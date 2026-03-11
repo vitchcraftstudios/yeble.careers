@@ -1,20 +1,28 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
 export default function SignInPage() {
+  return (
+    <Suspense fallback={<SignInShell loading />}>
+      <SignInShell />
+    </Suspense>
+  );
+}
+
+function SignInShell({ loading = false }: { loading?: boolean }) {
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl") || "/admin";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSubmitting(true);
     setError("");
     const res = await signIn("credentials", {
       redirect: false,
@@ -22,7 +30,7 @@ export default function SignInPage() {
       password,
       callbackUrl,
     });
-    setLoading(false);
+    setSubmitting(false);
     if (!res?.ok) {
       setError("Invalid credentials");
       return;
@@ -63,10 +71,10 @@ export default function SignInPage() {
             {error && <p className="text-sm text-amber-300">{error}</p>}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || submitting}
               className="mt-2 inline-flex items-center justify-center rounded-lg bg-lime-400 px-4 py-2 font-semibold text-[#06290f] transition hover:bg-lime-300 disabled:opacity-60"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading || submitting ? "Signing in..." : "Sign in"}
             </button>
           </form>
         </div>
