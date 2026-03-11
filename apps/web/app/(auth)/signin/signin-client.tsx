@@ -20,7 +20,9 @@ export default function SignInClient() {
             path="/signin"
             routing="path"
             signUpUrl="/signup"
-            redirectUrl={redirectUrl}
+            // Clerk version in use expects forceRedirectUrl/fallbackRedirectUrl instead of redirectUrl
+            forceRedirectUrl={redirectUrl}
+            fallbackRedirectUrl={redirectUrl}
             appearance={{
               elements: {
                 card: "bg-transparent border-0 shadow-none",
