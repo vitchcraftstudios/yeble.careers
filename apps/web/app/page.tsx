@@ -44,22 +44,17 @@ export default function Home() {
               <span className="rounded-full border border-white/10 px-3 py-1">PAN India sourcing hubs</span>
             </div>
           </div>
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur md:min-w-[320px]">
-            <p className="text-xs uppercase tracking-[0.24em] text-lime-200/80">Snapshot</p>
-            <div className="mt-3 space-y-3 text-sm text-lime-100/80">
-              <div className="flex items-center justify-between">
-                <span>Active mandates</span> <span className="text-lime-50 font-semibold">48</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Avg. shortlist time</span> <span className="text-lime-50 font-semibold">2.1 days</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Offer acceptance</span> <span className="text-lime-50 font-semibold">82%</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Roles filled in FY25</span> <span className="text-lime-50 font-semibold">312</span>
-              </div>
-            </div>
+          <div className="rounded-3xl border border-white/10 bg-white/5 overflow-hidden backdrop-blur md:min-w-[340px]">
+            <video
+              className="w-full h-full object-cover"
+              poster="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80"
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
+              <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4" />
+            </video>
           </div>
         </header>
 
@@ -114,7 +109,7 @@ export default function Home() {
             <ul className="mt-4 space-y-2 text-sm text-lime-100/80">
               <li>✔ Roles across Bengaluru, Hyderabad, NCR, Mumbai, Pune, Remote.</li>
               <li>✔ Interview coaching and salary guidance specific to your stack.</li>
-              <li>✔ Confidential submissions—your résumé is never blasted.</li>
+              <li>✔ Confidential submissions—your resume is never blasted.</li>
               <li>✔ Rapid feedback; we keep you updated at every stage.</li>
             </ul>
             <Link
@@ -149,6 +144,44 @@ export default function Home() {
                 <p className="mt-1 text-lime-100/70">{step.desc}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-lime-200/80">Inside Yeble</p>
+              <h2 className="text-xl font-semibold text-lime-50">In the field</h2>
+            </div>
+            <span className="text-sm text-lime-200/80">Real teams, real candidates</span>
+          </div>
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <div className="relative overflow-hidden rounded-2xl border border-white/10">
+              <img
+                src="https://images.unsplash.com/photo-1556761175-129418cb2dfe?auto=format&fit=crop&w=900&q=80"
+                alt="Team collaboration"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="relative overflow-hidden rounded-2xl border border-white/10">
+              <video
+                className="h-full w-full object-cover"
+                poster="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80"
+                autoPlay
+                loop
+                muted
+                playsInline
+              >
+                <source src="https://storage.googleapis.com/coverr-main/mp4/Night_City.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div className="relative overflow-hidden rounded-2xl border border-white/10">
+              <img
+                src="https://images.unsplash.com/photo-1556767576-5ec41e3239da?auto=format&fit=crop&w=900&q=80"
+                alt="Interview panel"
+                className="h-full w-full object-cover"
+              />
+            </div>
           </div>
         </section>
       </main>
