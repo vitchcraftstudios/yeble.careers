@@ -156,55 +156,44 @@ export default function Home() {
             <span className="text-sm text-lime-200/80">Real teams, real candidates</span>
           </div>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
-            <div className="relative overflow-hidden rounded-2xl border border-white/10">
-              <img
-                src="https://images.unsplash.com/photo-1556761175-129418cb2dfe?auto=format&fit=crop&w=900&q=80"
-                alt="Team collaboration"
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="relative overflow-hidden rounded-2xl border border-white/10">
-              <video
-                className="h-full w-full object-cover"
-                poster="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80"
-                autoPlay
-                loop
-                muted
-                playsInline
-              >
-                <source src="https://storage.googleapis.com/coverr-main/mp4/Night_City.mp4" type="video/mp4" />
-              </video>
-            </div>
-            <div className="relative overflow-hidden rounded-2xl border border-white/10">
-              <img
-                src="https://images.unsplash.com/photo-1556767576-5ec41e3239da?auto=format&fit=crop&w=900&q=80"
-                alt="Interview panel"
-                className="h-full w-full object-cover"
-              />
-            </div>
+            {[
+              {
+                type: "image",
+                src: "https://images.unsplash.com/photo-1556761175-129418cb2dfe?auto=format&fit=crop&w=900&q=80",
+                alt: "Team collaboration",
+              },
+              {
+                type: "video",
+                src: "https://storage.googleapis.com/coverr-main/mp4/Night_City.mp4",
+                poster:
+                  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80",
+              },
+              {
+                type: "image",
+                src: "https://images.unsplash.com/photo-1556767576-5ec41e3239da?auto=format&fit=crop&w=900&q=80",
+                alt: "Interview panel",
+              },
+            ].map((item, idx) => (
+              <div key={idx} className="relative overflow-hidden rounded-2xl border border-white/10">
+                {item.type === "image" ? (
+                  <img src={item.src} alt={item.alt} className="h-full w-full object-cover" />
+                ) : (
+                  <video
+                    className="h-full w-full object-cover"
+                    poster={item.poster}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  >
+                    <source src={item.src} type="video/mp4" />
+                  </video>
+                )}
+              </div>
+            ))}
           </div>
         </section>
       </main>
-
-      <footer className="relative z-10 border-t border-white/10 bg-black/20">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-lime-100/70 md:flex-row md:items-center md:justify-between">
-          <div>© {new Date().getFullYear()} Yeble Careers · India</div>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/about" className="hover:text-lime-200">
-              About
-            </Link>
-            <Link href="/services" className="hover:text-lime-200">
-              Services
-            </Link>
-            <Link href="/jobs" className="hover:text-lime-200">
-              Jobs
-            </Link>
-            <Link href="/contact" className="hover:text-lime-200">
-              Contact
-            </Link>
-          </div>
-        </div>
-      </footer>
 
       <style jsx global>{`
         .bg-grid {
