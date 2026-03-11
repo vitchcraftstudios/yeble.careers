@@ -18,7 +18,7 @@ export default function Home() {
 
       <main className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 py-16 text-center">
         <div className="mb-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.2em] text-lime-200">
-          Yeble Placement · Vercel · Neon · Blob
+          Yeble - Accelerate your Placement
         </div>
 
         <h1 className="text-4xl font-semibold leading-tight text-lime-100 md:text-5xl">
@@ -48,7 +48,7 @@ export default function Home() {
         <div className="mt-12 grid gap-3 text-left text-sm text-lime-50/80 md:grid-cols-3">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
             <p className="text-lime-200">Zero-lag hiring</p>
-            <p>Neon-backed pipelines with real-time shortlist updates.</p>
+            <p>Powerful Serverless backed pipelines with real-time shortlist updates.</p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
             <p className="text-lime-200">Signal-first matching</p>
@@ -56,7 +56,7 @@ export default function Home() {
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
             <p className="text-lime-200">Secure submissions</p>
-            <p>Resumes land in Vercel Blob with privacy-respecting defaults.</p>
+            <p>Resumes land in our object storage service with privacy-respecting defaults.</p>
           </div>
         </div>
       </main>
