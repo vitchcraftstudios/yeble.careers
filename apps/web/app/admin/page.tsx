@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { candidates, jobs, opsChecklist, pipeline } from "@/lib/data";
 
 export default async function AdminPage() {
   const { userId } = auth();
@@ -9,31 +10,27 @@ export default async function AdminPage() {
   const role = user?.publicMetadata?.role;
   if (role && role !== "ADMIN") redirect("/signin");
 
+  const openRoles = jobs.filter((j) => j.status !== "Closed");
   const metrics = [
-    { label: "Open roles", value: "18", delta: "+3 this week" },
-    { label: "Active candidates", value: "126", delta: "+14 interviewing" },
-    { label: "Avg. time to shortlist", value: "2.4 days", delta: "↓ 0.6 day" },
-    { label: "Offer acceptance", value: "78%", delta: "↑ 6% vs last month" },
+    { label: "Open roles", value: openRoles.length.toString(), delta: "+2 this week" },
+    { label: "Active candidates", value: "241", delta: "+18 interviewing" },
+    { label: "Avg. time to shortlist", value: "2.1 days", delta: "↓ 0.3 day" },
+    { label: "Offer acceptance", value: "82%", delta: "↑ 4% vs last month" },
   ];
 
-  const roles = [
-    { title: "Full‑stack Engineer", company: "GrowthOps", city: "Remote · US", stage: "Interview", slots: 3 },
-    { title: "Product Designer", company: "Northwind", city: "NYC", stage: "Shortlist", slots: 2 },
-    { title: "Data Analyst", company: "Helio Labs", city: "Remote · EU", stage: "Offer", slots: 1 },
-  ];
-
-  const candidates = [
-    { name: "Priya Narang", role: "Product Designer", stage: "Portfolio review", eta: "Today" },
-    { name: "Luis Ortega", role: "Full‑stack Engineer", stage: "Tech screen", eta: "In 2h" },
-    { name: "Emma Walsh", role: "Data Analyst", stage: "Hiring manager", eta: "Tomorrow" },
-    { name: "Jay Park", role: "Solutions Eng", stage: "Offer review", eta: "Awaiting" },
-  ];
-
-  const pipeline = [
-    { label: "Inbound", value: 312, accent: "from-lime-300/90 via-emerald-300/60 to-yellow-200/70" },
-    { label: "Shortlisted", value: 87, accent: "from-amber-200/80 via-lime-200/80 to-emerald-300/80" },
-    { label: "Interviewing", value: 46, accent: "from-cyan-200/80 via-emerald-200/80 to-lime-200/80" },
-    { label: "Offers", value: 12, accent: "from-lime-200/80 via-yellow-200/80 to-amber-200/80" },
+  const pipelineBars = [
+    { label: "Inbound", value: pipeline.inbound, accent: "from-lime-300/90 via-emerald-300/60 to-yellow-200/70" },
+    {
+      label: "Shortlisted",
+      value: pipeline.shortlisted,
+      accent: "from-amber-200/80 via-lime-200/80 to-emerald-300/80",
+    },
+    {
+      label: "Interviewing",
+      value: pipeline.interviewing,
+      accent: "from-cyan-200/80 via-emerald-200/80 to-lime-200/80",
+    },
+    { label: "Offers", value: pipeline.offers, accent: "from-lime-200/80 via-yellow-200/80 to-amber-200/80" },
   ];
 
   return (
@@ -75,20 +72,25 @@ export default async function AdminPage() {
               <span className="text-xs text-lime-200/70">Refreshing hourly</span>
             </div>
             <div className="mt-4 space-y-3">
-              {roles.map((role) => (
+              {openRoles.map((role) => (
                 <div
-                  key={role.title}
+                  key={role.id}
                   className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
                 >
                   <div>
                     <p className="text-sm font-semibold text-lime-50">{role.title}</p>
                     <p className="text-xs text-lime-100/70">
-                      {role.company} · {role.city}
+                      {role.company} · {role.city} · {role.locationType}
+                    </p>
+                    <p className="text-[11px] text-lime-100/60">
+                      {role.experience} · {role.salaryRange} · {role.type}
                     </p>
                   </div>
                   <div className="flex items-center gap-3 text-xs">
-                    <span className="rounded-full bg-emerald-300/15 px-3 py-1 text-lime-100">{role.stage}</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1 text-lime-200/80">{role.slots} slots</span>
+                    <span className="rounded-full bg-emerald-300/15 px-3 py-1 text-lime-100">{role.status}</span>
+                    <span className="rounded-full border border-white/10 px-3 py-1 text-lime-200/80">
+                      {role.openings} open
+                    </span>
                   </div>
                 </div>
               ))}
@@ -101,7 +103,7 @@ export default async function AdminPage() {
               <span className="text-xs text-lime-200/70">Live</span>
             </div>
             <div className="mt-4 space-y-3">
-              {pipeline.map((stage) => (
+              {pipelineBars.map((stage) => (
                 <div key={stage.label}>
                   <div className="flex justify-between text-sm text-lime-100/80">
                     <span>{stage.label}</span>
@@ -119,7 +121,7 @@ export default async function AdminPage() {
             <div className="mt-5 rounded-2xl border border-white/5 bg-[#0b2716] px-4 py-3 text-xs text-lime-100/80">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-300" />
-                94% of interviews scheduled on time today.
+                {(pipeline.onTimeInterviewRate * 100).toFixed(0)}% of interviews scheduled on time today.
               </div>
             </div>
           </div>
@@ -165,12 +167,7 @@ export default async function AdminPage() {
               <span className="text-xs text-lime-200/70">Today</span>
             </div>
             <div className="mt-4 space-y-3 text-sm text-lime-50">
-              {[
-                "Push new SFDC webhook to capture inbound leads",
-                "Upload design candidates for Northwind sprint",
-                "Send offer packets for Solutions Eng cohort",
-                "Archive rejected profiles older than 30 days",
-              ].map((task) => (
+              {opsChecklist.map((task) => (
                 <label
                   key={task}
                   className="flex cursor-pointer items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 transition hover:border-lime-200/40"
