@@ -18,7 +18,7 @@ export default function Home() {
           <div className="space-y-4 max-w-3xl">
             <p className="text-xs uppercase tracking-[0.28em] text-lime-200">Yeble.careers - Accelerate your Placement</p>
             <h1 className="text-4xl font-semibold leading-tight text-lime-50 md:text-5xl">
-              Permanent & contract hiring across tech, product, analytics, and GTM.
+              Connecting forward-thinking companies with the exceptional individuals who drive innovation, operational excellence, and long-term commercial success.
             </h1>
             <p className="text-lg text-lime-50/80">
               Founded 2026 · HQ Selaqui, Dehradun, Uttarakhand. We staff across Uttarakhand, Uttar Pradesh, Haryana, and
@@ -257,3 +257,4 @@ export default function Home() {
     </div>
   );
 }
+
