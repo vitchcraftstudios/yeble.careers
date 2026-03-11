@@ -3,7 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SiteNav } from "@/components/site-nav";
 import { Footer } from "@/components/footer";
+import dynamic from "next/dynamic";
 import "./globals.css";
+
+const Splash = dynamic(() => import("./(auth)/splash"), { ssr: false });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Yeble Careers | India-first Employment Agency",
-  description: "Permanent & contract hiring across tech, product, analytics, GTM in India.",
+  title: "Yeble.careers - Accelerate your Placement",
+  description: "Permanent & contract hiring across tech, product, analytics, GTM from Dehradun HQ.",
 };
 
 export default function RootLayout({
@@ -31,6 +34,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <Splash />
           <SiteNav />
           {children}
           <Footer />

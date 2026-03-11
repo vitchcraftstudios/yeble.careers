@@ -16,13 +16,13 @@ export default function Home() {
       <main className="relative z-10 mx-auto flex max-w-6xl flex-col gap-16 px-6 py-14">
         <header className="flex flex-col gap-6 text-center md:text-left md:flex-row md:items-center md:justify-between">
           <div className="space-y-4 max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.28em] text-lime-200">India-first employment agency</p>
+            <p className="text-xs uppercase tracking-[0.28em] text-lime-200">Yeble.careers - Accelerate your Placement</p>
             <h1 className="text-4xl font-semibold leading-tight text-lime-50 md:text-5xl">
               Permanent & contract hiring across tech, product, analytics, and GTM.
             </h1>
             <p className="text-lg text-lime-50/80">
-              Yeble partners with funded startups and enterprises to place vetted talent faster—PAN India reach, with
-              on-ground recruiters in Bengaluru, Hyderabad, Delhi NCR, Mumbai, and Pune.
+              Founded 2026 · HQ Selaqui, Dehradun, Uttarakhand. We staff across Uttarakhand, Uttar Pradesh, Haryana, and
+              Himachal Pradesh with on-ground recruiters and tight feedback loops.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
@@ -40,8 +40,8 @@ export default function Home() {
             </div>
             <div className="flex flex-wrap gap-3 text-xs text-lime-100/70">
               <span className="rounded-full border border-white/10 px-3 py-1">Turnaround: shortlist in 72h</span>
+              <span className="rounded-full border border-white/10 px-3 py-1">Dehradun-led sourcing, 4-state coverage</span>
               <span className="rounded-full border border-white/10 px-3 py-1">Compliance: IT/ITES staffing</span>
-              <span className="rounded-full border border-white/10 px-3 py-1">PAN India sourcing hubs</span>
             </div>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 overflow-hidden backdrop-blur md:min-w-[340px]">
