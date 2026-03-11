@@ -3,10 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SiteNav } from "@/components/site-nav";
 import { Footer } from "@/components/footer";
-import dynamic from "next/dynamic";
 import "./globals.css";
-
-const Splash = dynamic(() => import("./(auth)/splash"), { ssr: false });
+import Splash from "./(auth)/splash";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
