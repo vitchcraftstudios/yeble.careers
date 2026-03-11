@@ -7,7 +7,8 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-6 text-sm md:flex-row md:items-center md:justify-between">
         <div className="space-y-1">
           <p className="text-lime-200 uppercase tracking-[0.2em] text-xs">Yeble Careers</p>
-          <p>India-first employment agency · Bengaluru | Hyderabad | NCR | Mumbai | Pune</p>
+          <p>Founded 2026 · HQ: Selaqui, Dehradun, Uttarakhand</p>
+          <p>Coverage: Uttarakhand · Uttar Pradesh · Haryana · Himachal Pradesh</p>
           <p className="text-lime-100/60">© {year} Yeble Careers</p>
         </div>
         <div className="flex flex-wrap gap-3">
