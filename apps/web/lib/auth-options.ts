@@ -1,16 +1,34 @@
 import { PrismaClient } from "@prisma/client";
 import { compare } from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
 
 const prisma = new PrismaClient();
 
 const adminEmail = process.env.ADMIN_EMAIL || "admin@yeble.careers";
 const adminPassword = process.env.ADMIN_PASSWORD || "changeme";
+const googleClientId =
+  process.env.GOOGLE_OAUTH_CLIENT_ID ||
+  process.env.GOOGLE_CLIENT_ID ||
+  // fallback in case the env var was accidentally duplicated in the dashboard
+  (process.env as any).GOOGLE_OAUTH_CLIENT_IDOOGLE_OAUTH_CLIENT_ID;
+const googleClientSecret =
+  process.env.GOOGLE_OAUTH_CLIENT_SECRET ||
+  process.env.GOOGLE_CLIENT_SECRET ||
+  (process.env as any).GOOGLE_OAUTH_CLIENT_SECRETGOOGLE_OAUTH_CLIENT_SECRET;
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   providers: [
+    ...(googleClientId && googleClientSecret
+      ? [
+          GoogleProvider({
+            clientId: googleClientId,
+            clientSecret: googleClientSecret,
+          }),
+        ]
+      : []),
     Credentials({
       name: "Credentials",
       credentials: {

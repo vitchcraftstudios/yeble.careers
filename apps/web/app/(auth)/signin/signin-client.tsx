@@ -10,6 +10,7 @@ export default function SignInClient() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
@@ -28,6 +29,12 @@ export default function SignInClient() {
       return;
     }
     window.location.href = res.url || "/admin";
+  };
+
+  const handleGoogle = async () => {
+    setError("");
+    setGoogleLoading(true);
+    await signIn("google", { callbackUrl });
   };
 
   return (
@@ -69,6 +76,28 @@ export default function SignInClient() {
               {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
+          <div className="mt-6 flex items-center gap-3 text-xs text-lime-100/60">
+            <div className="h-px flex-1 bg-white/10" />
+            <span>or</span>
+            <div className="h-px flex-1 bg-white/10" />
+          </div>
+          <button
+            type="button"
+            onClick={handleGoogle}
+            disabled={googleLoading}
+            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-lime-50 transition hover:border-lime-200/60 disabled:opacity-60"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="h-5 w-5">
+              <path
+                fill="#FFC107"
+                d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 3l5.7-5.7C33.5 6.5 28.9 4.5 24 4.5 12.6 4.5 3.5 13.6 3.5 25S12.6 45.5 24 45.5 44.5 36.4 44.5 25c0-1.5-.1-2.5-.9-4.5z"
+              />
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.3 16.2 18.8 14 24 14c3 0 5.7 1.1 7.8 3l5.7-5.7C33.5 6.5 28.9 4.5 24 4.5c-7.4 0-13.7 4.2-17.7 10.2z" />
+              <path fill="#4CAF50" d="M24 45.5c5.2 0 10-1.8 13.6-5l-6.3-5.3C29.3 36 26.7 37 24 37c-5.3 0-9.7-3.1-11.5-7.5L6 34.9c3.9 6.1 10.5 10.6 18 10.6z" />
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1 2.9-3.6 5.1-6.6 5.9l6.3 5.3c-.4.3 6.4-4.7 6.4-14.2 0-1.5-.1-2.5-.8-4.5z" />
+            </svg>
+            {googleLoading ? "Redirecting…" : "Continue with Google"}
+          </button>
         </div>
       </div>
     </div>
