@@ -1,12 +1,13 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth-options";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 export default async function AdminPage() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user || (session.user as any).role !== "ADMIN") {
-    redirect("/signin");
-  }
+  const { userId } = auth();
+  if (!userId) redirect("/signin");
+
+  const user = await currentUser();
+  const role = user?.publicMetadata?.role;
+  if (role && role !== "ADMIN") redirect("/signin");
 
   const metrics = [
     { label: "Open roles", value: "18", delta: "+3 this week" },
@@ -46,7 +47,9 @@ export default async function AdminPage() {
           </div>
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-sm text-lime-100/80 shadow-lg shadow-emerald-500/10">
             <span className="h-2 w-2 rounded-full bg-emerald-300 animate-pulse" />
-            {(session.user as any).email}
+            {user?.primaryEmailAddress?.emailAddress ||
+              user?.phoneNumbers?.[0]?.phoneNumber ||
+              "Signed in"}
           </div>
         </div>
 
