@@ -1,0 +1,11 @@
+{
+  "name": "@yeble/ui",
+  "version": "0.0.1",
+  "main": "src/index.tsx",
+  "types": "src/index.tsx",
+  "private": true,
+  "peerDependencies": {
+    "react": "^18 || ^19",
+    "react-native": "*"
+  }
+}
