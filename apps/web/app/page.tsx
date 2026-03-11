@@ -67,36 +67,31 @@ export default function Home() {
 
       {showSplash && (
         <div className="fixed inset-0 z-20 flex items-center justify-center bg-[#03120a]">
-          <div className="absolute inset-0 animate-gradient bg-[radial-gradient(circle_at_30%_30%,#27e58a66,transparent_35%),radial-gradient(circle_at_70%_20%,#dff95b55,transparent_32%),radial-gradient(circle_at_60%_70%,#1baa5f55,transparent_30%)] opacity-80" />
-          <div className="absolute inset-0 bg-[linear-gradient(145deg,#0a1f12,#06230f_50%,#0c2f14)] opacity-85" />
-          <div className="relative flex flex-col items-center gap-2 rounded-3xl border border-white/10 bg-white/5 px-10 py-8 backdrop-blur-xl shadow-[0_20px_80px_rgba(20,255,120,0.25)] animate-pop">
-            <div className="flex items-center gap-3 text-sm uppercase tracking-[0.2em] text-lime-200">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-lime-300 shadow-[0_0_12px_2px_rgba(132,255,147,0.8)]" />
-              Yeble
+          <div className="absolute inset-0 bg-[linear-gradient(160deg,#062d15,#0b1f12_45%,#0f3a1b)] opacity-90" />
+          <div className="relative w-[320px] max-w-[80vw] rounded-2xl border border-lime-300/40 bg-white/5 px-8 py-6 shadow-[0_18px_80px_rgba(82,255,122,0.25)] backdrop-blur-xl">
+            <div className="mb-3 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em] text-lime-200">
+              <span>Yeble</span>
+              <span className="text-lime-300">Accelerate your Placement</span>
             </div>
-            <h2 className="text-2xl font-semibold text-lime-50">Accelerate your Placement</h2>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div className="progress-bar h-full w-full rounded-full bg-gradient-to-r from-lime-300 via-yellow-300 to-lime-400" />
+            </div>
+            <p className="mt-3 text-sm text-lime-50/80">Loading experience…</p>
           </div>
         </div>
       )}
 
       <style jsx global>{`
-        .animate-pop {
-          animation: popIn 600ms ease forwards;
-          transform: scale(0.96);
-          opacity: 0;
+        .progress-bar {
+          animation: progress 1800ms ease forwards;
+          transform-origin: left center;
         }
-        @keyframes popIn {
+        @keyframes progress {
           0% {
-            transform: scale(0.96);
-            opacity: 0;
-          }
-          60% {
-            transform: scale(1.03);
-            opacity: 1;
+            transform: scaleX(0);
           }
           100% {
-            transform: scale(1);
-            opacity: 1;
+            transform: scaleX(1);
           }
         }
         @keyframes drift {
