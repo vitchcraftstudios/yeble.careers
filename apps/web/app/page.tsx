@@ -1,6 +1,13 @@
 "use client";
 
 export default function Home() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 2200);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#03120a] text-white">
       <div className="absolute inset-0 animate-gradient bg-[radial-gradient(circle_at_20%_20%,#27e58a66,transparent_35%),radial-gradient(circle_at_80%_10%,#dff95b44,transparent_30%),radial-gradient(circle_at_50%_80%,#1baa5f55,transparent_32%)]" />
@@ -52,7 +59,44 @@ export default function Home() {
         </div>
       </main>
 
+      <footer className="relative z-10 flex items-center justify-center pb-8 text-xs text-lime-50/70">
+        © {new Date().getFullYear()} Yeble — Accelerate your Placement
+      </footer>
+
+      {showSplash && (
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-[#03120a]">
+          <div className="absolute inset-0 animate-gradient bg-[radial-gradient(circle_at_30%_30%,#27e58a66,transparent_35%),radial-gradient(circle_at_70%_20%,#dff95b55,transparent_32%),radial-gradient(circle_at_60%_70%,#1baa5f55,transparent_30%)] opacity-80" />
+          <div className="absolute inset-0 bg-[linear-gradient(145deg,#0a1f12,#06230f_50%,#0c2f14)] opacity-85" />
+          <div className="relative flex flex-col items-center gap-2 rounded-3xl border border-white/10 bg-white/5 px-10 py-8 backdrop-blur-xl shadow-[0_20px_80px_rgba(20,255,120,0.25)] animate-pop">
+            <div className="flex items-center gap-3 text-sm uppercase tracking-[0.2em] text-lime-200">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-lime-300 shadow-[0_0_12px_2px_rgba(132,255,147,0.8)]" />
+              Yeble
+            </div>
+            <h2 className="text-2xl font-semibold text-lime-50">Accelerate your Placement</h2>
+          </div>
+        </div>
+      )}
+
       <style jsx global>{`
+        .animate-pop {
+          animation: popIn 600ms ease forwards;
+          transform: scale(0.96);
+          opacity: 0;
+        }
+        @keyframes popIn {
+          0% {
+            transform: scale(0.96);
+            opacity: 0;
+          }
+          60% {
+            transform: scale(1.03);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
         @keyframes drift {
           0% {
             transform: translate3d(0, 0, 0) scale(1);
