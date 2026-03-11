@@ -20,7 +20,7 @@ export default function SignUpClient() {
             path="/signup"
             routing="path"
             signInUrl="/signin"
-            afterSignUpUrl={redirectUrl}
+            redirectUrl={redirectUrl}
             appearance={{
               elements: {
                 card: "bg-transparent border-0 shadow-none",
