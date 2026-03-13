@@ -10,15 +10,15 @@ export default function AboutPage() {
           <p className="text-xs uppercase tracking-[0.28em] text-lime-200">About us</p>
           <h1 className="text-3xl font-semibold text-lime-50">We place talent into teams that ship.</h1>
           <p className="text-lg text-lime-100/80">
-            Yeble Careers is an India-first employment agency helping venture-backed startups and enterprises hire
-            engineers, product managers, data talent, designers, and GTM specialists. We combine on-ground sourcing hubs
+            Yeble Careers is the most trusted employment agency helping enterprises hire
+            Talents. We combine on-ground sourcing hubs
             with structured evaluation so you get calibrated shortlists in under 72 hours.
           </p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
           {[
-            { label: "Founded", value: "2022", detail: "Bengaluru HQ, recruiters across 5 cities" },
+            { label: "Founded", value: "2026", detail: "Dehradun HQ, recruiters across 5 cities" },
             { label: "Placements FY25", value: "312", detail: "Across tech, product, analytics, GTM" },
             { label: "Acceptance rate", value: "82%", detail: "Offer-to-join backed by prep + closing" },
           ].map((item) => (
