@@ -17,9 +17,8 @@ export function Footer() {
             />
             <p className="text-[#0f2c1c] uppercase tracking-[0.2em] text-xs">Yeble Careers</p>
           </div>
-          <p>Founded 2026 · HQ: Selaqui, Dehradun, Uttarakhand</p>
           <p>Coverage: Uttarakhand · Uttar Pradesh · Haryana · Himachal Pradesh</p>
-          <p className="text-[#2f4a35]/70">© {year} Yeble Careers</p>
+          <p className="text-[#2f4a35]/70">© {year} Yeble.careers - Accelerate your Placement</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link href="/about" className="hover:text-[#1c3e2a]">
