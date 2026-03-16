@@ -8,7 +8,7 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-6 text-sm md:flex-row md:items-center md:justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <Image src="/logo.svg" alt="Yeble.careers logo" width={140} height={46} className="h-10 w-auto" />
+            <Image src="/logo.svg" alt="Yeble.careers logo" width={180} height={60} className="h-12 w-auto" />
             <p className="text-lime-200 uppercase tracking-[0.2em] text-xs">Yeble Careers</p>
           </div>
           <p>Founded 2026 · HQ: Selaqui, Dehradun, Uttarakhand</p>

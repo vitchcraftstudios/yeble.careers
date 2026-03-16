@@ -170,7 +170,7 @@ export default function Home() {
               },
               {
                 type: "image",
-                src: "https://images.unsplash.com/photo-1556767576-5ec41e3239da?auto=format&fit=crop&w=900&q=80",
+                src: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=900&q=80",
                 alt: "Interview panel",
               },
             ].map((item, idx) => (
