@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const links = [
   { href: "/", label: "Home" },
@@ -26,8 +27,8 @@ export function SiteNav() {
   return (
     <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0a2918]/90 backdrop-blur shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-4">
-        <Link href="/" className="text-sm font-semibold tracking-[0.22em] uppercase text-lime-200">
-          Yeble Careers
+        <Link href="/" className="flex items-center gap-2 text-sm font-semibold tracking-[0.22em] uppercase text-lime-200">
+          <Image src="/logo.svg" alt="Yeble.careers logo" width={120} height={40} className="h-10 w-auto" priority />
         </Link>
         <div className="flex items-center gap-3">
           <nav className="hidden items-center gap-3 text-sm text-lime-100/80 md:flex">
