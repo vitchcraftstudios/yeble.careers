@@ -25,27 +25,27 @@ export function SiteNav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0a2918]/90 backdrop-blur shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
+    <header className="sticky top-0 z-30 border-b border-[#dcd8cf] bg-[#f5f4ef]/95 backdrop-blur shadow-[0_10px_40px_rgba(0,0,0,0.08)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-4">
-        <Link href="/" className="flex items-center gap-2 text-sm font-semibold tracking-[0.22em] uppercase text-lime-200">
-          <Image src="/logo.svg" alt="Yeble.careers logo" width={180} height={60} className="h-12 w-auto" priority />
+        <Link href="/" className="flex items-center gap-2 text-sm font-semibold tracking-[0.22em] uppercase text-[#0f2c1c]">
+          <Image src="/logo.svg" alt="Yeble.careers logo" width={200} height={70} className="h-14 w-auto" priority />
         </Link>
         <div className="flex items-center gap-3">
-          <nav className="hidden items-center gap-3 text-sm text-lime-100/80 md:flex">
+          <nav className="hidden items-center gap-3 text-sm text-[#0f2c1c] md:flex">
             {links.map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-lime-200">
+              <Link key={link.href} href={link.href} className="hover:text-[#1c3e2a]">
                 {link.label}
               </Link>
             ))}
             <Link
               href="/signin"
-              className="rounded-full border border-white/15 px-3 py-1 text-xs font-semibold text-lime-50 hover:border-lime-300/70"
+              className="rounded-full border border-[#cfcabf] px-3 py-1 text-xs font-semibold text-[#0f2c1c] hover:border-[#1c3e2a]"
             >
               Admin
             </Link>
           </nav>
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 text-lime-100 md:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#cfcabf] text-[#0f2c1c] md:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -60,12 +60,12 @@ export function SiteNav() {
           open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <nav className="flex flex-col gap-2 border-t border-white/10 bg-[#0b2f1b]/95 px-6 py-4 text-sm text-lime-100/85 shadow-[0_15px_40px_rgba(0,0,0,0.35)]">
+        <nav className="flex flex-col gap-2 border-t border-[#dcd8cf] bg-[#f0ede6]/95 px-6 py-4 text-sm text-[#0f2c1c] shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-lg px-2 py-2 hover:bg-white/10"
+              className="rounded-lg px-2 py-2 hover:bg-white"
               onClick={() => setOpen(false)}
             >
               {link.label}
@@ -73,7 +73,7 @@ export function SiteNav() {
           ))}
           <Link
             href="/signin"
-            className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-white/20 px-3 py-2 text-xs font-semibold text-lime-50 hover:border-lime-300/70"
+            className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-[#cfcabf] px-3 py-2 text-xs font-semibold text-[#0f2c1c] hover:border-[#1c3e2a]"
             onClick={() => setOpen(false)}
           >
             Admin
