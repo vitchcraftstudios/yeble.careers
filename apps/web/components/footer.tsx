@@ -16,7 +16,6 @@ export function Footer() {
               className="h-12 w-auto filter grayscale"
             />
           </div>
-          <p>Coverage: Uttarakhand · Uttar Pradesh · Haryana · Himachal Pradesh</p>
           <p className="text-[#2f4a35]/70">© {year} Yeble.careers - Accelerate your Placement</p>
         </div>
         <div className="flex flex-wrap gap-3">
