@@ -15,7 +15,6 @@ export function Footer() {
               height={60}
               className="h-12 w-auto filter grayscale"
             />
-            <p className="text-[#0f2c1c] uppercase tracking-[0.2em] text-xs">Yeble Careers</p>
           </div>
           <p>Coverage: Uttarakhand · Uttar Pradesh · Haryana · Himachal Pradesh</p>
           <p className="text-[#2f4a35]/70">© {year} Yeble.careers - Accelerate your Placement</p>
