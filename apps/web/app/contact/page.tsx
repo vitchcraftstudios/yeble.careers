@@ -1,59 +1,59 @@
-export const metadata = {
+﻿export const metadata = {
   title: "Contact | Yeble Careers",
 };
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#03110a] via-[#062314] to-[#0a3a1a] text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-4xl px-6 py-14 space-y-8">
         <div className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.28em] text-lime-200">Contact</p>
-          <h1 className="text-3xl font-semibold text-lime-50">Talk to our team</h1>
+          <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Contact</p>
+          <h1 className="text-3xl font-semibold text-[#123622]">Talk to our team</h1>
           <p className="text-sm text-lime-100/75">
-            Employers: share your roles and hiring timelines. Candidates: include your résumé link and the Job ID if
+            Employers: share your roles and hiring timelines. Candidates: include your rÃ©sumÃ© link and the Job ID if
             applicable.
           </p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <h3 className="text-lg font-semibold text-lime-50">Email</h3>
-            <p className="mt-2 text-sm text-lime-100/80">
-              Hiring: <a className="text-lime-200" href="mailto:hello@yeble.careers">hello@yeble.careers</a>
+          <div className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
+            <h3 className="text-lg font-semibold text-[#123622]">Email</h3>
+            <p className="mt-2 text-sm text-[#2f4a35]">
+              Hiring: <a className="text-[#2d6a3e]" href="mailto:hello@yeble.careers">hello@yeble.careers</a>
               <br />
-              Candidates: <a className="text-lime-200" href="mailto:hr@yeble.careers">hr@yeble.careers</a>
+              Candidates: <a className="text-[#2d6a3e]" href="mailto:hr@yeble.careers">hr@yeble.careers</a>
             </p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <h3 className="text-lg font-semibold text-lime-50">Locations</h3>
-            <p className="mt-2 text-sm text-lime-100/80">
-              Bengaluru · Hyderabad · Delhi NCR · Mumbai · Pune <br />
+          <div className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
+            <h3 className="text-lg font-semibold text-[#123622]">Locations</h3>
+            <p className="mt-2 text-sm text-[#2f4a35]">
+              Bengaluru Â· Hyderabad Â· Delhi NCR Â· Mumbai Â· Pune <br />
               PAN India remote support for candidate coordination.
             </p>
           </div>
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <h3 className="text-lg font-semibold text-lime-50">Quick enquiry</h3>
+        <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+          <h3 className="text-lg font-semibold text-[#123622]">Quick enquiry</h3>
           <form className="mt-4 grid gap-4">
             <input
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white outline-none"
+              className="w-full rounded-lg border border-[#e3decf] bg-white/85 px-3 py-2 text-[#0f2918] outline-none"
               placeholder="Name"
               required
             />
             <input
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white outline-none"
+              className="w-full rounded-lg border border-[#e3decf] bg-white/85 px-3 py-2 text-[#0f2918] outline-none"
               placeholder="Work email"
               type="email"
               required
             />
             <input
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white outline-none"
+              className="w-full rounded-lg border border-[#e3decf] bg-white/85 px-3 py-2 text-[#0f2918] outline-none"
               placeholder="Phone (optional)"
             />
             <textarea
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white outline-none"
-              placeholder="Share your hiring needs or the Job ID you’re applying for"
+              className="w-full rounded-lg border border-[#e3decf] bg-white/85 px-3 py-2 text-[#0f2918] outline-none"
+              placeholder="Share your hiring needs or the Job ID youâ€™re applying for"
               rows={4}
             />
             <button
@@ -62,7 +62,7 @@ export default function ContactPage() {
             >
               Send enquiry
             </button>
-            <p className="text-xs text-lime-100/70">
+            <p className="text-xs text-[#31513c]">
               Submissions route to our inbox; we respond within one business day. For faster responses, email
               hello@yeble.careers directly.
             </p>
@@ -72,3 +72,7 @@ export default function ContactPage() {
     </div>
   );
 }
+
+
+
+

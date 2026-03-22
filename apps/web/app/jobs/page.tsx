@@ -1,4 +1,4 @@
-import { jobs } from "@/lib/data";
+﻿import { jobs } from "@/lib/data";
 
 export const metadata = {
   title: "Open Jobs | Yeble Careers",
@@ -6,41 +6,45 @@ export const metadata = {
 
 export default function JobsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#03110a] via-[#062314] to-[#0a3a1a] text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-6xl px-6 py-14 space-y-6">
         <div className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.28em] text-lime-200">Open roles</p>
-          <h1 className="text-3xl font-semibold text-lime-50">Current mandates</h1>
+          <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Open roles</p>
+          <h1 className="text-3xl font-semibold text-[#123622]">Current mandates</h1>
           <p className="text-sm text-lime-100/75">Updated daily. Apply via hr@yeble.careers with the Job ID.</p>
         </div>
 
         <div className="grid gap-3">
           {jobs.map((job) => (
-            <article key={job.id} className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur">
+            <article key={job.id} className="rounded-2xl border border-[#e3decf] bg-white/85 p-5 backdrop-blur">
               <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-lime-200/80">{job.company}</p>
-                  <h2 className="text-xl font-semibold text-lime-50">{job.title}</h2>
-                  <p className="text-sm text-lime-100/70">
-                    {job.city} · {job.locationType} · {job.experience} · {job.type}
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#2d6a3e]/80">{job.company}</p>
+                  <h2 className="text-xl font-semibold text-[#123622]">{job.title}</h2>
+                  <p className="text-sm text-[#31513c]">
+                    {job.city} Â· {job.locationType} Â· {job.experience} Â· {job.type}
                   </p>
-                  <p className="text-sm text-lime-100/70">Salary: {job.salaryRange} · Job ID: {job.id}</p>
+                  <p className="text-sm text-[#31513c]">Salary: {job.salaryRange} Â· Job ID: {job.id}</p>
                 </div>
-                <div className="flex flex-wrap gap-2 text-xs text-lime-100/80">
+                <div className="flex flex-wrap gap-2 text-xs text-[#2f4a35]">
                   <span className="rounded-full bg-white/10 px-3 py-1">{job.sector}</span>
-                  <span className="rounded-full border border-white/10 px-3 py-1">{job.openings} openings</span>
-                  <span className="rounded-full border border-white/10 px-3 py-1">{job.status}</span>
+                  <span className="rounded-full border border-[#e3decf] px-3 py-1">{job.openings} openings</span>
+                  <span className="rounded-full border border-[#e3decf] px-3 py-1">{job.status}</span>
                 </div>
               </div>
             </article>
           ))}
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-lime-100/75">
-          To apply, email your résumé with the Job ID to <a className="text-lime-200" href="mailto:hr@yeble.careers">hr@yeble.careers</a>.
-          Hiring managers can send new mandates to <a className="text-lime-200" href="mailto:hello@yeble.careers">hello@yeble.careers</a>.
+        <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 text-sm text-lime-100/75">
+          To apply, email your rÃ©sumÃ© with the Job ID to <a className="text-[#2d6a3e]" href="mailto:hr@yeble.careers">hr@yeble.careers</a>.
+          Hiring managers can send new mandates to <a className="text-[#2d6a3e]" href="mailto:hello@yeble.careers">hello@yeble.careers</a>.
         </div>
       </div>
     </div>
   );
 }
+
+
+
+

@@ -1,4 +1,4 @@
-export const metadata = {
+﻿export const metadata = {
   title: "Services | Yeble Careers",
 };
 
@@ -31,12 +31,12 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#03110a] via-[#062314] to-[#0a3a1a] text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-8">
         <div className="space-y-3">
-          <p className="text-xs uppercase tracking-[0.28em] text-lime-200">Services</p>
-          <h1 className="text-3xl font-semibold text-lime-50">Hiring solutions built for Indian teams</h1>
-          <p className="text-lg text-lime-100/80">
+          <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Services</p>
+          <h1 className="text-3xl font-semibold text-[#123622]">Hiring solutions built for Indian teams</h1>
+          <p className="text-lg text-[#2f4a35]">
             Whether you need to scale fast, add contract talent, or close a leadership seat, we match you with vetted
             candidates and manage the process end-to-end.
           </p>
@@ -44,20 +44,20 @@ export default function ServicesPage() {
 
         <div className="grid gap-4 md:grid-cols-3">
           {services.map((service) => (
-            <div key={service.title} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-              <h3 className="text-lg font-semibold text-lime-50">{service.title}</h3>
-              <ul className="mt-3 space-y-2 text-sm text-lime-100/80">
+            <div key={service.title} className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
+              <h3 className="text-lg font-semibold text-[#123622]">{service.title}</h3>
+              <ul className="mt-3 space-y-2 text-sm text-[#2f4a35]">
                 {service.points.map((p) => (
-                  <li key={p}>• {p}</li>
+                  <li key={p}>â€¢ {p}</li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-xl font-semibold text-lime-50">Coverage</h2>
-          <p className="mt-2 text-sm text-lime-100/80">
+        <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+          <h2 className="text-xl font-semibold text-[#123622]">Coverage</h2>
+          <p className="mt-2 text-sm text-[#2f4a35]">
             Cities: Bengaluru, Hyderabad, Delhi NCR, Mumbai, Pune, Chennai. Remote-friendly roles pan India. Time zones:
             IST-first with overlap to EU/US as required.
           </p>
@@ -66,3 +66,9 @@ export default function ServicesPage() {
     </div>
   );
 }
+
+
+
+
+
+
