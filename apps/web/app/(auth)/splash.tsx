@@ -40,12 +40,7 @@ export default function Splash() {
           <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#27c06b] border-t-transparent" />
           <p className="text-base font-semibold">{progress}%</p>
         </div>
-        <p className="mt-2 text-sm text-[#123622]">Loading the Yeble experience…</p>
       </div>
     </div>
   );
 }
-
-
-
-
