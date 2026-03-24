@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { LogIn, Menu, ShieldCheck, UserRound, X } from "lucide-react";
 
 const links = [
   { href: "/", label: "Home" },
@@ -12,10 +13,14 @@ const links = [
   { href: "/contact", label: "Contact" },
 ];
 
+const authLinks = [
+  { href: "/signin?callbackUrl=/jobs", label: "Registrant Login", icon: UserRound },
+  { href: "/signin?callbackUrl=/admin", label: "Admin Login", icon: ShieldCheck },
+];
+
 export function SiteNav() {
   const [open, setOpen] = useState(false);
 
-  // close menu on resize to desktop
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth >= 768) setOpen(false);
@@ -25,59 +30,71 @@ export function SiteNav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-[#dcd8cf] bg-[#f5f4ef]/95 backdrop-blur shadow-[0_10px_40px_rgba(0,0,0,0.08)]">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-4">
-        <Link href="/" className="flex items-center gap-2 text-sm font-semibold tracking-[0.22em] uppercase text-[#0f2c1c]">
+    <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur shadow-[0_8px_40px_rgba(15,23,42,0.06)]">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+        <Link href="/" className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.22em] text-slate-900">
           <Image src="/logo.svg" alt="Yeble.careers logo" width={200} height={70} className="h-14 w-auto" priority />
         </Link>
-        <div className="flex items-center gap-3">
-          <nav className="hidden items-center gap-3 text-sm text-[#0f2c1c] md:flex">
+
+        <div className="hidden items-center gap-3 md:flex">
+          <nav className="flex items-center gap-5 text-sm text-slate-700">
             {links.map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-[#1c3e2a]">
+              <Link key={link.href} href={link.href} className="transition hover:text-[#163b66]">
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/signin"
-              className="rounded-full border border-[#cfcabf] px-3 py-1 text-xs font-semibold text-[#0f2c1c] hover:border-[#1c3e2a]"
-            >
-              Admin
-            </Link>
           </nav>
-          <button
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#cfcabf] text-[#0f2c1c] md:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
-          >
-            {open ? "×" : "☰"}
-          </button>
+          <div className="flex items-center gap-2 pl-2">
+            {authLinks.map(({ href, label, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-800 transition hover:border-[#163b66] hover:text-[#163b66]"
+              >
+                <Icon className="h-4 w-4" />
+                {label}
+              </Link>
+            ))}
+          </div>
         </div>
+
+        <button
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-slate-800 md:hidden"
+          onClick={() => setOpen((value) => !value)}
+          aria-label="Toggle menu"
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
 
-      {/* mobile dropdown panel */}
-      <div
-        className={`md:hidden transition-[max-height,opacity] duration-300 overflow-hidden ${
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <nav className="flex flex-col gap-2 border-t border-[#dcd8cf] bg-[#f0ede6]/95 px-6 py-4 text-sm text-[#0f2c1c] shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
+      <div className={`overflow-hidden border-t border-slate-200 transition-[max-height,opacity] duration-300 md:hidden ${open ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"}`}>
+        <nav className="flex flex-col gap-2 bg-white px-6 py-4 text-sm text-slate-700 shadow-[0_15px_40px_rgba(15,23,42,0.08)]">
           {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-lg px-2 py-2 hover:bg-white"
-              onClick={() => setOpen(false)}
-            >
+            <Link key={link.href} href={link.href} className="rounded-xl px-3 py-2 hover:bg-slate-50" onClick={() => setOpen(false)}>
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/signin"
-            className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-[#cfcabf] px-3 py-2 text-xs font-semibold text-[#0f2c1c] hover:border-[#1c3e2a]"
-            onClick={() => setOpen(false)}
-          >
-            Admin
-          </Link>
+          <div className="mt-2 grid gap-2">
+            {authLinks.map(({ href, label, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-800"
+                onClick={() => setOpen(false)}
+              >
+                <Icon className="h-4 w-4" />
+                {label}
+              </Link>
+            ))}
+            <Link
+              href="/signup?callbackUrl=/jobs"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#163b66] px-4 py-2 text-xs font-semibold text-white"
+              onClick={() => setOpen(false)}
+            >
+              <LogIn className="h-4 w-4" />
+              Create Registrant Account
+            </Link>
+          </div>
         </nav>
       </div>
     </header>
