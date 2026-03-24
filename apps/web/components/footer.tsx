@@ -1,4 +1,4 @@
-import Link from "next/link";
+ï»¿import Link from "next/link";
 import Image from "next/image";
 
 export function Footer() {
@@ -9,7 +9,7 @@ export function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm md:flex-row md:items-center md:justify-between">
         <div className="space-y-2">
           <Image src="/logo.svg" alt="Yeble.careers logo" width={180} height={60} className="h-12 w-auto grayscale" />
-          <p>© {year} Yeble Careers. Recruitment operations from Selaqui, Dehradun.</p>
+          <p>(c) {year} Yeble Careers. Recruitment operations from Selaqui, Dehradun.</p>
         </div>
         <div className="flex flex-wrap gap-4">
           <Link href="/about" className="hover:text-[#163b66]">About</Link>
