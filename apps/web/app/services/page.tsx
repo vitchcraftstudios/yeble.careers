@@ -43,45 +43,51 @@ const services = [
     title: "Permanent Recruitment (RPO)",
     icon: BriefcaseIcon,
     points: [
-      "End-to-end recruitment support for ongoing hiring mandates across technology, operations, support, and business teams.",
-      "Structured sourcing, screening, shortlist coordination, and interview follow-up designed for employers who need steady hiring movement.",
-      "Well suited for businesses that want a reliable recruitment partner instead of fragmented hiring efforts.",
+      "We work with employers on full-time hiring mandates and stay involved from requirement understanding to final closure.",
+      "At the same time, we help serious candidates reach roles that genuinely match their experience, expectations, and long-term plans.",
+      "This works best for companies that want a dependable hiring partner and for professionals looking for credible opportunities with proper follow-up.",
     ],
   },
   {
     title: "Campus Recruitment Drives",
     icon: GraduationIcon,
     points: [
-      "Planned campus outreach and early-career hiring support for employers looking to build fresher and trainee pipelines.",
-      "Coordination for shortlisting, drive management, candidate communication, and employer scheduling across regional institutions.",
-      "Useful for companies hiring at scale and for teams building long-term workforce strength in North India.",
+      "We support fresher hiring through planned campus drives, pre-screening, and better coordination between institutions and employers.",
+      "For students and early-career candidates, this creates a more organized path into real jobs instead of random application cycles.",
+      "For employers, it helps build a stronger entry-level pipeline with clearer communication and better drive management.",
     ],
   },
   {
     title: "Contract Staffing (Staff Augmentation)",
     icon: UsersIcon,
     points: [
-      "Flexible staffing support for project-based hiring, urgent team expansion, and short-to-mid-term workforce needs.",
-      "Suitable for employers who need deployable talent quickly without slowing delivery or business timelines.",
-      "Coordinated with practical hiring support, role clarity, and dependable communication through the onboarding stage.",
+      "When teams need people quickly, we support short-term and project-based staffing with a practical, role-first approach.",
+      "This helps employers keep delivery moving, while candidates get access to genuine contract opportunities with clear expectations.",
+      "We stay focused on fit, availability, and reliable communication through the hiring and onboarding stage.",
     ],
   },
   {
     title: "Skill-Based Vetting (Assessment)",
     icon: ShieldIcon,
     points: [
-      "Candidate evaluation support based on role fit, communication, practical capability, and job-readiness.",
-      "Helps employers reduce mismatch risk by reviewing candidates beyond resume keywords alone.",
-      "Useful for teams that want better screening confidence before interview rounds and final shortlist decisions.",
+      "We review candidates beyond resume keywords and look at practical fit, communication, role understanding, and readiness.",
+      "This gives employers more confidence before interview rounds and helps candidates get evaluated more fairly on actual suitability.",
+      "It is especially useful where the cost of a poor shortlist is high and better screening can save everyone time.",
     ],
   },
 ];
 
 const strengths = [
-  "Dehradun-based hiring support with North India market understanding.",
-  "Coverage across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh.",
-  "Structured support for employers, candidates, and fresher hiring programs.",
-  "A practical approach focused on real roles, real follow-up, and credible placements.",
+  "We operate from Dehradun and understand the hiring pulse of North India from the ground up.",
+  "We work with both employers and job seekers, so the process stays more balanced and more human.",
+  "We focus on real openings, clear communication, and dependable follow-up instead of volume-driven profile circulation.",
+  "We support hiring across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical regional understanding.",
+];
+
+const candidateSupport = [
+  "Guidance for candidates who need help understanding the role, employer expectations, and hiring stages.",
+  "Better coordination so applicants are not left guessing after every round.",
+  "A more genuine effort to connect people with openings that make sense for their background and goals.",
 ];
 
 export const metadata = {
@@ -94,11 +100,11 @@ export default function ServicesPage() {
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-8">
         <div className="space-y-3">
           <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Services</p>
-          <h1 className="text-3xl font-semibold text-[#123622]">Hiring solutions built for North India&apos;s growing employers</h1>
+          <h1 className="text-3xl font-semibold text-[#123622]">Hiring and placement support shaped by Dehradun, built for North India.</h1>
           <p className="text-lg leading-8 text-[#2f4a35]">
-            From Dehradun, Yeble Careers supports employers with dependable recruitment, fresher hiring, staffing
-            support, and candidate vetting services. Our work is shaped by practical hiring needs across North India,
-            with a focus on speed, fit, and clearer hiring communication.
+            Yeble Careers works from Dehradun and supports both employers and job seekers across North India. Our
+            services are built around practical hiring needs, honest communication, and a simple idea that good roles
+            should reach the right people without unnecessary confusion or delay.
           </p>
         </div>
 
@@ -127,11 +133,11 @@ export default function ServicesPage() {
 
         <div className="grid gap-6 md:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-            <h2 className="text-xl font-semibold text-[#123622]">Why employers engage us</h2>
+            <h2 className="text-xl font-semibold text-[#123622]">How we support hiring and placement</h2>
             <p className="mt-3 text-sm leading-7 text-[#2f4a35]">
-              Employers work with Yeble Careers when they need a recruitment partner that understands local hiring
-              realities, keeps communication active, and helps move genuine talent through the process with more
-              confidence.
+              We are not just here to fill roles quickly. We try to make the hiring journey easier for both sides,
+              whether that means helping an employer find dependable people or helping a candidate reach a better job with
+              proper guidance and follow-up.
             </p>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-[#2f4a35]">
               {strengths.map((item) => (
@@ -150,11 +156,24 @@ export default function ServicesPage() {
         </div>
 
         <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+          <h2 className="text-xl font-semibold text-[#123622]">For job seekers</h2>
+          <p className="mt-2 text-sm leading-7 text-[#2f4a35]">
+            A good employment agency should not only speak to companies. We also work to help candidates move forward
+            with more clarity, better coordination, and access to opportunities that feel genuine.
+          </p>
+          <ul className="mt-4 space-y-3 text-sm leading-7 text-[#2f4a35]">
+            {candidateSupport.map((item) => (
+              <li key={item}>• {item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
           <h2 className="text-xl font-semibold text-[#123622]">Coverage</h2>
           <p className="mt-2 text-sm leading-7 text-[#2f4a35]">
-            Based in Dehradun, we support hiring requirements across Uttarakhand, Uttar Pradesh, Haryana, and Himachal
-            Pradesh, while also coordinating with employers hiring into connected growth corridors and metro-linked teams.
-            Our focus stays on practical recruitment support, dependable candidate follow-up, and long-term hiring relationships.
+            Based in Dehradun, we work across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh. Our approach is
+            local in understanding, but broad enough to support employers, freshers, and experienced professionals across
+            the wider North India opportunity belt.
           </p>
         </div>
       </div>
