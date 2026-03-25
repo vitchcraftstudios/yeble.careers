@@ -38,6 +38,33 @@ function ShieldIcon() {
   );
 }
 
+function CompassIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <circle cx="12" cy="12" r="8" />
+      <path d="m14.8 9.2-2.4 5.6-5.6 2.4 2.4-5.6z" />
+    </svg>
+  );
+}
+
+function MessageIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M5 18.5V6.5A1.5 1.5 0 0 1 6.5 5h11A1.5 1.5 0 0 1 19 6.5v8A1.5 1.5 0 0 1 17.5 16H9z" />
+      <path d="M9 16 5 20v-1.5" />
+    </svg>
+  );
+}
+
+function MapPinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M12 21s6-4.35 6-10a6 6 0 1 0-12 0c0 5.65 6 10 6 10Z" />
+      <circle cx="12" cy="11" r="2.2" />
+    </svg>
+  );
+}
+
 const services = [
   {
     title: "Permanent Recruitment (RPO)",
@@ -85,9 +112,29 @@ const strengths = [
 ];
 
 const candidateSupport = [
-  "Guidance for candidates who need help understanding the role, employer expectations, and hiring stages.",
-  "Better coordination so applicants are not left guessing after every round.",
-  "A more genuine effort to connect people with openings that make sense for their background and goals.",
+  {
+    title: "Role clarity",
+    detail: "We help candidates understand the role, the employer's expectations, and what each stage of the process actually means.",
+    icon: CompassIcon,
+  },
+  {
+    title: "Better follow-up",
+    detail: "Applicants should not be left guessing after every round, so we try to keep communication clearer and more timely.",
+    icon: MessageIcon,
+  },
+  {
+    title: "Genuine fit",
+    detail: "We make a more careful effort to connect people with openings that suit their background, readiness, and long-term direction.",
+    icon: ShieldIcon,
+  },
+];
+
+const coverageRegions = ["Uttarakhand", "Uttar Pradesh", "Haryana", "Himachal Pradesh"];
+
+const coverageNotes = [
+  "Dehradun-led coordination with regional understanding of candidate movement and employer expectations.",
+  "Support for freshers, experienced professionals, and employers hiring into the wider North India opportunity belt.",
+  "A practical approach that stays local in understanding while remaining broad enough for multi-location hiring needs.",
 ];
 
 export const metadata = {
@@ -155,26 +202,82 @@ export default function ServicesPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-          <h2 className="text-xl font-semibold text-[#123622]">For job seekers</h2>
-          <p className="mt-2 text-sm leading-7 text-[#2f4a35]">
-            A good employment agency should not only speak to companies. We also work to help candidates move forward
-            with more clarity, better coordination, and access to opportunities that feel genuine.
-          </p>
-          <ul className="mt-4 space-y-3 text-sm leading-7 text-[#2f4a35]">
-            {candidateSupport.map((item) => (
-              <li key={item}>• {item}</li>
-            ))}
-          </ul>
+        <div className="grid gap-6 md:grid-cols-[1.08fr_0.92fr]">
+          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-[#123622]">For job seekers</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-7 text-[#2f4a35]">
+                  A good employment agency should not only speak to companies. We also work to help candidates move forward
+                  with more clarity, better coordination, and access to opportunities that feel genuine.
+                </p>
+              </div>
+              <div className="rounded-full border border-[#d8e5d9] bg-[#f5fbf6] px-4 py-2 text-xs font-medium text-[#2d6a3e]">
+                Candidate-first guidance
+              </div>
+            </div>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {candidateSupport.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.title} className="rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                      <Icon />
+                    </div>
+                    <h3 className="mt-4 text-base font-semibold text-[#123622]">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-7 text-[#31513c]">{item.detail}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85">
+            <img
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
+              alt="Candidates discussing career opportunities"
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
         </div>
 
-        <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-          <h2 className="text-xl font-semibold text-[#123622]">Coverage</h2>
-          <p className="mt-2 text-sm leading-7 text-[#2f4a35]">
-            Based in Dehradun, we work across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh. Our approach is
-            local in understanding, but broad enough to support employers, freshers, and experienced professionals across
-            the wider North India opportunity belt.
-          </p>
+        <div className="grid gap-6 md:grid-cols-[0.92fr_1.08fr]">
+          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85">
+            <img
+              src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"
+              alt="Regional hiring and collaboration"
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-[#123622]">Coverage</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-7 text-[#2f4a35]">
+                  Based in Dehradun, we work across North India with a style that stays local in understanding and practical in execution.
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-sm font-medium text-[#2d6a3e]">
+                <MapPinIcon />
+                Dehradun, Uttarakhand
+              </div>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {coverageRegions.map((region) => (
+                <div key={region} className="rounded-full border border-[#d6d1c1] bg-[#fffdf6] px-4 py-2 text-sm font-medium text-[#123622]">
+                  {region}
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {coverageNotes.map((note) => (
+                <div key={note} className="rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4 text-sm leading-7 text-[#31513c]">
+                  {note}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
