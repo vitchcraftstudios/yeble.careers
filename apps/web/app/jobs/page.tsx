@@ -11,7 +11,7 @@ export default function JobsPage() {
         <div className="space-y-2">
           <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Open roles</p>
           <h1 className="text-3xl font-semibold text-[#123622]">Current mandates</h1>
-          <p className="text-sm text-lime-100/75">Updated daily. Apply via hr@yeble.careers with the Job ID.</p>
+          <p className="text-sm text-[#56705d]">Updated daily. Apply via hr@yeble.careers with the Job ID.</p>
         </div>
 
         <div className="grid gap-3">
@@ -22,29 +22,25 @@ export default function JobsPage() {
                   <p className="text-xs uppercase tracking-[0.2em] text-[#2d6a3e]/80">{job.company}</p>
                   <h2 className="text-xl font-semibold text-[#123622]">{job.title}</h2>
                   <p className="text-sm text-[#31513c]">
-                    {job.city} Â· {job.locationType} Â· {job.experience} Â· {job.type}
+                    {job.city} · {job.locationType} · {job.experience} · {job.type}
                   </p>
-                  <p className="text-sm text-[#31513c]">Salary: {job.salaryRange} Â· Job ID: {job.id}</p>
+                  <p className="text-sm text-[#31513c]">Salary: {job.salaryRange} · Job ID: {job.id}</p>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs text-[#2f4a35]">
-                  <span className="rounded-full bg-white/10 px-3 py-1">{job.sector}</span>
-                  <span className="rounded-full border border-[#e3decf] px-3 py-1">{job.openings} openings</span>
-                  <span className="rounded-full border border-[#e3decf] px-3 py-1">{job.status}</span>
+                  <span className="rounded-full bg-[#f6f2e6] px-3 py-1">{job.sector}</span>
+                  <span className="rounded-full border border-[#e3decf] bg-white px-3 py-1">{job.openings} openings</span>
+                  <span className="rounded-full border border-[#e3decf] bg-white px-3 py-1">{job.status}</span>
                 </div>
               </div>
             </article>
           ))}
         </div>
 
-        <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 text-sm text-lime-100/75">
-          To apply, email your rÃ©sumÃ© with the Job ID to <a className="text-[#2d6a3e]" href="mailto:hr@yeble.careers">hr@yeble.careers</a>.
-          Hiring managers can send new mandates to <a className="text-[#2d6a3e]" href="mailto:hello@yeble.careers">hello@yeble.careers</a>.
+        <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 text-sm text-[#4d6654]">
+          To apply, email your resume with the Job ID to <a className="font-medium text-[#1f5c36]" href="mailto:hr@yeble.careers">hr@yeble.careers</a>.
+          Hiring managers can send new mandates to <a className="font-medium text-[#1f5c36]" href="mailto:hello@yeble.careers">hello@yeble.careers</a>.
         </div>
       </div>
     </div>
   );
 }
-
-
-
-
