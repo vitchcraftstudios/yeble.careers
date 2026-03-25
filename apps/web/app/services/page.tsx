@@ -65,6 +65,23 @@ function MapPinIcon() {
   );
 }
 
+function SparkIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="m12 3 1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4Z" />
+    </svg>
+  );
+}
+
+function CheckDotIcon() {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true" className="mt-1 h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="10" cy="10" r="7" />
+      <path d="m7.5 10 1.6 1.6L12.5 8.4" />
+    </svg>
+  );
+}
+
 const services = [
   {
     title: "Permanent Recruitment (RPO)",
@@ -180,15 +197,23 @@ export default function ServicesPage() {
 
         <div className="grid gap-6 md:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-            <h2 className="text-xl font-semibold text-[#123622]">How we support hiring and placement</h2>
-            <p className="mt-3 text-sm leading-7 text-[#2f4a35]">
+            <div className="flex items-center gap-3 text-[#123622]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                <SparkIcon />
+              </div>
+              <h2 className="text-xl font-semibold">How we support hiring and placement</h2>
+            </div>
+            <p className="mt-4 text-sm leading-7 text-[#2f4a35]">
               We are not just here to fill roles quickly. We try to make the hiring journey easier for both sides,
               whether that means helping an employer find dependable people or helping a candidate reach a better job with
               proper guidance and follow-up.
             </p>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-[#2f4a35]">
               {strengths.map((item) => (
-                <li key={item}>• {item}</li>
+                <li key={item} className="flex items-start gap-3">
+                  <span className="text-[#2d6a3e]"><CheckDotIcon /></span>
+                  <span>{item}</span>
+                </li>
               ))}
             </ul>
           </div>
@@ -206,8 +231,13 @@ export default function ServicesPage() {
           <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-[#123622]">For job seekers</h2>
-                <p className="mt-2 max-w-2xl text-sm leading-7 text-[#2f4a35]">
+                <div className="flex items-center gap-3 text-[#123622]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                    <UsersIcon />
+                  </div>
+                  <h2 className="text-xl font-semibold">For job seekers</h2>
+                </div>
+                <p className="mt-3 max-w-2xl text-sm leading-7 text-[#2f4a35]">
                   We help candidates move forward with more clarity, better communication, and access to openings that feel real and relevant.
                 </p>
               </div>
@@ -254,8 +284,13 @@ export default function ServicesPage() {
           <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
             <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-[#123622]">Coverage</h2>
-                <p className="mt-2 max-w-2xl text-sm leading-7 text-[#2f4a35]">
+                <div className="flex items-center gap-3 text-[#123622]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                    <MapPinIcon />
+                  </div>
+                  <h2 className="text-xl font-semibold">Coverage</h2>
+                </div>
+                <p className="mt-3 max-w-2xl text-sm leading-7 text-[#2f4a35]">
                   Based in Dehradun, we work across North India with a style that stays local in understanding and practical in execution.
                 </p>
               </div>
@@ -273,8 +308,9 @@ export default function ServicesPage() {
             </div>
             <div className="mt-6 space-y-4">
               {coverageNotes.map((note) => (
-                <div key={note} className="border-l-2 border-[#d8e5d9] pl-4 text-sm leading-7 text-[#31513c]">
-                  {note}
+                <div key={note} className="flex items-start gap-3 border-l-2 border-[#d8e5d9] pl-4 text-sm leading-7 text-[#31513c]">
+                  <span className="text-[#2d6a3e]"><CheckDotIcon /></span>
+                  <span>{note}</span>
                 </div>
               ))}
             </div>
