@@ -202,36 +202,37 @@ export default function ServicesPage() {
           </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-[1.08fr_0.92fr]">
+        <div className="grid gap-6 md:grid-cols-[1.15fr_0.85fr]">
           <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-[#123622]">For job seekers</h2>
                 <p className="mt-2 max-w-2xl text-sm leading-7 text-[#2f4a35]">
-                  A good employment agency should not only speak to companies. We also work to help candidates move forward
-                  with more clarity, better coordination, and access to opportunities that feel genuine.
+                  We help candidates move forward with more clarity, better communication, and access to openings that feel real and relevant.
                 </p>
               </div>
-              <div className="rounded-full border border-[#d8e5d9] bg-[#f5fbf6] px-4 py-2 text-xs font-medium text-[#2d6a3e]">
+              <div className="text-xs font-medium uppercase tracking-[0.18em] text-[#2d6a3e]">
                 Candidate-first guidance
               </div>
             </div>
-            <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <div className="mt-6 space-y-4">
               {candidateSupport.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <div key={item.title} className="rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                  <div key={item.title} className="flex items-start gap-4 rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
                       <Icon />
                     </div>
-                    <h3 className="mt-4 text-base font-semibold text-[#123622]">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-[#31513c]">{item.detail}</p>
+                    <div>
+                      <h3 className="text-base font-semibold text-[#123622]">{item.title}</h3>
+                      <p className="mt-1 text-sm leading-7 text-[#31513c]">{item.detail}</p>
+                    </div>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85">
+          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 md:min-h-[420px]">
             <img
               src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
               alt="Candidates discussing career opportunities"
@@ -241,8 +242,8 @@ export default function ServicesPage() {
           </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-[0.92fr_1.08fr]">
-          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85">
+        <div className="grid gap-6 md:grid-cols-[0.82fr_1.18fr]">
+          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 md:min-h-[420px]">
             <img
               src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"
               alt="Regional hiring and collaboration"
@@ -251,14 +252,14 @@ export default function ServicesPage() {
             />
           </div>
           <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-[#123622]">Coverage</h2>
                 <p className="mt-2 max-w-2xl text-sm leading-7 text-[#2f4a35]">
                   Based in Dehradun, we work across North India with a style that stays local in understanding and practical in execution.
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-sm font-medium text-[#2d6a3e]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#d8e5d9] bg-[#f5fbf6] px-4 py-2 text-sm font-medium text-[#2d6a3e]">
                 <MapPinIcon />
                 Dehradun, Uttarakhand
               </div>
@@ -270,9 +271,9 @@ export default function ServicesPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <div className="mt-6 space-y-4">
               {coverageNotes.map((note) => (
-                <div key={note} className="rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4 text-sm leading-7 text-[#31513c]">
+                <div key={note} className="border-l-2 border-[#d8e5d9] pl-4 text-sm leading-7 text-[#31513c]">
                   {note}
                 </div>
               ))}
