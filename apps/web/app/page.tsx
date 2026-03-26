@@ -103,7 +103,7 @@ function ChevronRightIcon() {
 
 function PlusChevronIcon({ open }: { open: boolean }) {
   return (
-    <span className="relative flex h-9 w-9 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+    <span className="relative flex h-8 w-8 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e] sm:h-9 sm:w-9">
       <span className="absolute h-0.5 w-4 rounded-full bg-current" />
       <span className={`absolute h-4 w-0.5 rounded-full bg-current transition-transform duration-300 ${open ? "scale-y-0" : "scale-y-100"}`} />
     </span>
@@ -281,31 +281,29 @@ export default function Home() {
         </ScrollReveal>
 
         <ScrollReveal delay={60}>
-          <section className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
-            <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-              <div>
-                <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Industries We Serve</p>
-                <h2 className="mt-3 max-w-xl text-3xl font-semibold leading-tight text-[#123622]">
-                  Practical hiring support across sectors we can genuinely serve well
-                </h2>
-                <p className="mt-4 max-w-xl text-sm leading-7 text-[#31513c] sm:text-base">
-                  We focus on the sectors where we can actually add value through cleaner screening, regional understanding, and dependable follow-up.
-                </p>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {industries.map((industry) => {
-                  const Icon = industry.icon;
-                  return (
-                    <article key={industry.title} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-5">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
-                        <Icon />
-                      </div>
-                      <h3 className="mt-4 text-lg font-semibold text-[#123622]">{industry.title}</h3>
-                      <p className="mt-2 text-sm leading-7 text-[#31513c]">{industry.description}</p>
-                    </article>
-                  );
-                })}
-              </div>
+          <section className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-5 shadow-sm sm:p-8">
+            <div className="max-w-2xl">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Industries We Serve</p>
+              <h2 className="mt-3 text-2xl font-semibold leading-tight text-[#123622] sm:text-3xl">
+                Practical hiring support across sectors we can genuinely serve well
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-[#31513c] sm:text-base">
+                We focus on the sectors where we can actually add value through cleaner screening, regional understanding, and dependable follow-up.
+              </p>
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {industries.map((industry) => {
+                const Icon = industry.icon;
+                return (
+                  <article key={industry.title} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4 sm:p-5">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e] sm:h-11 sm:w-11">
+                      <Icon />
+                    </div>
+                    <h3 className="mt-3 text-base font-semibold text-[#123622] sm:text-lg">{industry.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-[#31513c]">{industry.description}</p>
+                  </article>
+                );
+              })}
             </div>
           </section>
         </ScrollReveal>
@@ -376,12 +374,12 @@ export default function Home() {
         </ScrollReveal>
 
         <ScrollReveal delay={140}>
-          <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
+          <section className="grid items-start gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-5 shadow-sm sm:p-7">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Testimonials</p>
-                  <h2 className="mt-2 text-2xl font-semibold text-[#123622]">What people say about working with Yeble</h2>
+                  <h2 className="mt-2 text-xl font-semibold text-[#123622] sm:text-2xl">What people say about working with Yeble</h2>
                 </div>
                 <div className="hidden items-center gap-2 sm:flex">
                   <button
@@ -402,17 +400,14 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <div className="mt-6 overflow-hidden rounded-[1.75rem] border border-[#e8e1cd] bg-[#fffdf6]">
+              <div className="mt-5 overflow-hidden rounded-[1.5rem] border border-[#e8e1cd] bg-[#fffdf6]">
                 <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${activeTestimonial * 100}%)` }}>
                   {testimonials.map((item) => (
-                    <article key={item.name} className="min-w-full p-6 sm:p-7">
-                      <p className="text-lg leading-8 text-[#23422f] sm:text-xl">“{item.quote}”</p>
-                      <div className="mt-6 flex items-center justify-between gap-4 border-t border-[#e7dfcb] pt-4">
-                        <div>
-                          <p className="font-semibold text-[#123622]">{item.name}</p>
-                          <p className="text-sm text-[#31513c]">{item.role}</p>
-                        </div>
-                        <span className="rounded-full border border-[#d8e5d9] bg-[#f5fbf6] px-3 py-1 text-xs font-medium text-[#2d6a3e]">Candidate story</span>
+                    <article key={item.name} className="min-w-full p-5 sm:p-6">
+                      <p className="text-base leading-7 text-[#23422f] sm:text-lg sm:leading-8">“{item.quote}”</p>
+                      <div className="mt-5 border-t border-[#e7dfcb] pt-4">
+                        <p className="font-semibold text-[#123622]">{item.name}</p>
+                        <p className="text-sm text-[#31513c]">{item.role}</p>
                       </div>
                     </article>
                   ))}
@@ -457,12 +452,12 @@ export default function Home() {
         </ScrollReveal>
 
         <ScrollReveal delay={170}>
-          <section className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
-            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <section className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-5 shadow-sm sm:p-8">
+            <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div>
                 <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Frequently Asked Questions</p>
-                <h2 className="mt-2 text-2xl font-semibold text-[#123622]">Clear answers before you register or reach out</h2>
-                <p className="mt-4 text-sm leading-7 text-[#31513c] sm:text-base">
+                <h2 className="mt-2 text-xl font-semibold text-[#123622] sm:text-2xl">Clear answers before you register or reach out</h2>
+                <p className="mt-3 text-sm leading-7 text-[#31513c] sm:text-base">
                   We prefer clear expectations over vague promises. Here are a few common questions candidates and employers usually ask first.
                 </p>
               </div>
@@ -470,13 +465,13 @@ export default function Home() {
                 {faqs.map((faq, index) => {
                   const isOpen = activeFaq === index;
                   return (
-                    <div key={faq.question} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] px-5 py-3">
+                    <div key={faq.question} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] px-4 py-3 sm:px-5">
                       <button
                         type="button"
                         onClick={() => setActiveFaq(isOpen ? null : index)}
-                        className="flex w-full items-center justify-between gap-4 py-1 text-left"
+                        className="flex w-full items-center justify-between gap-3 py-1 text-left"
                       >
-                        <span className="text-base font-semibold text-[#123622]">{faq.question}</span>
+                        <span className="text-sm font-semibold leading-6 text-[#123622] sm:text-base">{faq.question}</span>
                         <PlusChevronIcon open={isOpen} />
                       </button>
                       <div className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-70"}`}>
