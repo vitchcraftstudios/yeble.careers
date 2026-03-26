@@ -142,7 +142,7 @@ export default function AboutPage() {
           <div className="grid gap-6 md:grid-cols-[1.08fr_0.92fr] md:items-start">
             <div className="space-y-4">
               <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">About us</p>
-              <h1 className="text-4xl font-semibold leading-tight text-[#123622]">Helping serious employers hire dependable talent across North India.</h1>
+              <h1 className="text-4xl font-semibold leading-tight text-[#123622]">Your Partner in Building Resilient Teams for Emerging Growth Corridors.</h1>
               <p className="text-lg leading-8 text-[#2f4a35]">
                 Yeble Careers started in 2026 with a simple belief: strong companies deserve better hiring support, and good
                 candidates deserve access to genuine opportunities. From our Dehradun base, we work closely with employers
