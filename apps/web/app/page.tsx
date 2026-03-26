@@ -103,7 +103,7 @@ function ChevronRightIcon() {
 
 function PlusChevronIcon({ open }: { open: boolean }) {
   return (
-    <span className="relative flex h-10 w-10 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+    <span className="relative flex h-9 w-9 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
       <span className="absolute h-0.5 w-4 rounded-full bg-current" />
       <span className={`absolute h-4 w-0.5 rounded-full bg-current transition-transform duration-300 ${open ? "scale-y-0" : "scale-y-100"}`} />
     </span>
@@ -217,20 +217,10 @@ const processSteps = [
   },
 ];
 
-const gallery = [
-  {
-    src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
-    alt: "Recruitment team collaboration",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80",
-    alt: "Business support and coordination team at work",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1556742393-d75f468bfcb0?auto=format&fit=crop&w=1200&q=80",
-    alt: "Hospitality and customer service team on the floor",
-  },
-];
+const heroImage = {
+  src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
+  alt: "Recruitment team collaboration",
+};
 
 export default function Home() {
   const featured = useMemo(() => jobs.slice(0, 3), []);
@@ -247,65 +237,67 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#fffef0] text-[#0f2918]">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#fffef0] text-[#0f2918]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(184,243,199,0.38),transparent_34%),radial-gradient(circle_at_80%_10%,rgba(243,240,176,0.34),transparent_28%),linear-gradient(135deg,#ffffff,#f7f3dc_40%,#fffef0)]" />
 
-      <main className="relative z-10 mx-auto flex max-w-7xl flex-col gap-14 px-5 py-12 sm:px-6 lg:px-8">
+      <main className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-8">
         <ScrollReveal>
           <section className="overflow-hidden rounded-[2rem] border border-[#e3decf] bg-white/95 shadow-sm">
-            <div className="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">
-              <div className="p-7 sm:p-10 lg:p-12">
-                <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Yeble.careers - Accelerate your Placement</p>
-                <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight text-[#123622] sm:text-5xl lg:text-[3.7rem]">
+            <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="p-6 sm:p-8 lg:p-10">
+                <p className="text-[11px] uppercase tracking-[0.28em] text-[#2d6a3e]">Yeble.careers - Accelerate your Placement</p>
+                <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight text-[#123622] sm:text-5xl">
                   Connecting innovative companies with the talent that drives excellence and growth.
                 </h1>
-                <p className="mt-5 max-w-2xl text-base leading-8 text-[#2f4a35] sm:text-lg">
+                <p className="mt-5 max-w-2xl text-base leading-8 text-[#2f4a35]">
                   Founded in 2026 from Selaqui, Dehradun, Yeble works across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical hiring support, tighter follow-up, and clearer communication.
                 </p>
-                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
                     type="button"
                     onClick={() => setIntakeOpen(true)}
-                    className="rounded-full bg-[#27c06b] px-7 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-[#1fb35f]"
+                    className="rounded-full bg-[#27c06b] px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-[#1fb35f]"
                   >
                     Register Now
                   </button>
                   <Link
                     href="/jobs"
-                    className="rounded-full border border-[#cfd8d0] px-7 py-3 text-center text-sm font-semibold text-[#1d402a] transition hover:border-[#27c06b] hover:text-[#1a703d]"
+                    className="rounded-full border border-[#cfd8d0] px-6 py-3 text-center text-sm font-semibold text-[#1d402a] transition hover:border-[#27c06b] hover:text-[#1a703d]"
                   >
                     View open roles
                   </Link>
                 </div>
-                <div className="mt-7 flex flex-wrap gap-3 text-xs text-[#31513c] sm:text-sm">
+                <div className="mt-6 flex flex-wrap gap-3 text-xs text-[#31513c] sm:text-sm">
                   <span className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2">Shortlist support in 72 hours</span>
                   <span className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2">Dehradun-led, 4-state coverage</span>
                   <span className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2">Practical screening and follow-up</span>
                 </div>
               </div>
-              <div className="min-h-[320px] lg:min-h-full">
-                <img src={gallery[0].src} alt={gallery[0].alt} className="h-full w-full object-cover" loading="eager" />
+              <div className="min-h-[260px] lg:min-h-full">
+                <img src={heroImage.src} alt={heroImage.alt} className="h-full w-full object-cover" loading="eager" />
               </div>
             </div>
           </section>
         </ScrollReveal>
 
-        <ScrollReveal delay={70}>
-          <section className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
-            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-7 shadow-sm sm:p-8">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Industries We Serve</p>
-              <h2 className="mt-3 max-w-2xl text-3xl font-semibold leading-tight text-[#123622]">
-                Practical hiring support across the sectors a young North India agency can genuinely serve well
-              </h2>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-[#31513c] sm:text-base">
-                We are not trying to sound bigger than we are. We focus on the sectors where we can actually add value through clearer screening, regional understanding, and dependable follow-up.
-              </p>
-              <div className="mt-7 grid gap-4 sm:grid-cols-2">
+        <ScrollReveal delay={60}>
+          <section className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
+            <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Industries We Serve</p>
+                <h2 className="mt-3 max-w-xl text-3xl font-semibold leading-tight text-[#123622]">
+                  Practical hiring support across sectors we can genuinely serve well
+                </h2>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-[#31513c] sm:text-base">
+                  We focus on the sectors where we can actually add value through cleaner screening, regional understanding, and dependable follow-up.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {industries.map((industry) => {
                   const Icon = industry.icon;
                   return (
                     <article key={industry.title} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-5">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
                         <Icon />
                       </div>
                       <h3 className="mt-4 text-lg font-semibold text-[#123622]">{industry.title}</h3>
@@ -315,28 +307,21 @@ export default function Home() {
                 })}
               </div>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-1">
-              {gallery.slice(1).map((item) => (
-                <div key={item.src} className="overflow-hidden rounded-[2rem] border border-[#e3decf] bg-white shadow-sm">
-                  <img src={item.src} alt={item.alt} className="h-72 w-full object-cover xl:h-[21rem]" loading="lazy" />
-                </div>
-              ))}
-            </div>
           </section>
         </ScrollReveal>
 
-        <ScrollReveal delay={90}>
-          <section className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-7 shadow-sm sm:p-8">
+        <ScrollReveal delay={80}>
+          <section className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Featured roles</p>
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Featured roles</p>
                 <h2 className="mt-2 text-2xl font-semibold text-[#123622]">Select openings this week</h2>
               </div>
               <Link href="/jobs" className="text-sm font-medium text-[#2d6a3e] hover:text-[#1a703d]">
                 See all openings
               </Link>
             </div>
-            <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
               {featured.map((job) => (
                 <article key={job.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-5">
                   <p className="text-xs uppercase tracking-[0.18em] text-[#2d6a3e]">{job.company}</p>
@@ -355,10 +340,10 @@ export default function Home() {
           </section>
         </ScrollReveal>
 
-        <ScrollReveal delay={120}>
-          <section className="grid gap-6 lg:grid-cols-2">
-            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-7 shadow-sm sm:p-8">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">For employers</p>
+        <ScrollReveal delay={110}>
+          <section className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">For employers</p>
               <h2 className="mt-3 text-2xl font-semibold text-[#123622]">Dependable hiring support for growing teams</h2>
               <ul className="mt-5 space-y-3 text-sm leading-7 text-[#2f4a35] sm:text-base">
                 <li className="flex gap-3"><span className="mt-1 text-[#2d6a3e]"><CheckIcon /></span><span>Targeted sourcing across tech, GTM, staffing, retail, hospitality, and operations roles.</span></li>
@@ -375,8 +360,8 @@ export default function Home() {
                 Landline: 0135 422 2268
               </p>
             </div>
-            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-7 shadow-sm sm:p-8">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">For candidates</p>
+            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">For candidates</p>
               <h2 className="mt-3 text-2xl font-semibold text-[#123622]">Guided support for serious job seekers in North India</h2>
               <ul className="mt-5 space-y-3 text-sm leading-7 text-[#2f4a35] sm:text-base">
                 <li className="flex gap-3"><span className="mt-1 text-[#2d6a3e]"><CheckIcon /></span><span>Openings across Dehradun, Noida, Ghaziabad, Gurugram, Chandigarh, Mohali, and nearby hiring corridors.</span></li>
@@ -390,19 +375,19 @@ export default function Home() {
           </section>
         </ScrollReveal>
 
-        <ScrollReveal delay={150}>
-          <section className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
-            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-7 shadow-sm sm:p-8">
+        <ScrollReveal delay={140}>
+          <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Testimonials</p>
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Testimonials</p>
                   <h2 className="mt-2 text-2xl font-semibold text-[#123622]">What people say about working with Yeble</h2>
                 </div>
                 <div className="hidden items-center gap-2 sm:flex">
                   <button
                     type="button"
                     onClick={() => setActiveTestimonial((current) => (current - 1 + testimonials.length) % testimonials.length)}
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-[#123622] transition hover:border-[#2d6a3e]"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-[#123622] transition hover:border-[#2d6a3e]"
                     aria-label="Previous testimonial"
                   >
                     <ChevronLeftIcon />
@@ -410,7 +395,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setActiveTestimonial((current) => (current + 1) % testimonials.length)}
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-[#123622] transition hover:border-[#2d6a3e]"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-[#123622] transition hover:border-[#2d6a3e]"
                     aria-label="Next testimonial"
                   >
                     <ChevronRightIcon />
@@ -420,20 +405,20 @@ export default function Home() {
               <div className="mt-6 overflow-hidden rounded-[1.75rem] border border-[#e8e1cd] bg-[#fffdf6]">
                 <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${activeTestimonial * 100}%)` }}>
                   {testimonials.map((item) => (
-                    <article key={item.name} className="min-w-full p-6 sm:p-8">
-                      <p className="text-xl leading-9 text-[#23422f] sm:text-2xl">“{item.quote}”</p>
-                      <div className="mt-8 flex items-center justify-between gap-4 border-t border-[#e7dfcb] pt-5">
+                    <article key={item.name} className="min-w-full p-6 sm:p-7">
+                      <p className="text-lg leading-8 text-[#23422f] sm:text-xl">“{item.quote}”</p>
+                      <div className="mt-6 flex items-center justify-between gap-4 border-t border-[#e7dfcb] pt-4">
                         <div>
                           <p className="font-semibold text-[#123622]">{item.name}</p>
                           <p className="text-sm text-[#31513c]">{item.role}</p>
                         </div>
-                        <span className="rounded-full border border-[#d8e5d9] bg-[#f5fbf6] px-4 py-2 text-xs font-medium text-[#2d6a3e]">Candidate story</span>
+                        <span className="rounded-full border border-[#d8e5d9] bg-[#f5fbf6] px-3 py-1 text-xs font-medium text-[#2d6a3e]">Candidate story</span>
                       </div>
                     </article>
                   ))}
                 </div>
               </div>
-              <div className="mt-5 flex items-center justify-between gap-4">
+              <div className="mt-4 flex items-center justify-between gap-4">
                 <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#e4decd]">
                   <div className="h-full rounded-full bg-[#2d6a3e] transition-all duration-500 ease-out" style={{ width: `${((activeTestimonial + 1) / testimonials.length) * 100}%` }} />
                 </div>
@@ -443,7 +428,7 @@ export default function Home() {
                       key={item.name}
                       type="button"
                       onClick={() => setActiveTestimonial(index)}
-                      className={`h-2.5 rounded-full transition-all duration-300 ${index === activeTestimonial ? "w-8 bg-[#2d6a3e]" : "w-2.5 bg-[#d9d4c3]"}`}
+                      className={`h-2.5 rounded-full transition-all duration-300 ${index === activeTestimonial ? "w-7 bg-[#2d6a3e]" : "w-2.5 bg-[#d9d4c3]"}`}
                       aria-label={`Go to testimonial ${index + 1}`}
                     />
                   ))}
@@ -451,17 +436,17 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-7 shadow-sm sm:p-8">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">How Yeble Works</p>
+            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">How Yeble Works</p>
               <h2 className="mt-2 text-2xl font-semibold text-[#123622]">A simple process that candidates can actually follow</h2>
-              <div className="mt-6 space-y-4">
+              <div className="mt-6 space-y-3">
                 {processSteps.map((step, idx) => (
-                  <article key={step.title} className="flex gap-4 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-5">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-sm font-semibold text-[#2d6a3e]">
+                  <article key={step.title} className="flex gap-4 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-sm font-semibold text-[#2d6a3e]">
                       {idx + 1}
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-[#123622]">{step.title}</h3>
+                      <h3 className="text-base font-semibold text-[#123622]">{step.title}</h3>
                       <p className="mt-1 text-sm leading-7 text-[#31513c]">{step.desc}</p>
                     </div>
                   </article>
@@ -471,11 +456,11 @@ export default function Home() {
           </section>
         </ScrollReveal>
 
-        <ScrollReveal delay={180}>
-          <section className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-7 shadow-sm sm:p-8">
-            <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+        <ScrollReveal delay={170}>
+          <section className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-6 shadow-sm sm:p-8">
+            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div>
-                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Frequently Asked Questions</p>
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Frequently Asked Questions</p>
                 <h2 className="mt-2 text-2xl font-semibold text-[#123622]">Clear answers before you register or reach out</h2>
                 <p className="mt-4 text-sm leading-7 text-[#31513c] sm:text-base">
                   We prefer clear expectations over vague promises. Here are a few common questions candidates and employers usually ask first.
@@ -485,7 +470,7 @@ export default function Home() {
                 {faqs.map((faq, index) => {
                   const isOpen = activeFaq === index;
                   return (
-                    <div key={faq.question} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] px-5 py-3 transition-shadow duration-300 hover:shadow-sm">
+                    <div key={faq.question} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] px-5 py-3">
                       <button
                         type="button"
                         onClick={() => setActiveFaq(isOpen ? null : index)}
