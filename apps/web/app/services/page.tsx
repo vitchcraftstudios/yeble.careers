@@ -1,4 +1,6 @@
-﻿function BriefcaseIcon() {
+﻿import { ScrollReveal } from "@/components/scroll-reveal";
+
+function BriefcaseIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
       <path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7" />
@@ -162,160 +164,170 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-8">
-        <div className="space-y-3">
-          <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Services</p>
-          <h1 className="text-3xl font-semibold text-[#123622]">Hiring and placement support shaped by Dehradun, built for North India.</h1>
-          <p className="text-lg leading-8 text-[#2f4a35]">
-            Yeble Careers works from Dehradun and supports both employers and job seekers across North India. Our
-            services are built around practical hiring needs, honest communication, and a simple idea that good roles
-            should reach the right people without unnecessary confusion or delay.
-          </p>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2">
-          {services.map((service) => {
-            const Icon = service.icon;
-            return (
-              <div key={service.title} className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
-                <div className="flex items-start gap-3">
-                  <div className="rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] p-3 text-[#2d6a3e]">
-                    <Icon />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-[#123622]">{service.title}</h3>
-                    <ul className="mt-3 space-y-2 text-sm leading-7 text-[#2f4a35]">
-                      {service.points.map((point) => (
-                        <li key={point}>• {point}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-            <div className="flex items-center gap-3 text-[#123622]">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
-                <SparkIcon />
-              </div>
-              <h2 className="text-xl font-semibold">How we support hiring and placement</h2>
-            </div>
-            <p className="mt-4 text-sm leading-7 text-[#2f4a35]">
-              We are not just here to fill roles quickly. We try to make the hiring journey easier for both sides,
-              whether that means helping an employer find dependable people or helping a candidate reach a better job with
-              proper guidance and follow-up.
+        <ScrollReveal>
+          <div className="space-y-3">
+            <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Services</p>
+            <h1 className="text-3xl font-semibold text-[#123622]">Hiring and placement support shaped by Dehradun, built for North India.</h1>
+            <p className="text-lg leading-8 text-[#2f4a35]">
+              Yeble Careers works from Dehradun and supports both employers and job seekers across North India. Our
+              services are built around practical hiring needs, honest communication, and a simple idea that good roles
+              should reach the right people without unnecessary confusion or delay.
             </p>
-            <ul className="mt-4 space-y-3 text-sm leading-7 text-[#2f4a35]">
-              {strengths.map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <span className="text-[#2d6a3e]"><CheckDotIcon /></span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
           </div>
-          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85">
-            <img
-              src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80"
-              alt="Hiring team reviewing active placement work"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid gap-6 md:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <div>
-                <div className="flex items-center gap-3 text-[#123622]">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
-                    <UsersIcon />
-                  </div>
-                  <h2 className="text-xl font-semibold">For job seekers</h2>
-                </div>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-[#2f4a35]">
-                  We help candidates move forward with more clarity, better communication, and access to openings that feel real and relevant.
-                </p>
-              </div>
-              <div className="text-xs font-medium uppercase tracking-[0.18em] text-[#2d6a3e]">
-                Candidate-first guidance
-              </div>
-            </div>
-            <div className="mt-6 space-y-4">
-              {candidateSupport.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div key={item.title} className="flex items-start gap-4 rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+        <ScrollReveal delay={70}>
+          <div className="grid gap-4 md:grid-cols-2">
+            {services.map((service) => {
+              const Icon = service.icon;
+              return (
+                <div key={service.title} className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] p-3 text-[#2d6a3e]">
                       <Icon />
                     </div>
                     <div>
-                      <h3 className="text-base font-semibold text-[#123622]">{item.title}</h3>
-                      <p className="mt-1 text-sm leading-7 text-[#31513c]">{item.detail}</p>
+                      <h3 className="text-lg font-semibold text-[#123622]">{service.title}</h3>
+                      <ul className="mt-3 space-y-2 text-sm leading-7 text-[#2f4a35]">
+                        {service.points.map((point) => (
+                          <li key={point}>• {point}</li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
-          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 md:min-h-[420px]">
-            <img
-              src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1200&q=80"
-              alt="Candidates discussing career options with optimism"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid gap-6 md:grid-cols-[0.82fr_1.18fr]">
-          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 md:min-h-[420px]">
-            <img
-              src="https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?auto=format&fit=crop&w=1200&q=80"
-              alt="Regional team collaboration across hiring markets"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
+        <ScrollReveal delay={110}>
+          <div className="grid gap-6 md:grid-cols-[1.05fr_0.95fr]">
+            <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+              <div className="flex items-center gap-3 text-[#123622]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                  <SparkIcon />
+                </div>
+                <h2 className="text-xl font-semibold">How we support hiring and placement</h2>
+              </div>
+              <p className="mt-4 text-sm leading-7 text-[#2f4a35]">
+                We are not just here to fill roles quickly. We try to make the hiring journey easier for both sides,
+                whether that means helping an employer find dependable people or helping a candidate reach a better job with
+                proper guidance and follow-up.
+              </p>
+              <ul className="mt-4 space-y-3 text-sm leading-7 text-[#2f4a35]">
+                {strengths.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span className="text-[#2d6a3e]"><CheckDotIcon /></span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85">
+              <img
+                src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80"
+                alt="Hiring team reviewing active placement work"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
-          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-            <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-              <div>
-                <div className="flex items-center gap-3 text-[#123622]">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
-                    <MapPinIcon />
+        </ScrollReveal>
+
+        <ScrollReveal delay={150}>
+          <div className="grid gap-6 md:grid-cols-[1.15fr_0.85fr]">
+            <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <div className="flex items-center gap-3 text-[#123622]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                      <UsersIcon />
+                    </div>
+                    <h2 className="text-xl font-semibold">For job seekers</h2>
                   </div>
-                  <h2 className="text-xl font-semibold">Coverage</h2>
+                  <p className="mt-3 max-w-2xl text-sm leading-7 text-[#2f4a35]">
+                    We help candidates move forward with more clarity, better communication, and access to openings that feel real and relevant.
+                  </p>
                 </div>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-[#2f4a35]">
-                  Based in Dehradun, we work across North India with a style that stays local in understanding and practical in execution.
-                </p>
+                <div className="text-xs font-medium uppercase tracking-[0.18em] text-[#2d6a3e]">
+                  Candidate-first guidance
+                </div>
               </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#d8e5d9] bg-[#f5fbf6] px-4 py-2 text-sm font-medium text-[#2d6a3e]">
-                <MapPinIcon />
-                Dehradun, Uttarakhand
+              <div className="mt-6 space-y-4">
+                {candidateSupport.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={item.title} className="flex items-start gap-4 rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                        <Icon />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-semibold text-[#123622]">{item.title}</h3>
+                        <p className="mt-1 text-sm leading-7 text-[#31513c]">{item.detail}</p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <div className="mt-5 flex flex-wrap gap-3">
-              {coverageRegions.map((region) => (
-                <div key={region} className="rounded-full border border-[#d6d1c1] bg-[#fffdf6] px-4 py-2 text-sm font-medium text-[#123622]">
-                  {region}
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 space-y-4">
-              {coverageNotes.map((note) => (
-                <div key={note} className="flex items-start gap-3 border-l-2 border-[#d8e5d9] pl-4 text-sm leading-7 text-[#31513c]">
-                  <span className="text-[#2d6a3e]"><CheckDotIcon /></span>
-                  <span>{note}</span>
-                </div>
-              ))}
+            <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 md:min-h-[420px]">
+              <img
+                src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1200&q=80"
+                alt="Candidates discussing career options with optimism"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
             </div>
           </div>
-        </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={190}>
+          <div className="grid gap-6 md:grid-cols-[0.82fr_1.18fr]">
+            <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 md:min-h-[420px]">
+              <img
+                src="https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?auto=format&fit=crop&w=1200&q=80"
+                alt="Regional team collaboration across hiring markets"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <div className="flex items-center gap-3 text-[#123622]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                      <MapPinIcon />
+                    </div>
+                    <h2 className="text-xl font-semibold">Coverage</h2>
+                  </div>
+                  <p className="mt-3 max-w-2xl text-sm leading-7 text-[#2f4a35]">
+                    Based in Dehradun, we work across North India with a style that stays local in understanding and practical in execution.
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#d8e5d9] bg-[#f5fbf6] px-4 py-2 text-sm font-medium text-[#2d6a3e]">
+                  <MapPinIcon />
+                  Dehradun, Uttarakhand
+                </div>
+              </div>
+              <div className="mt-5 flex flex-wrap gap-3">
+                {coverageRegions.map((region) => (
+                  <div key={region} className="rounded-full border border-[#d6d1c1] bg-[#fffdf6] px-4 py-2 text-sm font-medium text-[#123622]">
+                    {region}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 space-y-4">
+                {coverageNotes.map((note) => (
+                  <div key={note} className="flex items-start gap-3 border-l-2 border-[#d8e5d9] pl-4 text-sm leading-7 text-[#31513c]">
+                    <span className="text-[#2d6a3e]"><CheckDotIcon /></span>
+                    <span>{note}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </div>
   );

@@ -1,4 +1,6 @@
-﻿function CalendarIcon() {
+﻿import { ScrollReveal } from "@/components/scroll-reveal";
+
+function CalendarIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
       <rect x="4" y="5" width="16" height="15" rx="2" />
@@ -136,129 +138,91 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-10">
-        <div className="grid gap-6 md:grid-cols-[1.08fr_0.92fr] md:items-start">
-          <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">About us</p>
-            <h1 className="text-4xl font-semibold leading-tight text-[#123622]">Helping serious employers hire dependable talent across North India.</h1>
-            <p className="text-lg leading-8 text-[#2f4a35]">
-              Yeble Careers started in 2026 with a simple belief: strong companies deserve better hiring support, and good
-              candidates deserve access to genuine opportunities. From our Dehradun base, we work closely with employers
-              and job seekers to make hiring more transparent, faster, and more dependable across regional and growth
-              markets.
-            </p>
+        <ScrollReveal>
+          <div className="grid gap-6 md:grid-cols-[1.08fr_0.92fr] md:items-start">
+            <div className="space-y-4">
+              <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">About us</p>
+              <h1 className="text-4xl font-semibold leading-tight text-[#123622]">Helping serious employers hire dependable talent across North India.</h1>
+              <p className="text-lg leading-8 text-[#2f4a35]">
+                Yeble Careers started in 2026 with a simple belief: strong companies deserve better hiring support, and good
+                candidates deserve access to genuine opportunities. From our Dehradun base, we work closely with employers
+                and job seekers to make hiring more transparent, faster, and more dependable across regional and growth
+                markets.
+              </p>
+            </div>
+            <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
+              <img
+                src="https://images.unsplash.com/photo-1552664688-cf412ec27db2?auto=format&fit=crop&w=1200&q=80"
+                alt="Recruitment team reviewing candidate profiles together"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
-          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
-            <img
-              src="https://images.unsplash.com/photo-1552664688-cf412ec27db2?auto=format&fit=crop&w=1200&q=80"
-              alt="Recruitment team reviewing candidate profiles together"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          {highlights.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div key={item.label} className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
-                <div className="flex items-center gap-3 text-[#123622]">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
-                    <Icon />
+        <ScrollReveal delay={70}>
+          <div className="grid gap-4 md:grid-cols-3">
+            {highlights.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.label} className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
+                  <div className="flex items-center gap-3 text-[#123622]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                      <Icon />
+                    </div>
+                    <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]/80">{item.label}</p>
                   </div>
-                  <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]/80">{item.label}</p>
+                  <p className="mt-4 text-2xl font-semibold text-[#123622]">{item.value}</p>
+                  <p className="mt-2 text-sm leading-6 text-[#31513c]">{item.detail}</p>
                 </div>
-                <p className="mt-4 text-2xl font-semibold text-[#123622]">{item.value}</p>
-                <p className="mt-2 text-sm leading-6 text-[#31513c]">{item.detail}</p>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </ScrollReveal>
 
-        <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
+        <ScrollReveal delay={110}>
+          <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
+            <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+              <div className="flex items-center gap-3 text-[#123622]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                  <SparkIcon />
+                </div>
+                <h2 className="text-xl font-semibold">Our story</h2>
+              </div>
+              <div className="mt-4 space-y-4 text-sm leading-7 text-[#2f4a35]">
+                <p>
+                  We began in 2026 from Dehradun with a practical goal: reduce the gap between deserving talent and
+                  employers who genuinely want to hire well. In many regional markets, candidates often struggle to find
+                  trustworthy openings, while employers struggle to identify candidates who are serious, informed, and job-ready.
+                </p>
+                <p>
+                  Yeble Careers was built to make that process more human and more dependable. We focus on real conversations,
+                  stronger role understanding, and better follow-up so the right people do not miss the right opportunities.
+                </p>
+              </div>
+            </div>
+            <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
+              <img
+                src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"
+                alt="Professional handshake after a successful hiring conversation"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={150}>
           <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
             <div className="flex items-center gap-3 text-[#123622]">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
                 <SparkIcon />
               </div>
-              <h2 className="text-xl font-semibold">Our story</h2>
+              <h2 className="text-xl font-semibold">What makes us different</h2>
             </div>
-            <div className="mt-4 space-y-4 text-sm leading-7 text-[#2f4a35]">
-              <p>
-                We began in 2026 from Dehradun with a practical goal: reduce the gap between deserving talent and
-                employers who genuinely want to hire well. In many regional markets, candidates often struggle to find
-                trustworthy openings, while employers struggle to identify candidates who are serious, informed, and job-ready.
-              </p>
-              <p>
-                Yeble Careers was built to make that process more human and more dependable. We focus on real conversations,
-                stronger role understanding, and better follow-up so the right people do not miss the right opportunities.
-              </p>
-            </div>
-          </div>
-          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
-            <img
-              src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"
-              alt="Professional handshake after a successful hiring conversation"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        </div>
-
-        <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-          <div className="flex items-center gap-3 text-[#123622]">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
-              <SparkIcon />
-            </div>
-            <h2 className="text-xl font-semibold">What makes us different</h2>
-          </div>
-          <ul className="mt-5 space-y-4 text-[#2f4a35]">
-            {differentiators.map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm leading-7">
-                <span className="text-[#2d6a3e]"><CheckDotIcon /></span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-3">
-          {pillars.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div key={item.title} className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
-                  <Icon />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-[#123622]">{item.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-[#31513c]">{item.detail}</p>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-[0.92fr_1.08fr]">
-          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
-            <img
-              src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80"
-              alt="Career guidance session with candidates reviewing opportunities"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          </div>
-          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
-            <div className="flex items-center gap-3 text-[#123622]">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
-                <UserIcon />
-              </div>
-              <h2 className="text-xl font-semibold">How we help real talent move forward</h2>
-            </div>
-            <p className="mt-4 text-sm leading-7 text-[#2f4a35]">
-              Our platform is meant to do more than collect registrations. We work to help credible candidates get seen,
-              get guided, and get introduced to opportunities where their profile has a genuine chance of moving ahead.
-            </p>
             <ul className="mt-5 space-y-4 text-[#2f4a35]">
-              {candidateSupport.map((item) => (
+              {differentiators.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm leading-7">
                   <span className="text-[#2d6a3e]"><CheckDotIcon /></span>
                   <span>{item}</span>
@@ -266,7 +230,57 @@ export default function AboutPage() {
               ))}
             </ul>
           </div>
-        </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={190}>
+          <div className="grid gap-4 md:grid-cols-3">
+            {pillars.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.title} className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                    <Icon />
+                  </div>
+                  <h3 className="mt-4 text-lg font-semibold text-[#123622]">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[#31513c]">{item.detail}</p>
+                </div>
+              );
+            })}
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={230}>
+          <div className="grid gap-6 md:grid-cols-[0.92fr_1.08fr]">
+            <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
+              <img
+                src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80"
+                alt="Career guidance session with candidates reviewing opportunities"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6">
+              <div className="flex items-center gap-3 text-[#123622]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                  <UserIcon />
+                </div>
+                <h2 className="text-xl font-semibold">How we help real talent move forward</h2>
+              </div>
+              <p className="mt-4 text-sm leading-7 text-[#2f4a35]">
+                Our platform is meant to do more than collect registrations. We work to help credible candidates get seen,
+                get guided, and get introduced to opportunities where their profile has a genuine chance of moving ahead.
+              </p>
+              <ul className="mt-5 space-y-4 text-[#2f4a35]">
+                {candidateSupport.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-7">
+                    <span className="text-[#2d6a3e]"><CheckDotIcon /></span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </div>
   );
