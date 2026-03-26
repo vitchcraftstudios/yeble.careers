@@ -32,7 +32,7 @@ export default function Home() {
                   onClick={() => setIntakeOpen(true)}
                   className="rounded-full bg-[#27c06b] px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-[#1fb35f]"
                 >
-                  Hire with Yeble
+                  Register Now
                 </button>
                 <Link
                   href="/jobs"
@@ -191,3 +191,4 @@ export default function Home() {
     </div>
   );
 }
+

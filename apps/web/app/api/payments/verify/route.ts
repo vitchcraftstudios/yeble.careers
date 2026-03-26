@@ -29,10 +29,11 @@ export async function POST(req: Request) {
       name?: string;
       email?: string;
       phone?: string;
-      companyName?: string;
+      currentCity?: string;
       service?: string;
-      hiringLocation?: string;
-      requirementSummary?: string;
+      experienceLevel?: string;
+      resumeLink?: string;
+      note?: string;
       razorpayOrderId?: string;
       razorpayPaymentId?: string;
       razorpaySignature?: string;
@@ -47,16 +48,17 @@ export async function POST(req: Request) {
       name = "",
       email = "",
       phone = "",
-      companyName = "",
+      currentCity = "",
       service = "",
-      hiringLocation = "",
-      requirementSummary = "",
+      experienceLevel = "",
+      resumeLink = "",
+      note = "",
       razorpayOrderId = "",
       razorpayPaymentId = "",
       razorpaySignature = "",
     } = body;
 
-    if (!name.trim() || !email.trim() || !companyName.trim() || !service.trim()) {
+    if (!name.trim() || !email.trim() || !phone.trim() || !service.trim() || !resumeLink.trim()) {
       return NextResponse.json({ error: "Missing required registration details." }, { status: 400 });
     }
 
@@ -75,44 +77,47 @@ export async function POST(req: Request) {
 
     const safeName = escapeHtml(name.trim());
     const safeEmail = escapeHtml(email.trim());
-    const safePhone = escapeHtml(phone.trim() || "Not provided");
-    const safeCompanyName = escapeHtml(companyName.trim());
+    const safePhone = escapeHtml(phone.trim());
+    const safeCurrentCity = escapeHtml(currentCity.trim() || "Not provided");
     const safeService = escapeHtml(service.trim());
-    const safeLocation = escapeHtml(hiringLocation.trim() || "Not provided");
-    const safeRequirement = escapeHtml(requirementSummary.trim() || "Not provided").replaceAll("\n", "<br />");
+    const safeExperienceLevel = escapeHtml(experienceLevel.trim() || "Not provided");
+    const safeResumeLink = escapeHtml(resumeLink.trim());
+    const safeNote = escapeHtml(note.trim() || "Not provided").replaceAll("\n", "<br />");
 
     await resend.emails.send({
       from: mailFrom,
       to: [mailTo],
       replyTo: email.trim(),
-      subject: `Paid employer intake: ${companyName.trim()} · ${service.trim()}`,
+      subject: `Paid job seeker registration: ${name.trim()} · ${service.trim()}`,
       text: [
         `Payment label: ${paymentLabel}`,
         `Amount: ${(paymentAmount / 100).toFixed(2)} ${paymentCurrency}`,
         `Name: ${name.trim()}`,
-        `Company: ${companyName.trim()}`,
         `Email: ${email.trim()}`,
-        `Phone: ${phone.trim() || "Not provided"}`,
+        `Phone: ${phone.trim()}`,
+        `Current city: ${currentCity.trim() || "Not provided"}`,
         `Service: ${service.trim()}`,
-        `Hiring location: ${hiringLocation.trim() || "Not provided"}`,
-        `Requirement summary: ${requirementSummary.trim() || "Not provided"}`,
+        `Experience level: ${experienceLevel.trim() || "Not provided"}`,
+        `Resume or LinkedIn: ${resumeLink.trim()}`,
+        `Candidate note: ${note.trim() || "Not provided"}`,
         `Razorpay order ID: ${razorpayOrderId}`,
         `Razorpay payment ID: ${razorpayPaymentId}`,
       ].join("\n"),
       html: `
         <div style="font-family: Arial, Helvetica, sans-serif; color: #123622; line-height: 1.6;">
-          <h2 style="margin: 0 0 16px;">New paid employer intake</h2>
+          <h2 style="margin: 0 0 16px;">New paid job seeker registration</h2>
           <p style="margin: 0 0 8px;"><strong>Payment label:</strong> ${escapeHtml(paymentLabel)}</p>
           <p style="margin: 0 0 8px;"><strong>Amount:</strong> ${(paymentAmount / 100).toFixed(2)} ${paymentCurrency}</p>
           <p style="margin: 0 0 8px;"><strong>Name:</strong> ${safeName}</p>
-          <p style="margin: 0 0 8px;"><strong>Company:</strong> ${safeCompanyName}</p>
           <p style="margin: 0 0 8px;"><strong>Email:</strong> ${safeEmail}</p>
           <p style="margin: 0 0 8px;"><strong>Phone:</strong> ${safePhone}</p>
+          <p style="margin: 0 0 8px;"><strong>Current city:</strong> ${safeCurrentCity}</p>
           <p style="margin: 0 0 8px;"><strong>Service:</strong> ${safeService}</p>
-          <p style="margin: 0 0 8px;"><strong>Hiring location:</strong> ${safeLocation}</p>
-          <p style="margin: 16px 0 8px;"><strong>Requirement summary:</strong></p>
+          <p style="margin: 0 0 8px;"><strong>Experience level:</strong> ${safeExperienceLevel}</p>
+          <p style="margin: 0 0 8px;"><strong>Resume or LinkedIn:</strong> <a href="${escapeHtml(resumeLink.trim())}">${safeResumeLink}</a></p>
+          <p style="margin: 16px 0 8px;"><strong>Candidate note:</strong></p>
           <div style="padding: 16px; border: 1px solid #e3decf; border-radius: 12px; background: #fffef7; margin-bottom: 16px;">
-            ${safeRequirement}
+            ${safeNote}
           </div>
           <p style="margin: 0 0 8px;"><strong>Razorpay order ID:</strong> ${escapeHtml(razorpayOrderId)}</p>
           <p style="margin: 0;"><strong>Razorpay payment ID:</strong> ${escapeHtml(razorpayPaymentId)}</p>
@@ -121,7 +126,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({
-      message: "Payment verified and your employer intake has been submitted successfully.",
+      message: "Payment verified and your job seeker registration has been submitted successfully.",
     });
   } catch (error) {
     console.error(error);

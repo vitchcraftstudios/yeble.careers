@@ -11,37 +11,39 @@ declare global {
   }
 }
 
-type EmployerIntakeModalProps = {
+type JobSeekerRegistrationModalProps = {
   open: boolean;
   onClose: () => void;
 };
 
-type IntakeFormState = {
+type RegistrationFormState = {
   name: string;
-  companyName: string;
   email: string;
   phone: string;
-  hiringLocation: string;
+  currentCity: string;
   service: string;
-  requirementSummary: string;
+  experienceLevel: string;
+  resumeLink: string;
+  note: string;
   company: string;
 };
 
 const serviceOptions = [
-  "Permanent Recruitment (RPO)",
-  "Campus Recruitment Drives",
-  "Contract Staffing (Staff Augmentation)",
-  "Skill-Based Vetting (Assessment)",
+  "Permanent Recruitment Opportunities",
+  "Campus & Fresher Placement Support",
+  "Contract Staffing Opportunities",
+  "Skill-Based Vetting & Assessment",
 ];
 
-const initialState: IntakeFormState = {
+const initialState: RegistrationFormState = {
   name: "",
-  companyName: "",
   email: "",
   phone: "",
-  hiringLocation: "",
+  currentCity: "",
   service: serviceOptions[0],
-  requirementSummary: "",
+  experienceLevel: "",
+  resumeLink: "",
+  note: "",
   company: "",
 };
 
@@ -54,14 +56,14 @@ function CheckIcon() {
   );
 }
 
-export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps) {
-  const [form, setForm] = useState<IntakeFormState>(initialState);
+export function EmployerIntakeModal({ open, onClose }: JobSeekerRegistrationModalProps) {
+  const [form, setForm] = useState<RegistrationFormState>(initialState);
   const [status, setStatus] = useState<"idle" | "creating-order" | "opening-checkout" | "verifying" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   const amountInRupees = useMemo(() => Number(process.env.NEXT_PUBLIC_RAZORPAY_AMOUNT || "499") || 499, []);
-  const paymentLabel = useMemo(() => process.env.NEXT_PUBLIC_RAZORPAY_PAYMENT_LABEL || "Employer Intake Fee", []);
+  const paymentLabel = useMemo(() => process.env.NEXT_PUBLIC_RAZORPAY_PAYMENT_LABEL || "Job Seeker Registration Fee", []);
   const razorpayKeyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "";
 
   useEffect(() => {
@@ -172,7 +174,7 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
             setStatus("success");
             setSuccessMessage(
               verifyData.message ||
-                "Payment confirmed. Your employer intake has been received and our team will reach out shortly.",
+                "Payment confirmed. Your job seeker registration has been received and our team will reach out shortly.",
             );
             setForm(initialState);
           } catch (error) {
@@ -198,8 +200,8 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
       <OverlayModal
         open={open && status !== "success"}
         onClose={resetAndClose}
-        title="Employer Intake Registration"
-        description="Share your hiring requirement, select the service you need, and complete the intake fee to move forward with our Dehradun-led hiring desk."
+        title="Job Seeker Registration"
+        description="Complete your registration details, choose the support you need, and pay the registration fee to submit your profile to our Dehradun hiring desk."
         widthClassName="max-w-3xl"
       >
         <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
@@ -214,21 +216,14 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
               />
               <input
                 className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
-                placeholder="Company name"
-                required
-                value={form.companyName}
-                onChange={(event) => setForm((current) => ({ ...current, companyName: event.target.value }))}
-              />
-            </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <input
-                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
-                placeholder="Work email"
+                placeholder="Work or personal email"
                 type="email"
                 required
                 value={form.email}
                 onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
               />
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
               <input
                 className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
                 placeholder="Phone number"
@@ -236,14 +231,15 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
                 value={form.phone}
                 onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))}
               />
-            </div>
-            <div className="grid gap-4 md:grid-cols-2">
               <input
                 className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
-                placeholder="Hiring location"
-                value={form.hiringLocation}
-                onChange={(event) => setForm((current) => ({ ...current, hiringLocation: event.target.value }))}
+                placeholder="Current city"
+                required
+                value={form.currentCity}
+                onChange={(event) => setForm((current) => ({ ...current, currentCity: event.target.value }))}
               />
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
               <select
                 className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] outline-none"
                 value={form.service}
@@ -255,7 +251,22 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
                   </option>
                 ))}
               </select>
+              <input
+                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
+                placeholder="Experience level (e.g. Fresher, 2 years, 5+ years)"
+                required
+                value={form.experienceLevel}
+                onChange={(event) => setForm((current) => ({ ...current, experienceLevel: event.target.value }))}
+              />
             </div>
+            <input
+              className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
+              placeholder="Resume or LinkedIn URL"
+              type="url"
+              required
+              value={form.resumeLink}
+              onChange={(event) => setForm((current) => ({ ...current, resumeLink: event.target.value }))}
+            />
             <input
               className="hidden"
               tabIndex={-1}
@@ -267,11 +278,11 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
             />
             <textarea
               className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
-              placeholder="Describe your hiring need, number of roles, seniority level, timeline, or any specific screening expectations"
+              placeholder="Tell us the kind of roles you are targeting, preferred locations, salary range, or anything important for your profile review"
               rows={6}
               required
-              value={form.requirementSummary}
-              onChange={(event) => setForm((current) => ({ ...current, requirementSummary: event.target.value }))}
+              value={form.note}
+              onChange={(event) => setForm((current) => ({ ...current, note: event.target.value }))}
             />
             {errorMessage ? <p className="text-sm leading-6 text-[#9b2c2c]">{errorMessage}</p> : null}
             <button
@@ -285,30 +296,30 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
               {status === "idle" || status === "error" ? `Pay Now · INR ${amountInRupees}` : null}
             </button>
             <p className="text-xs leading-6 text-[#31513c]">
-              Your registration is marked complete only after successful payment verification. After that, our team will
-              receive your intake instantly and follow up on the same hiring requirement.
+              Your registration becomes successful only after payment verification. Once verified, your details are sent to
+              our team so they can review your profile and guide you on the next step.
             </p>
           </form>
 
           <div className="space-y-4 rounded-[1.75rem] border border-[#e3decf] bg-[#fffdf6] p-5">
             <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">What happens next</p>
-            <h3 className="text-xl font-semibold text-[#123622]">A simple, paid intake flow for serious hiring requirements</h3>
+            <h3 className="text-xl font-semibold text-[#123622]">A simple registration flow for serious job seekers</h3>
             <div className="space-y-3 text-sm leading-7 text-[#31513c]">
               <div className="flex items-start gap-3">
                 <span className="mt-1 text-[#2d6a3e]"><CheckIcon /></span>
-                <span>Select the service that best matches your current hiring need.</span>
+                <span>Select the support category that best matches your current job search need.</span>
               </div>
               <div className="flex items-start gap-3">
                 <span className="mt-1 text-[#2d6a3e]"><CheckIcon /></span>
-                <span>Complete the intake fee through Razorpay to confirm your request.</span>
+                <span>Complete the Razorpay payment to confirm your registration.</span>
               </div>
               <div className="flex items-start gap-3">
                 <span className="mt-1 text-[#2d6a3e]"><CheckIcon /></span>
-                <span>Once payment is verified, your details are sent to our hiring desk at growth@yeble.careers.</span>
+                <span>After payment verification, your profile details are shared with our team at growth@yeble.careers.</span>
               </div>
               <div className="flex items-start gap-3">
                 <span className="mt-1 text-[#2d6a3e]"><CheckIcon /></span>
-                <span>Our Dehradun team reviews the requirement and reaches out with the next step.</span>
+                <span>Our Dehradun team reviews your profile and reaches out with the next step.</span>
               </div>
             </div>
             <div className="rounded-2xl border border-[#d8e5d9] bg-white p-4 text-sm text-[#31513c]">
@@ -323,8 +334,8 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
       <OverlayModal
         open={status === "success"}
         onClose={resetAndClose}
-        title="Registration received successfully"
-        description={successMessage || "Your payment has been verified and the intake has been submitted successfully."}
+        title="Registration completed successfully"
+        description={successMessage || "Your payment has been verified and your job seeker registration has been submitted successfully."}
         widthClassName="max-w-xl"
       >
         <div className="space-y-5">
@@ -332,8 +343,8 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
             <CheckIcon />
           </div>
           <p className="text-sm leading-7 text-[#31513c]">
-            Our hiring desk has received your request. We will review the requirement and reach out to you on the
-            shared email or phone number.
+            Your profile has been registered successfully. Our team will review your details and reach out on the email or
+            phone number you shared.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
             <button
@@ -355,4 +366,3 @@ export function EmployerIntakeModal({ open, onClose }: EmployerIntakeModalProps)
     </>
   );
 }
-

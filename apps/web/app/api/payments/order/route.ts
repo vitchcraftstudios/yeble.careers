@@ -7,10 +7,11 @@ export async function POST(req: Request) {
       name?: string;
       email?: string;
       phone?: string;
-      companyName?: string;
+      currentCity?: string;
       service?: string;
-      hiringLocation?: string;
-      requirementSummary?: string;
+      experienceLevel?: string;
+      resumeLink?: string;
+      note?: string;
       company?: string;
     };
 
@@ -18,8 +19,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: true }, { status: 200 });
     }
 
-    if (!body.name?.trim() || !body.email?.trim() || !body.companyName?.trim() || !body.service?.trim()) {
-      return NextResponse.json({ error: "Please complete the required intake details before payment." }, { status: 400 });
+    if (!body.name?.trim() || !body.email?.trim() || !body.phone?.trim() || !body.service?.trim() || !body.resumeLink?.trim()) {
+      return NextResponse.json({ error: "Please complete the required registration details before payment." }, { status: 400 });
     }
 
     const razorpay = getRazorpayClient();
@@ -28,14 +29,15 @@ export async function POST(req: Request) {
       currency: paymentCurrency,
       receipt: `yeble-${Date.now()}`,
       notes: {
-        formType: "employer-intake",
+        formType: "job-seeker-registration",
         paymentLabel,
         name: body.name.trim(),
         email: body.email.trim(),
-        phone: body.phone?.trim() || "",
-        companyName: body.companyName.trim(),
+        phone: body.phone.trim(),
+        currentCity: body.currentCity?.trim() || "",
         service: body.service.trim(),
-        hiringLocation: body.hiringLocation?.trim() || "",
+        experienceLevel: body.experienceLevel?.trim() || "",
+        resumeLink: body.resumeLink.trim(),
       },
     });
 
