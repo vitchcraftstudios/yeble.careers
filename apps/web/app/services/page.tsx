@@ -167,7 +167,7 @@ export default function ServicesPage() {
         <ScrollReveal>
           <div className="space-y-3">
             <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Services</p>
-            <h1 className="text-3xl font-semibold text-[#123622]">Hiring and placement support shaped by Dehradun, built for North India.</h1>
+            <h1 className="text-3xl font-semibold text-[#123622]">Hiring and placement support shaped by Regional Insight, built for North India.</h1>
             <p className="text-lg leading-8 text-[#2f4a35]">
               Yeble Careers works from Dehradun and supports both employers and job seekers across North India. Our
               services are built around practical hiring needs, honest communication, and a simple idea that good roles
