@@ -67,6 +67,17 @@ function FactoryIcon() {
   );
 }
 
+function HospitalityIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M4 19v-8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8" />
+      <path d="M4 14h16" />
+      <path d="M7 9V6.5A1.5 1.5 0 0 1 8.5 5h2A1.5 1.5 0 0 1 12 6.5V9" />
+      <path d="M20 19H4" />
+    </svg>
+  );
+}
+
 function ChevronLeftIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -113,6 +124,11 @@ const industries = [
     title: "Industrial & Operations",
     description: "Practical support for operations, coordination, and execution-heavy roles in North India markets.",
     icon: FactoryIcon,
+  },
+  {
+    title: "Hospitality & Travel",
+    description: "Support for hotels, guest experience teams, travel operations, and service-first hiring mandates.",
+    icon: HospitalityIcon,
   },
 ];
 
@@ -163,6 +179,17 @@ const faqs = [
     question: "Do you also work with employers directly?",
     answer:
       "Yes. Alongside candidate registrations, we work with companies that need dependable hiring support, cleaner shortlists, and practical follow-up across North India.",
+  },
+];
+
+const industryMedia = [
+  {
+    src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+    alt: "Hospitality and service operations team meeting",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=900&q=80",
+    alt: "Retail and customer support workspace",
   },
 ];
 
@@ -232,29 +259,40 @@ export default function Home() {
 
         <ScrollReveal delay={60}>
           <section className="rounded-3xl border border-[#e3decf] bg-white/92 p-6 shadow-sm">
-            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
               <div>
-                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Industries We Serve</p>
-                <h2 className="text-2xl font-semibold text-[#123622]">Built for North India’s practical hiring needs across multiple sectors</h2>
-              </div>
-              <p className="max-w-2xl text-sm leading-7 text-[#31513c]">
-                We do not work like a generic profile-forwarding agency. Our focus is on real requirements, clearer fit,
-                and hiring support that matches how teams actually hire on the ground.
-              </p>
-            </div>
-            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {industries.map((industry) => {
-                const Icon = industry.icon;
-                return (
-                  <div key={industry.title} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-5 transition hover:-translate-y-0.5 hover:shadow-sm">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
-                      <Icon />
-                    </div>
-                    <h3 className="mt-4 text-lg font-semibold text-[#123622]">{industry.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-[#31513c]">{industry.description}</p>
+                <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Industries We Serve</p>
+                    <h2 className="text-2xl font-semibold text-[#123622]">Built for North India’s practical hiring needs across multiple sectors</h2>
                   </div>
-                );
-              })}
+                  <p className="max-w-2xl text-sm leading-7 text-[#31513c]">
+                    We do not work like a generic profile-forwarding agency. Our focus is on real requirements, clearer fit,
+                    and hiring support that matches how teams actually hire on the ground.
+                  </p>
+                </div>
+                <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {industries.map((industry) => {
+                    const Icon = industry.icon;
+                    return (
+                      <div key={industry.title} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-5 transition hover:-translate-y-0.5 hover:shadow-sm">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+                          <Icon />
+                        </div>
+                        <h3 className="mt-4 text-lg font-semibold text-[#123622]">{industry.title}</h3>
+                        <p className="mt-2 text-sm leading-7 text-[#31513c]">{industry.description}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                {industryMedia.map((item) => (
+                  <div key={item.src} className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white shadow-sm">
+                    <img src={item.src} alt={item.alt} className="h-56 w-full object-cover lg:h-[17.25rem]" loading="lazy" />
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
         </ScrollReveal>
@@ -293,20 +331,32 @@ export default function Home() {
           <section className="grid gap-6 md:grid-cols-2">
             <div className="rounded-3xl border border-[#e3decf] bg-white/92 p-6 shadow-sm">
               <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">For employers</p>
-              <h2 className="text-xl font-semibold text-[#123622]">Build teams faster, compliantly</h2>
+              <h2 className="text-xl font-semibold text-[#123622]">Need dependable hiring support for your team?</h2>
               <ul className="mt-4 space-y-2 text-sm text-[#2f4a35]">
                 <li>✔ Targeted sourcing across tech, product, data, GTM, and TA.</li>
                 <li>✔ Structured screening: skills + background + compensation sanity.</li>
                 <li>✔ Interview scheduling, feedback loops, and offer negotiation.</li>
                 <li>✔ Compliance ready: offer letters, NDAs, BGV liaison on request.</li>
               </ul>
-              <button
-                type="button"
-                onClick={() => setIntakeOpen(true)}
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#27c06b] px-5 py-2 text-sm font-semibold text-[#06290f] shadow-sm hover:bg-[#1fb35f]"
-              >
-                Start registration
-              </button>
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="tel:+919429692113"
+                  className="inline-flex items-center justify-center rounded-full bg-[#27c06b] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1fb35f]"
+                >
+                  Request Intake Call
+                </a>
+                <a
+                  href="tel:+911354222268"
+                  className="inline-flex items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622] transition hover:border-[#2d6a3e]"
+                >
+                  Dial Landline
+                </a>
+              </div>
+              <p className="mt-3 text-xs leading-6 text-[#31513c]">
+                Mobile: +91 94296 92113
+                <br />
+                Landline: 0135 422 2268
+              </p>
             </div>
             <div className="rounded-3xl border border-[#e3decf] bg-white/92 p-6 shadow-sm">
               <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">For candidates</p>
@@ -445,7 +495,7 @@ export default function Home() {
               </div>
               <span className="text-sm text-[#2d6a3e]">Real teams, real candidates</span>
             </div>
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <div className="mt-4 grid gap-4 md:grid-cols-4">
               {[
                 {
                   src: "https://images.unsplash.com/photo-1556761175-129418cb2dfe?auto=format&fit=crop&w=900&q=80",
@@ -458,6 +508,10 @@ export default function Home() {
                 {
                   src: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=900&q=80",
                   alt: "Interview panel",
+                },
+                {
+                  src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
+                  alt: "Candidate discussion and coordination",
                 },
               ].map((item, idx) => (
                 <div key={idx} className="relative overflow-hidden rounded-2xl border border-[#d6d1c1] bg-white">
