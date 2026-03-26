@@ -204,18 +204,18 @@ export function EmployerIntakeModal({ open, onClose }: JobSeekerRegistrationModa
         description="Complete your registration details, choose the support you need, and pay the registration fee to submit your profile to our Dehradun hiring desk."
         widthClassName="max-w-3xl"
       >
-        <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
-          <form className="grid gap-4" onSubmit={handleSubmit}>
-            <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-[1.1fr_0.9fr] md:gap-6">
+          <form className="grid gap-3 sm:gap-4" onSubmit={handleSubmit}>
+            <div className="grid gap-3 sm:gap-4 md:grid-cols-2">
               <input
-                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
+                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-base text-[#0f2918] placeholder:text-[#8a8f87] outline-none sm:text-lg"
                 placeholder="Full name"
                 required
                 value={form.name}
                 onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
               />
               <input
-                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
+                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-base text-[#0f2918] placeholder:text-[#8a8f87] outline-none sm:text-lg"
                 placeholder="Work or personal email"
                 type="email"
                 required
@@ -223,25 +223,25 @@ export function EmployerIntakeModal({ open, onClose }: JobSeekerRegistrationModa
                 onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
               />
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-3 sm:gap-4 md:grid-cols-2">
               <input
-                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
+                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-base text-[#0f2918] placeholder:text-[#8a8f87] outline-none sm:text-lg"
                 placeholder="Phone number"
                 required
                 value={form.phone}
                 onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))}
               />
               <input
-                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
+                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-base text-[#0f2918] placeholder:text-[#8a8f87] outline-none sm:text-lg"
                 placeholder="Current city"
                 required
                 value={form.currentCity}
                 onChange={(event) => setForm((current) => ({ ...current, currentCity: event.target.value }))}
               />
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-3 sm:gap-4 md:grid-cols-2">
               <select
-                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] outline-none"
+                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-base text-[#0f2918] outline-none sm:text-lg"
                 value={form.service}
                 onChange={(event) => setForm((current) => ({ ...current, service: event.target.value }))}
               >
@@ -252,15 +252,15 @@ export function EmployerIntakeModal({ open, onClose }: JobSeekerRegistrationModa
                 ))}
               </select>
               <input
-                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
-                placeholder="Experience level (e.g. Fresher, 2 years, 5+ years)"
+                className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-base text-[#0f2918] placeholder:text-[#8a8f87] outline-none sm:text-lg"
+                placeholder="Experience level"
                 required
                 value={form.experienceLevel}
                 onChange={(event) => setForm((current) => ({ ...current, experienceLevel: event.target.value }))}
               />
             </div>
             <input
-              className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
+              className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-base text-[#0f2918] placeholder:text-[#8a8f87] outline-none sm:text-lg"
               placeholder="Resume or LinkedIn URL"
               type="url"
               required
@@ -277,9 +277,9 @@ export function EmployerIntakeModal({ open, onClose }: JobSeekerRegistrationModa
               onChange={(event) => setForm((current) => ({ ...current, company: event.target.value }))}
             />
             <textarea
-              className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
+              className="min-h-40 w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-base text-[#0f2918] placeholder:text-[#8a8f87] outline-none sm:min-h-44 sm:text-lg"
               placeholder="Tell us the kind of roles you are targeting, preferred locations, salary range, or anything important for your profile review"
-              rows={6}
+              rows={5}
               required
               value={form.note}
               onChange={(event) => setForm((current) => ({ ...current, note: event.target.value }))}
@@ -288,22 +288,22 @@ export function EmployerIntakeModal({ open, onClose }: JobSeekerRegistrationModa
             <button
               type="submit"
               disabled={status === "creating-order" || status === "opening-checkout" || status === "verifying"}
-              className="inline-flex items-center justify-center rounded-full bg-[#27c06b] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-[#1fb35f] disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex min-h-14 items-center justify-center rounded-full bg-[#27c06b] px-5 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-[#1fb35f] disabled:cursor-not-allowed disabled:opacity-70 sm:text-lg"
             >
               {status === "creating-order" && "Preparing payment..."}
               {status === "opening-checkout" && "Opening payment..."}
               {status === "verifying" && "Verifying payment..."}
               {status === "idle" || status === "error" ? `Pay Now · INR ${amountInRupees}` : null}
             </button>
-            <p className="text-xs leading-6 text-[#31513c]">
+            <p className="text-sm leading-7 text-[#31513c]">
               Your registration becomes successful only after payment verification. Once verified, your details are sent to
               our team so they can review your profile and guide you on the next step.
             </p>
           </form>
 
-          <div className="space-y-4 rounded-[1.75rem] border border-[#e3decf] bg-[#fffdf6] p-5">
+          <div className="space-y-4 rounded-[1.5rem] border border-[#e3decf] bg-[#fffdf6] p-4 sm:rounded-[1.75rem] sm:p-5">
             <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">What happens next</p>
-            <h3 className="text-xl font-semibold text-[#123622]">A simple registration flow for serious job seekers</h3>
+            <h3 className="text-lg font-semibold leading-tight text-[#123622] sm:text-xl">A simple registration flow for serious job seekers</h3>
             <div className="space-y-3 text-sm leading-7 text-[#31513c]">
               <div className="flex items-start gap-3">
                 <span className="mt-1 text-[#2d6a3e]"><CheckIcon /></span>

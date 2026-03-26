@@ -42,22 +42,28 @@ export function OverlayModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f2918]/45 px-4 py-6 backdrop-blur-sm">
-      <div className={`relative w-full ${widthClassName} overflow-hidden rounded-[2rem] border border-[#d8e5d9] bg-[#fffef7] shadow-[0_30px_80px_rgba(15,41,24,0.22)]`}>
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-lg text-[#123622] transition hover:border-[#2d6a3e]"
-          aria-label="Close modal"
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#0f2918]/45 px-3 py-3 backdrop-blur-sm sm:px-4 sm:py-6">
+      <div className="flex min-h-full items-start justify-center sm:items-center">
+        <div
+          className={`relative w-full ${widthClassName} max-h-[calc(100dvh-1.5rem)] overflow-hidden rounded-[1.75rem] border border-[#d8e5d9] bg-[#fffef7] shadow-[0_30px_80px_rgba(15,41,24,0.22)] sm:max-h-[calc(100dvh-3rem)] sm:rounded-[2rem]`}
         >
-          ×
-        </button>
-        <div className="border-b border-[#ebe4d2] px-6 pb-5 pt-6 md:px-8">
-          <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Yeble Careers</p>
-          <h2 className="mt-3 text-2xl font-semibold text-[#123622]">{title}</h2>
-          {description ? <p className="mt-2 max-w-2xl text-sm leading-7 text-[#31513c]">{description}</p> : null}
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-lg text-[#123622] transition hover:border-[#2d6a3e] sm:right-4 sm:top-4"
+            aria-label="Close modal"
+          >
+            ×
+          </button>
+          <div className="flex max-h-[calc(100dvh-1.5rem)] flex-col sm:max-h-[calc(100dvh-3rem)]">
+            <div className="border-b border-[#ebe4d2] px-4 pb-4 pt-5 sm:px-6 sm:pb-5 sm:pt-6 md:px-8">
+              <p className="pr-12 text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Yeble Careers</p>
+              <h2 className="mt-3 pr-12 text-xl font-semibold leading-tight text-[#123622] sm:text-2xl">{title}</h2>
+              {description ? <p className="mt-2 pr-8 text-sm leading-6 text-[#31513c] sm:max-w-2xl sm:leading-7">{description}</p> : null}
+            </div>
+            <div className="overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 md:px-8">{children}</div>
+          </div>
         </div>
-        <div className="px-6 py-6 md:px-8">{children}</div>
       </div>
     </div>
   );

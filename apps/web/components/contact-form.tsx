@@ -128,25 +128,25 @@ export function ContactForm() {
         description={feedback || "Our hiring desk has received your enquiry and will respond within one business day."}
         widthClassName="max-w-xl"
       >
-        <div className="space-y-5">
-          <div className="inline-flex h-14 w-14 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+        <div className="space-y-4 sm:space-y-5">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e] sm:h-14 sm:w-14">
             <CheckIcon />
           </div>
           <p className="text-sm leading-7 text-[#31513c]">
             Thank you for reaching out. Our Dehradun hiring desk will review your enquiry and get back to you on the
             contact details you shared.
           </p>
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="grid gap-3 sm:flex sm:flex-row">
             <button
               type="button"
               onClick={closeSuccessModal}
-              className="inline-flex items-center justify-center rounded-full bg-[#27c06b] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-[#1fb35f]"
+              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#27c06b] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-[#1fb35f]"
             >
               Close
             </button>
             <a
               href="mailto:growth@yeble.careers"
-              className="inline-flex items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622] transition hover:border-[#2d6a3e]"
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622] transition hover:border-[#2d6a3e]"
             >
               Email our team
             </a>
