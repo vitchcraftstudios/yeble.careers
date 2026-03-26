@@ -74,8 +74,8 @@ export default function ContactPage() {
 
           <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
             <img
-              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
-              alt="Recruitment consultation and hiring discussion"
+              src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80"
+              alt="Professional contact desk conversation with a client"
               className="h-full w-full object-cover"
               loading="lazy"
             />
@@ -173,8 +173,8 @@ export default function ContactPage() {
 
           <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
             <img
-              src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80"
-              alt="Employer discussion and contact support"
+              src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"
+              alt="Recruitment consultant speaking with a client team"
               className="h-full w-full object-cover"
               loading="lazy"
             />

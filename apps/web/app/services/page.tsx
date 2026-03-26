@@ -219,8 +219,8 @@ export default function ServicesPage() {
           </div>
           <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85">
             <img
-              src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80"
-              alt="Hiring and staffing discussion"
+              src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80"
+              alt="Hiring team reviewing active placement work"
               className="h-full w-full object-cover"
               loading="lazy"
             />
@@ -264,8 +264,8 @@ export default function ServicesPage() {
           </div>
           <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 md:min-h-[420px]">
             <img
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
-              alt="Candidates discussing career opportunities"
+              src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1200&q=80"
+              alt="Candidates discussing career options with optimism"
               className="h-full w-full object-cover"
               loading="lazy"
             />
@@ -275,8 +275,8 @@ export default function ServicesPage() {
         <div className="grid gap-6 md:grid-cols-[0.82fr_1.18fr]">
           <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 md:min-h-[420px]">
             <img
-              src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"
-              alt="Regional hiring and collaboration"
+              src="https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?auto=format&fit=crop&w=1200&q=80"
+              alt="Regional team collaboration across hiring markets"
               className="h-full w-full object-cover"
               loading="lazy"
             />
