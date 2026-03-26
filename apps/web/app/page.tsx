@@ -375,7 +375,7 @@ export default function Home() {
 
         <ScrollReveal delay={140}>
           <section className="grid items-start gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-5 shadow-sm sm:p-7">
+            <div className="min-w-0 rounded-[2rem] border border-[#e3decf] bg-white/95 p-5 shadow-sm sm:p-7">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Testimonials</p>
@@ -404,7 +404,7 @@ export default function Home() {
                 <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${activeTestimonial * 100}%)` }}>
                   {testimonials.map((item) => (
                     <article key={item.name} className="min-w-full p-5 sm:p-6">
-                      <p className="text-base leading-7 text-[#23422f] sm:text-lg sm:leading-8">“{item.quote}”</p>
+                      <p className="max-w-full break-words text-base leading-7 text-[#23422f] sm:text-lg sm:leading-8">“{item.quote}”</p>
                       <div className="mt-5 border-t border-[#e7dfcb] pt-4">
                         <p className="font-semibold text-[#123622]">{item.name}</p>
                         <p className="text-sm text-[#31513c]">{item.role}</p>
@@ -436,7 +436,7 @@ export default function Home() {
               <h2 className="mt-2 text-2xl font-semibold text-[#123622]">A simple process that candidates can actually follow</h2>
               <div className="mt-6 space-y-3">
                 {processSteps.map((step, idx) => (
-                  <article key={step.title} className="flex gap-4 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
+                  <article key={step.title} className="flex min-w-0 gap-4 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-sm font-semibold text-[#2d6a3e]">
                       {idx + 1}
                     </div>
@@ -492,3 +492,4 @@ export default function Home() {
     </div>
   );
 }
+
