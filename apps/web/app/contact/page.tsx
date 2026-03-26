@@ -1,4 +1,5 @@
 ﻿import { ScrollReveal } from "@/components/scroll-reveal";
+import { ContactForm } from "@/components/contact-form";
 
 function PhoneIcon() {
   return (
@@ -145,37 +146,7 @@ export default function ContactPage() {
                 Use this form for employer mandates, staffing enquiries, partnership outreach, or candidate screening
                 follow-up. Clear role details help us respond faster.
               </p>
-              <form className="mt-5 grid gap-4">
-                <input
-                  className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
-                  placeholder="Full name"
-                  required
-                />
-                <input
-                  className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
-                  placeholder="Work email"
-                  type="email"
-                  required
-                />
-                <input
-                  className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
-                  placeholder="Phone number"
-                />
-                <textarea
-                  className="w-full rounded-xl border border-[#d6d1c1] bg-white px-4 py-3 text-[#0f2918] placeholder:text-[#8a8f87] outline-none"
-                  placeholder="Share your hiring requirement, locations, experience range, or the Job ID you are applying for"
-                  rows={5}
-                />
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center rounded-full bg-[#27c06b] px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-[#1fb35f]"
-                >
-                  Send enquiry
-                </button>
-                <p className="text-xs leading-6 text-[#31513c]">
-                  We usually respond within one business day. For urgent business enquiries, call <a className="font-medium text-[#2d6a3e]" href="tel:+919429692113">+91 94296 92113</a>, call <a className="font-medium text-[#2d6a3e]" href="tel:+911354222268">0135 422 2268</a>, or email <a className="font-medium text-[#2d6a3e]" href="mailto:growth@yeble.careers">growth@yeble.careers</a>.
-                </p>
-              </form>
+              <ContactForm />
             </div>
 
             <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
