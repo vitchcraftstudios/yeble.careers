@@ -16,13 +16,12 @@ function CodeIcon() {
   );
 }
 
-function ChartIcon() {
+function BriefcaseIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M5 19V9" />
-      <path d="M12 19V5" />
-      <path d="M19 19v-7" />
-      <path d="M4 19h16" />
+      <path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7" />
+      <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h13A1.5 1.5 0 0 1 20 8.5v8A1.5 1.5 0 0 1 18.5 18h-13A1.5 1.5 0 0 1 4 16.5Z" />
+      <path d="M4 11h16" />
     </svg>
   );
 }
@@ -78,6 +77,14 @@ function HospitalityIcon() {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="m5 12 4 4L19 6" />
+    </svg>
+  );
+}
+
 function ChevronLeftIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -94,40 +101,49 @@ function ChevronRightIcon() {
   );
 }
 
+function PlusChevronIcon({ open }: { open: boolean }) {
+  return (
+    <span className="relative flex h-10 w-10 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e]">
+      <span className="absolute h-0.5 w-4 rounded-full bg-current" />
+      <span className={`absolute h-4 w-0.5 rounded-full bg-current transition-transform duration-300 ${open ? "scale-y-0" : "scale-y-100"}`} />
+    </span>
+  );
+}
+
 const industries = [
   {
     title: "Technology & SaaS",
-    description: "Engineering, product, DevOps, QA, and customer-facing roles for software-led teams.",
+    description: "Engineering, product support, QA, and software delivery roles for lean teams building steadily.",
     icon: CodeIcon,
   },
   {
-    title: "Analytics & AI",
-    description: "Data analysts, BI specialists, ML support roles, and analytics hiring for growing teams.",
-    icon: ChartIcon,
+    title: "Business Support & Coordination",
+    description: "Back-office, operations support, executive assistance, MIS, and coordination roles that new agencies often handle first.",
+    icon: BriefcaseIcon,
   },
   {
     title: "GTM & Consumer",
-    description: "Sales, growth, marketing, operations, and support roles across fast-moving businesses.",
+    description: "Sales, growth, marketing, operations, and support roles across fast-moving businesses and local market teams.",
     icon: MegaphoneIcon,
   },
   {
     title: "Staffing & Compliance",
-    description: "Structured screening, documentation, and dependable hiring support for regulated workflows.",
+    description: "Structured screening, documentation, and dependable hiring support for regulated and process-led workflows.",
     icon: ShieldIcon,
   },
   {
     title: "Retail & Services",
-    description: "Hiring support for customer-facing businesses, regional operations, and service teams.",
+    description: "Hiring support for customer-facing businesses, store operations, service teams, and regional brand expansion.",
     icon: StoreIcon,
   },
   {
     title: "Industrial & Operations",
-    description: "Practical support for operations, coordination, and execution-heavy roles in North India markets.",
+    description: "Practical support for operations, site coordination, dispatch, production, and execution-heavy roles.",
     icon: FactoryIcon,
   },
   {
     title: "Hospitality & Travel",
-    description: "Support for hotels, guest experience teams, travel operations, and service-first hiring mandates.",
+    description: "Support for hotels, guest experience teams, travel operations, front office, and service-first hiring mandates.",
     icon: HospitalityIcon,
   },
 ];
@@ -135,27 +151,27 @@ const industries = [
 const testimonials = [
   {
     name: "Ritika Sharma",
-    role: "Product Designer, Dehradun",
+    role: "Front-End Designer, Dehradun",
     quote:
-      "The process felt more guided than random. I was not left guessing after every round, and that made a real difference.",
+      "The team explained the company properly before my interview. It did not feel like random forwarding. I knew what I was walking into.",
   },
   {
     name: "Aman Verma",
-    role: "SDE-II, Noida",
+    role: "Operations Executive, Noida",
     quote:
-      "Yeble helped me understand the role properly before interviews. That clarity improved how I presented myself.",
+      "What helped most was the follow-up. After every round, someone from Yeble actually updated me instead of going silent.",
   },
   {
-    name: "Neha Rawat",
-    role: "Data Analyst, Chandigarh",
+    name: "Pooja Rawat",
+    role: "HR Coordinator, Chandigarh",
     quote:
-      "What stood out was the follow-up. The team kept communication simple, timely, and much more human than most agencies.",
+      "As a candidate from Uttarakhand, it felt good to deal with a team that understood regional hiring realities and salary expectations.",
   },
   {
-    name: "Karan Malhotra",
-    role: "Hiring Manager, Gurugram",
+    name: "Saurabh Chauhan",
+    role: "Sales Associate, Gurugram",
     quote:
-      "Shortlists were cleaner and more relevant. We were not flooded with random profiles, which saved our team a lot of time.",
+      "The process was simple, clear, and practical. They only pushed me toward roles that genuinely matched my background.",
   },
 ];
 
@@ -163,33 +179,52 @@ const faqs = [
   {
     question: "What happens after I complete the registration payment?",
     answer:
-      "Once your payment is verified, your registration details are sent to our team for review. We then reach out on your shared email or phone number with the next step.",
+      "After payment verification, your registration details reach our team for profile review. We then contact you on your shared phone number or email with the next step.",
   },
   {
-    question: "Is the registration flow for freshers or experienced candidates?",
+    question: "Is this useful for freshers as well as experienced candidates?",
     answer:
-      "Both. We work with fresher, early-career, and experienced professionals depending on the role type, market demand, and profile fit.",
+      "Yes. We support fresher, early-career, and experienced candidates, depending on market demand, role suitability, and how job-ready the profile is.",
   },
   {
-    question: "Which regions does Yeble mainly support?",
+    question: "Which regions does Yeble mainly serve?",
     answer:
-      "Our base is in Dehradun, and we actively support opportunities and hiring movement across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh, along with connected metro corridors.",
+      "We work from Dehradun and mainly support opportunities across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh, along with nearby hiring corridors like Noida, Gurugram, Chandigarh, and Mohali.",
   },
   {
-    question: "Do you also work with employers directly?",
+    question: "Do employers also work with Yeble directly?",
     answer:
-      "Yes. Alongside candidate registrations, we work with companies that need dependable hiring support, cleaner shortlists, and practical follow-up across North India.",
+      "Yes. Companies reach out to us for shortlist support, intake coordination, and practical hiring help, especially when they need regional understanding with dependable follow-up.",
   },
 ];
 
 const industryMedia = [
   {
-    src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
-    alt: "Hospitality and service operations team meeting",
+    src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=900&q=80",
+    alt: "Business support and coordination team at work",
   },
   {
-    src: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=900&q=80",
-    alt: "Retail and customer support workspace",
+    src: "https://images.unsplash.com/photo-1556742393-d75f468bfcb0?auto=format&fit=crop&w=900&q=80",
+    alt: "Hospitality and customer service team on the floor",
+  },
+];
+
+const processSteps = [
+  {
+    title: "Register your profile",
+    desc: "Share your details, preferred roles, locations, and resume link in one clear form.",
+  },
+  {
+    title: "Profile review from our side",
+    desc: "We check fit, readiness, and whether your background matches live opportunities in our hiring network.",
+  },
+  {
+    title: "Relevant company introductions",
+    desc: "If your profile fits, we line you up for openings that make practical sense for your role and location preference.",
+  },
+  {
+    title: "Interview to joining follow-up",
+    desc: "We stay in touch through interview rounds, feedback, and offer-stage coordination so you are not left guessing.",
   },
 ];
 
@@ -202,12 +237,10 @@ export default function Home() {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveTestimonial((current) => (current + 1) % testimonials.length);
-    }, 4500);
+    }, 5200);
 
     return () => window.clearInterval(timer);
   }, []);
-
-  const currentTestimonial = testimonials[activeTestimonial];
 
   return (
     <div className="relative min-h-screen bg-[#fffef0] text-[#0f2918]">
@@ -259,16 +292,14 @@ export default function Home() {
 
         <ScrollReveal delay={60}>
           <section className="rounded-3xl border border-[#e3decf] bg-white/92 p-6 shadow-sm">
-            <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
               <div>
-                <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Industries We Serve</p>
-                    <h2 className="text-2xl font-semibold text-[#123622]">Built for North India’s practical hiring needs across multiple sectors</h2>
-                  </div>
+                <div className="space-y-3">
+                  <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Industries We Serve</p>
+                  <h2 className="max-w-2xl text-2xl font-semibold text-[#123622]">Practical hiring support across the sectors a young North India agency can genuinely serve well</h2>
                   <p className="max-w-2xl text-sm leading-7 text-[#31513c]">
-                    We do not work like a generic profile-forwarding agency. Our focus is on real requirements, clearer fit,
-                    and hiring support that matches how teams actually hire on the ground.
+                    We are not trying to sound bigger than we are. Our focus is on roles we can support properly, with cleaner screening,
+                    regional understanding, and dependable follow-up.
                   </p>
                 </div>
                 <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -286,10 +317,10 @@ export default function Home() {
                   })}
                 </div>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
                 {industryMedia.map((item) => (
                   <div key={item.src} className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white shadow-sm">
-                    <img src={item.src} alt={item.alt} className="h-56 w-full object-cover lg:h-[17.25rem]" loading="lazy" />
+                    <img src={item.src} alt={item.alt} className="h-64 w-full object-cover lg:h-[18.25rem]" loading="lazy" />
                   </div>
                 ))}
               </div>
@@ -333,10 +364,10 @@ export default function Home() {
               <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">For employers</p>
               <h2 className="text-xl font-semibold text-[#123622]">Need dependable hiring support for your team?</h2>
               <ul className="mt-4 space-y-2 text-sm text-[#2f4a35]">
-                <li>✔ Targeted sourcing across tech, product, data, GTM, and TA.</li>
-                <li>✔ Structured screening: skills + background + compensation sanity.</li>
-                <li>✔ Interview scheduling, feedback loops, and offer negotiation.</li>
-                <li>✔ Compliance ready: offer letters, NDAs, BGV liaison on request.</li>
+                <li>✔ Targeted sourcing across tech, product, GTM, staffing, retail, hospitality, and operations.</li>
+                <li>✔ Structured screening: fit, communication, salary alignment, and practical availability checks.</li>
+                <li>✔ Interview scheduling, feedback loops, and offer-stage follow-up without unnecessary delays.</li>
+                <li>✔ Regional understanding across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh.</li>
               </ul>
               <div className="mt-5 flex flex-col gap-3 sm:flex-row">
                 <a
@@ -360,12 +391,12 @@ export default function Home() {
             </div>
             <div className="rounded-3xl border border-[#e3decf] bg-white/92 p-6 shadow-sm">
               <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">For candidates</p>
-              <h2 className="text-xl font-semibold text-[#123622]">Curated intros to vetted employers</h2>
+              <h2 className="text-xl font-semibold text-[#123622]">Guided support for serious job seekers in North India</h2>
               <ul className="mt-4 space-y-2 text-sm text-[#2f4a35]">
-                <li>✔ Roles across Bengaluru, Hyderabad, NCR, Mumbai, Pune, Remote.</li>
-                <li>✔ Interview coaching and salary guidance specific to your stack.</li>
-                <li>✔ Confidential submissions; your resume is never blasted.</li>
-                <li>✔ Rapid feedback; we keep you updated at every stage.</li>
+                <li>✔ Openings across Dehradun, Noida, Ghaziabad, Gurugram, Chandigarh, Mohali, and nearby hiring corridors.</li>
+                <li>✔ Role clarity before interviews, so you understand the company, salary range, and expectations properly.</li>
+                <li>✔ Cleaner communication and follow-up instead of silent gaps after every round.</li>
+                <li>✔ Registrations reviewed for practical fit, not just random keyword matching.</li>
               </ul>
               <Link
                 href="/jobs"
@@ -378,7 +409,7 @@ export default function Home() {
         </ScrollReveal>
 
         <ScrollReveal delay={150}>
-          <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <section className="grid gap-6 lg:grid-cols-[1fr_0.95fr]">
             <div className="rounded-3xl border border-[#e3decf] bg-white/92 p-6 shadow-sm">
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -404,24 +435,44 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <div className="mt-6 rounded-[1.75rem] border border-[#e8e1cd] bg-[#fffdf6] p-5 sm:p-6">
-                <p className="text-lg leading-8 text-[#23422f] sm:text-xl">“{currentTestimonial.quote}”</p>
-                <div className="mt-5 flex items-center justify-between gap-4">
-                  <div>
-                    <p className="font-semibold text-[#123622]">{currentTestimonial.name}</p>
-                    <p className="text-sm text-[#31513c]">{currentTestimonial.role}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    {testimonials.map((item, index) => (
-                      <button
-                        key={item.name}
-                        type="button"
-                        onClick={() => setActiveTestimonial(index)}
-                        className={`h-2.5 rounded-full transition-all ${index === activeTestimonial ? "w-8 bg-[#2d6a3e]" : "w-2.5 bg-[#d9d4c3]"}`}
-                        aria-label={`Go to testimonial ${index + 1}`}
-                      />
-                    ))}
-                  </div>
+              <div className="mt-6 overflow-hidden rounded-[1.75rem] border border-[#e8e1cd] bg-[#fffdf6]">
+                <div
+                  className="flex transition-transform duration-500 ease-out"
+                  style={{ transform: `translateX(-${activeTestimonial * 100}%)` }}
+                >
+                  {testimonials.map((item) => (
+                    <div key={item.name} className="min-w-full p-5 sm:p-6">
+                      <p className="text-lg leading-8 text-[#23422f] sm:text-xl">“{item.quote}”</p>
+                      <div className="mt-5 flex items-center justify-between gap-4">
+                        <div>
+                          <p className="font-semibold text-[#123622]">{item.name}</p>
+                          <p className="text-sm text-[#31513c]">{item.role}</p>
+                        </div>
+                        <div className="rounded-full border border-[#d8e5d9] bg-[#f5fbf6] px-3 py-1 text-xs font-medium text-[#2d6a3e]">
+                          Candidate story
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between gap-4">
+                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#e4decd]">
+                  <div
+                    className="h-full rounded-full bg-[#2d6a3e] transition-all duration-500 ease-out"
+                    style={{ width: `${((activeTestimonial + 1) / testimonials.length) * 100}%` }}
+                  />
+                </div>
+                <div className="flex gap-2">
+                  {testimonials.map((item, index) => (
+                    <button
+                      key={item.name}
+                      type="button"
+                      onClick={() => setActiveTestimonial(index)}
+                      className={`h-2.5 rounded-full transition-all duration-300 ${index === activeTestimonial ? "w-8 bg-[#2d6a3e]" : "w-2.5 bg-[#d9d4c3]"}`}
+                      aria-label={`Go to testimonial ${index + 1}`}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -430,23 +481,22 @@ export default function Home() {
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Process</p>
-                  <h2 className="text-xl font-semibold text-[#123622]">How Yeble places talent</h2>
+                  <h2 className="text-xl font-semibold text-[#123622]">How Yeble works, in simple terms</h2>
                 </div>
                 <Link href="/services" className="text-sm text-[#2d6a3e] hover:text-[#1a703d]">
                   See services
                 </Link>
               </div>
-              <div className="mt-4 grid gap-3 text-sm text-[#2f4a35] md:grid-cols-2">
-                {[
-                  { title: "Intake", desc: "Role scorecard, comp bands, timeline, DEI notes." },
-                  { title: "Source", desc: "Targeted outreach + inbound curation from referral pools." },
-                  { title: "Assess", desc: "Skill screens, structured notes, compensation sanity check." },
-                  { title: "Close", desc: "Scheduling, panel prep, offer negotiation, joining follow-up." },
-                ].map((step, idx) => (
-                  <div key={step.title} className="rounded-2xl border border-[#e3decf] bg-white p-4">
-                    <p className="text-xs uppercase tracking-[0.22em] text-[#2d6a3e]/70">Step {idx + 1}</p>
-                    <h3 className="mt-2 text-base font-semibold text-[#123622]">{step.title}</h3>
-                    <p className="mt-1 text-[#31513c]">{step.desc}</p>
+              <div className="mt-4 grid gap-3 text-sm text-[#2f4a35]">
+                {processSteps.map((step, idx) => (
+                  <div key={step.title} className="flex gap-4 rounded-2xl border border-[#e3decf] bg-white p-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-sm font-semibold text-[#2d6a3e]">
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-[#123622]">{step.title}</h3>
+                      <p className="mt-1 leading-7 text-[#31513c]">{step.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -469,16 +519,20 @@ export default function Home() {
               {faqs.map((faq, index) => {
                 const isOpen = activeFaq === index;
                 return (
-                  <div key={faq.question} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-5">
+                  <div key={faq.question} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] px-5 py-3 transition-shadow duration-300 hover:shadow-sm">
                     <button
                       type="button"
                       onClick={() => setActiveFaq(isOpen ? null : index)}
                       className="flex w-full items-center justify-between gap-4 text-left"
                     >
                       <span className="text-base font-semibold text-[#123622]">{faq.question}</span>
-                      <span className={`text-[#2d6a3e] transition-transform ${isOpen ? "rotate-180" : "rotate-0"}`}>⌄</span>
+                      <PlusChevronIcon open={isOpen} />
                     </button>
-                    {isOpen ? <p className="mt-3 text-sm leading-7 text-[#31513c]">{faq.answer}</p> : null}
+                    <div className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-70"}`}>
+                      <div className="overflow-hidden">
+                        <p className="pt-3 text-sm leading-7 text-[#31513c]">{faq.answer}</p>
+                      </div>
+                    </div>
                   </div>
                 );
               })}
