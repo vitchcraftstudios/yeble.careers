@@ -1,12 +1,14 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { EmployerIntakeModal } from "@/components/employer-intake-modal";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { jobs } from "@/lib/data";
 
 export default function Home() {
   const featured = useMemo(() => jobs.slice(0, 3), []);
+  const [intakeOpen, setIntakeOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-[#fffef0] text-[#0f2918]">
@@ -25,12 +27,13 @@ export default function Home() {
                 Himachal Pradesh with on-ground recruiters and tight feedback loops.
               </p>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/contact"
+                <button
+                  type="button"
+                  onClick={() => setIntakeOpen(true)}
                   className="rounded-full bg-[#27c06b] px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-[#1fb35f]"
                 >
                   Hire with Yeble
-                </Link>
+                </button>
                 <Link
                   href="/jobs"
                   className="rounded-full border border-[#cfd8d0] px-6 py-3 text-center text-sm font-semibold text-[#1d402a] transition hover:border-[#27c06b] hover:text-[#1a703d]"
@@ -96,12 +99,13 @@ export default function Home() {
                 <li>✔ Interview scheduling, feedback loops, and offer negotiation.</li>
                 <li>✔ Compliance ready: offer letters, NDAs, BGV liaison on request.</li>
               </ul>
-              <Link
-                href="/contact"
+              <button
+                type="button"
+                onClick={() => setIntakeOpen(true)}
                 className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#27c06b] px-5 py-2 text-sm font-semibold text-[#06290f] shadow-sm hover:bg-[#1fb35f]"
               >
                 Book an intake call
-              </Link>
+              </button>
             </div>
             <div className="rounded-3xl border border-[#e3decf] bg-white/92 p-6 shadow-sm">
               <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">For candidates</p>
@@ -182,6 +186,8 @@ export default function Home() {
           </section>
         </ScrollReveal>
       </main>
+
+      <EmployerIntakeModal open={intakeOpen} onClose={() => setIntakeOpen(false)} />
     </div>
   );
 }
