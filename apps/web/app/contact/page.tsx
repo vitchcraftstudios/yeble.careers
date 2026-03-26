@@ -47,7 +47,7 @@ export default function ContactPage() {
           <div className="grid gap-6 md:grid-cols-[1.05fr_0.95fr] md:items-start">
             <div className="space-y-4">
               <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Contact</p>
-              <h1 className="text-4xl font-semibold leading-tight text-[#123622]">Connect with our hiring desk</h1>
+              <h1 className="text-4xl font-semibold leading-tight text-[#123622]">Partner with our Strategic Placement Hub</h1>
               <p className="max-w-3xl text-base leading-8 text-[#2f4a35]">
                 Employers can share open mandates, team expansion plans, and hiring timelines. Candidates may send their
                 profile, preferred location, and Job ID for faster screening support. Our team works with employers across
