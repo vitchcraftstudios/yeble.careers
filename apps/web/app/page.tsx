@@ -153,6 +153,18 @@ const industries = [
     icon: HospitalityIcon,
     image: "/industry-hospitality.svg",
   },
+  {
+    title: "BFSI & Financial Services",
+    description: "Hiring support for banking, insurance, lending, customer operations, and process-led financial services teams.",
+    icon: BriefcaseIcon,
+    image: "/industry-bfsi.svg",
+  },
+  {
+    title: "Healthcare & Life Sciences",
+    description: "Support for care operations, diagnostics, coordination, front-desk, and healthcare-adjacent hiring requirements.",
+    icon: ShieldIcon,
+    image: "/industry-healthcare.svg",
+  },
 ];
 
 const testimonials = [
@@ -253,7 +265,7 @@ export default function Home() {
             <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
               <div className="p-6 sm:p-8 lg:p-10">
                 <p className="text-[11px] uppercase tracking-[0.28em] text-[#2d6a3e]">Yeble.careers - Accelerate your Placement</p>
-                <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[0.95] tracking-[-0.05em] text-[#123622] sm:text-5xl lg:text-[4.25rem]">
+                <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[1.04] tracking-[-0.05em] text-[#123622] sm:text-5xl lg:text-[4.25rem]">
                   <strong>Powering Companies With Talent That Drives Real Growth.</strong>
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-8 text-[#2f4a35]">
