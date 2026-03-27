@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -296,7 +296,7 @@ export function EmployerIntakeModal({ open, onClose }: JobSeekerRegistrationModa
               {status === "creating-order" && "Preparing payment..."}
               {status === "opening-checkout" && "Opening payment..."}
               {status === "verifying" && "Verifying payment..."}
-              {status === "idle" || status === "error" ? `Pay Now � INR ${amountInRupees}` : null}
+              {status === "idle" || status === "error" ? `Pay Now · INR ${amountInRupees}` : null}
             </button>
             <p className="text-sm leading-7 text-[#31513c]">
               Your registration becomes successful only after payment verification. Once verified, your details are sent to
@@ -369,6 +369,7 @@ export function EmployerIntakeModal({ open, onClose }: JobSeekerRegistrationModa
     </>
   );
 }
+
 
 
 

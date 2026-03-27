@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Image from "next/image";
 
 export function Footer() {
@@ -16,7 +16,7 @@ export function Footer() {
               className="h-12 w-auto filter grayscale"
             />
           </div>
-          <p className="text-[#2f4a35]/70">� {year} Yeble - Accelerate your Placement</p>
+          <p className="text-[#2f4a35]/70">© {year} Yeble - Accelerate your Placement</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link href="/about" className="hover:text-[#1c3e2a]">
@@ -51,3 +51,4 @@ export function Footer() {
     </footer>
   );
 }
+
