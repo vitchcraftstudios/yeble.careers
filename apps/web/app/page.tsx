@@ -225,8 +225,8 @@ const processSteps = [
 ];
 
 const heroImage = {
-  src: "/hero-india-employment.svg",
-  alt: "Illustration of recruiters and candidates in a modern employment agency setting",
+  src: "https://images.pexels.com/photos/7414033/pexels-photo-7414033.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  alt: "Professional team meeting in a modern office",
 };
 
 export default function Home() {
@@ -300,16 +300,12 @@ export default function Home() {
             </div>
             <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {industries.map((industry) => {
-                const Icon = industry.icon;
                 return (
                   <article key={industry.title} className="relative rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4 sm:p-5">
                     <div className="absolute right-4 top-4 h-14 w-14 overflow-hidden rounded-full border border-[#d8e5d9] bg-white shadow-[0_8px_18px_rgba(24,83,55,0.08)] sm:h-16 sm:w-16">
                       <img src={industry.image} alt={`${industry.title} industry illustration`} className="h-full w-full object-cover" loading="lazy" />
                     </div>
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e] sm:h-11 sm:w-11">
-                      <Icon />
-                    </div>
-                    <h3 className="mt-3 max-w-[calc(100%-4.5rem)] pr-2 text-base font-semibold text-[#123622] sm:max-w-[calc(100%-5rem)] sm:text-lg">{industry.title}</h3>
+                    <h3 className="max-w-[calc(100%-4.5rem)] pr-2 text-base font-semibold text-[#123622] sm:max-w-[calc(100%-5rem)] sm:text-lg">{industry.title}</h3>
                     <p className="mt-2 text-sm leading-6 text-[#31513c]">{industry.description}</p>
                   </article>
                 );
