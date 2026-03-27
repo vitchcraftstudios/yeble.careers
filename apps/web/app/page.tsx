@@ -215,6 +215,26 @@ const faqs = [
     answer:
       "Yes. Companies reach out to us for shortlist support, intake coordination, and practical hiring help, especially when they need regional understanding with dependable follow-up.",
   },
+  {
+    question: "Will I get interview updates if I am shortlisted?",
+    answer:
+      "Yes. If your profile moves forward, we try to keep communication clear around interview schedules, feedback, and next steps instead of leaving long silent gaps.",
+  },
+  {
+    question: "Can I apply if I am open to relocation within North India?",
+    answer:
+      "Yes. If you are open to moving for the right role, mention your preferred cities and flexibility clearly during registration so we can align you with suitable openings.",
+  },
+  {
+    question: "Do you support only white-collar roles?",
+    answer:
+      "No. We support a mix of corporate, coordination, operations, customer-facing, and execution-heavy roles depending on the active mandates we are working on.",
+  },
+  {
+    question: "How should employers share a new hiring requirement?",
+    answer:
+      "Employers can call us directly or submit an enquiry with the role details, location, urgency, compensation range, and expected candidate profile so we can start intake properly.",
+  },
 ];
 
 const processSteps = [
