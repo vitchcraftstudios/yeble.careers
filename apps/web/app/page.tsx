@@ -225,8 +225,8 @@ const processSteps = [
 ];
 
 const heroImage = {
-  src: "https://images.pexels.com/photos/7414033/pexels-photo-7414033.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  alt: "Professional team meeting in a modern office",
+  src: "https://images.pexels.com/photos/7652178/pexels-photo-7652178.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  alt: "Asian professionals in a collaborative business meeting",
 };
 
 export default function Home() {
@@ -301,11 +301,13 @@ export default function Home() {
             <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {industries.map((industry) => {
                 return (
-                  <article key={industry.title} className="relative rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4 sm:p-5">
-                    <div className="absolute right-4 top-4 h-14 w-14 overflow-hidden rounded-full border border-[#d8e5d9] bg-white shadow-[0_8px_18px_rgba(24,83,55,0.08)] sm:h-16 sm:w-16">
-                      <img src={industry.image} alt={`${industry.title} industry illustration`} className="h-full w-full object-cover" loading="lazy" />
+                  <article key={industry.title} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4 sm:p-5">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="min-w-0 flex-1 text-base font-semibold text-[#123622] sm:text-lg">{industry.title}</h3>
+                      <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-[#d8e5d9] bg-white shadow-[0_8px_18px_rgba(24,83,55,0.08)] sm:h-16 sm:w-16">
+                        <img src={industry.image} alt={`${industry.title} industry illustration`} className="h-full w-full object-cover" loading="lazy" />
+                      </div>
                     </div>
-                    <h3 className="max-w-[calc(100%-4.5rem)] pr-2 text-base font-semibold text-[#123622] sm:max-w-[calc(100%-5rem)] sm:text-lg">{industry.title}</h3>
                     <p className="mt-2 text-sm leading-6 text-[#31513c]">{industry.description}</p>
                   </article>
                 );
