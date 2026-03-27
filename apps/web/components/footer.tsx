@@ -16,7 +16,7 @@ export function Footer() {
               className="h-12 w-auto filter grayscale"
             />
           </div>
-          <p className="text-[#2f4a35]/70">Â© {year} Yeble - Accelerate your Placement</p>
+          <p className="text-[#2f4a35]/70">© {year} Yeble - Accelerate your Placement</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link href="/about" className="hover:text-[#1c3e2a]">
@@ -30,6 +30,18 @@ export function Footer() {
           </Link>
           <Link href="/contact" className="hover:text-[#1c3e2a]">
             Contact
+          </Link>
+          <Link href="/terms-conditions" className="hover:text-[#1c3e2a]">
+            Terms & Conditions
+          </Link>
+          <Link href="/privacy-policy" className="hover:text-[#1c3e2a]">
+            Privacy Policy
+          </Link>
+          <Link href="/refund-policy" className="hover:text-[#1c3e2a]">
+            Refund Policy
+          </Link>
+          <Link href="/accessibility" className="hover:text-[#1c3e2a]">
+            Accessibility
           </Link>
           <Link href="/signin" className="hover:text-[#1c3e2a]">
             Admin

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -103,9 +103,9 @@ function ChevronRightIcon() {
 
 function PlusChevronIcon({ open }: { open: boolean }) {
   return (
-    <span className="relative flex h-8 w-8 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e] sm:h-9 sm:w-9">
-      <span className="absolute h-0.5 w-4 rounded-full bg-current" />
-      <span className={`absolute h-4 w-0.5 rounded-full bg-current transition-transform duration-300 ${open ? "scale-y-0" : "scale-y-100"}`} />
+    <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e] sm:h-11 sm:w-11">
+      <span className={`block h-0.5 w-4 rounded-full bg-current transition-transform duration-300 ${open ? "rotate-180" : "rotate-0"}`} />
+      <span className={`absolute block h-4 w-0.5 rounded-full bg-current transition-transform duration-300 ${open ? "scale-y-0 opacity-0" : "scale-y-100 opacity-100"}`} />
     </span>
   );
 }
@@ -377,7 +377,7 @@ export default function Home() {
                   <p className="text-xs uppercase tracking-[0.18em] text-[#2d6a3e]">{job.company}</p>
                   <h3 className="mt-2 text-xl font-semibold text-[#123622]">{job.title}</h3>
                   <p className="mt-2 text-sm leading-7 text-[#31513c]">
-                    {job.city} · {job.locationType} · {job.experience}
+                    {job.city} � {job.locationType} � {job.experience}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2 text-xs text-[#2f4a35]">
                     <span className="rounded-full bg-[#f4f2e3] px-3 py-1.5">{job.salaryRange}</span>
@@ -457,7 +457,7 @@ export default function Home() {
                   <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${activeTestimonial * 100}%)` }}>
                     {testimonials.map((item) => (
                       <article key={item.name} className="min-w-full p-5 sm:p-6">
-                        <p className="max-w-full break-words text-base leading-7 text-[#23422f] sm:text-lg sm:leading-8">“{item.quote}”</p>
+                        <p className="max-w-full break-words text-base leading-7 text-[#23422f] sm:text-lg sm:leading-8">�{item.quote}�</p>
                         <div className="mt-5 border-t border-[#e7dfcb] pt-4">
                           <p className="font-semibold text-[#123622]">{item.name}</p>
                           <p className="text-sm text-[#31513c]">{item.role}</p>
@@ -583,4 +583,6 @@ export default function Home() {
     </div>
   );
 }
+
+
 
