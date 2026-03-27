@@ -247,7 +247,7 @@ export default function Home() {
               <div className="p-6 sm:p-8 lg:p-10">
                 <p className="text-[11px] uppercase tracking-[0.28em] text-[#2d6a3e]">Yeble.careers - Accelerate your Placement</p>
                 <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight text-[#123622] sm:text-5xl">
-                  Connecting innovative companies with the talent that drives excellence and growth.
+                  POWERING COMPANIES WITH TALENT THAT DRIVES REAL GROWTH.
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-8 text-[#2f4a35]">
                   Founded in 2026 from Selaqui, Dehradun, Yeble works across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical hiring support, tighter follow-up, and clearer communication.
