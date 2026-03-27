@@ -9,7 +9,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-brand-sans);
-  --font-heading: var(--font-brand-serif);
+  --font-heading: var(--font-brand-sans);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -34,9 +34,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-brand-serif), serif;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-family: var(--font-brand-sans), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
   text-wrap: balance;
 }
 
@@ -52,7 +52,9 @@ textarea {
 }
 
 .font-heading {
-  font-family: var(--font-brand-serif), serif;
+  font-family: var(--font-brand-sans), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
 }
 
 html {

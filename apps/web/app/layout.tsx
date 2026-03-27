@@ -1,5 +1,5 @@
 ﻿import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Manrope, Newsreader } from "next/font/google";
+import { Geist_Mono, Manrope } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SiteNav } from "@/components/site-nav";
 import { Footer } from "@/components/footer";
@@ -8,12 +8,6 @@ import Splash from "./(auth)/splash";
 
 const brandSans = Manrope({
   variable: "--font-brand-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const brandSerif = Newsreader({
-  variable: "--font-brand-serif",
   subsets: ["latin"],
   display: "swap",
 });
@@ -52,7 +46,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${brandSans.variable} ${brandSerif.variable} ${geistMono.variable} antialiased`}
+          className={`${brandSans.variable} ${geistMono.variable} antialiased`}
         >
           <Splash />
           <SiteNav />
