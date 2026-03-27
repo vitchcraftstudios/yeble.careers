@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-type AdminJob = {
+type JobItem = {
   id: string;
   title: string;
   company: string;
@@ -15,13 +15,13 @@ type AdminJob = {
   openings: number;
   status: string;
   location: string;
-  salary: string | null;
   description: string;
+  salary: string | null;
   tags: string[];
   createdAt: string;
 };
 
-type AdminRegistrant = {
+type RegistrantItem = {
   id: string;
   name: string;
   email: string;
@@ -45,8 +45,8 @@ type ContentItem = {
 };
 
 type Props = {
-  initialJobs: AdminJob[];
-  initialRegistrants: AdminRegistrant[];
+  initialJobs: JobItem[];
+  initialRegistrants: RegistrantItem[];
   initialContent: ContentItem[];
 };
 
@@ -55,15 +55,15 @@ type JobFormState = {
   company: string;
   sector: string;
   city: string;
-  locationType: string;
+  locationType: string | null;
   experience: string;
   salaryRange: string;
-  type: string;
+  type: string | null;
   openings: string;
   status: string;
   location: string;
-  salary: string | null;
   description: string;
+  salary: string;
   tags: string;
 };
 
@@ -72,22 +72,22 @@ const emptyJob: JobFormState = {
   company: "",
   sector: "",
   city: "",
-  locationType: "Hybrid",
+  locationType: "On-site",
   experience: "",
   salaryRange: "",
   type: "Full-time",
   openings: "1",
   status: "Open",
   location: "",
-  salary: "",
   description: "",
+  salary: "",
   tags: "",
 };
 
 export function AdminDashboardClient({ initialJobs, initialRegistrants, initialContent }: Props) {
-  const [jobs, setJobs] = useState(initialJobs);
-  const [registrants] = useState(initialRegistrants);
-  const [content, setContent] = useState(initialContent);
+  const [jobs, setJobs] = useState<JobItem[]>(initialJobs);
+  const [registrants] = useState<RegistrantItem[]>(initialRegistrants);
+  const [content, setContent] = useState<ContentItem[]>(initialContent);
   const [jobForm, setJobForm] = useState<JobFormState>(emptyJob);
   const [savingJob, setSavingJob] = useState(false);
   const [jobMessage, setJobMessage] = useState("");
@@ -216,7 +216,7 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
             ))}
             <select
               className="rounded-2xl border border-[#d6d1c1] px-4 py-3 text-sm text-[#123622] outline-none"
-              value={jobForm.locationType}
+              value={jobForm.locationType ?? ""}
               onChange={(event) => setJobForm((current) => ({ ...current, locationType: event.target.value }))}
             >
               <option>On-site</option>
@@ -225,7 +225,7 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
             </select>
             <select
               className="rounded-2xl border border-[#d6d1c1] px-4 py-3 text-sm text-[#123622] outline-none"
-              value={jobForm.type}
+              value={jobForm.type ?? ""}
               onChange={(event) => setJobForm((current) => ({ ...current, type: event.target.value }))}
             >
               <option>Full-time</option>
@@ -258,11 +258,7 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
               required
             />
             <div className="md:col-span-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <button
-                type="submit"
-                disabled={savingJob}
-                className="rounded-full bg-[#27c06b] px-6 py-3 text-sm font-semibold text-white disabled:opacity-70"
-              >
+              <button type="submit" disabled={savingJob} className="rounded-full bg-[#27c06b] px-6 py-3 text-sm font-semibold text-white disabled:opacity-70">
                 {savingJob ? "Saving mandate..." : "Publish mandate"}
               </button>
               {jobMessage ? <p className="text-sm text-[#31513c]">{jobMessage}</p> : null}
@@ -274,21 +270,25 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
           <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Registrant desk</p>
           <h2 className="mt-2 text-2xl font-semibold text-[#123622]">Recent paid registrants</h2>
           <div className="mt-6 space-y-3">
-            {registrants.slice(0, 6).map((registrant) => (
-              <div key={registrant.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="font-semibold text-[#123622]">{registrant.name}</p>
-                    <p className="text-sm text-[#31513c]">{registrant.email}</p>
-                    <p className="text-sm text-[#31513c]">{registrant.currentCity || "City not added"}</p>
+            {registrants.length ? (
+              registrants.slice(0, 6).map((registrant) => (
+                <div key={registrant.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="font-semibold text-[#123622]">{registrant.name}</p>
+                      <p className="text-sm text-[#31513c]">{registrant.email}</p>
+                      <p className="text-sm text-[#31513c]">{registrant.currentCity || "City not added"}</p>
+                    </div>
+                    <span className="rounded-full border border-[#d6d1c1] px-3 py-1 text-xs text-[#2d6a3e]">{registrant.paymentStatus}</span>
                   </div>
-                  <span className="rounded-full border border-[#d6d1c1] px-3 py-1 text-xs text-[#2d6a3e]">{registrant.paymentStatus}</span>
+                  <p className="mt-3 text-sm text-[#31513c]">Files: {registrant.filesCount} · Applications: {registrant.applicationsCount}</p>
                 </div>
-                <p className="mt-3 text-sm text-[#31513c]">
-                  Files: {registrant.filesCount} · Applications: {registrant.applicationsCount}
-                </p>
+              ))
+            ) : (
+              <div className="rounded-2xl border border-dashed border-[#d6d1c1] bg-[#fffdf6] p-5 text-sm text-[#56705d]">
+                No registrants yet. Once candidates register, their paid profiles will appear here.
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -298,24 +298,28 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
           <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Mandates</p>
           <h2 className="mt-2 text-2xl font-semibold text-[#123622]">Manage live jobs</h2>
           <div className="mt-6 space-y-3">
-            {jobs.map((job) => (
-              <div key={job.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <p className="font-semibold text-[#123622]">{job.title}</p>
-                    <p className="text-sm text-[#31513c]">{job.company} · {job.city || job.location} · {job.status}</p>
-                    <p className="text-sm text-[#31513c]">{job.salaryRange || job.salary || "Salary on request"}</p>
+            {jobs.length ? (
+              jobs.map((job) => (
+                <div key={job.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="font-semibold text-[#123622]">{job.title}</p>
+                      <p className="text-sm text-[#31513c]">
+                        {job.company} · {job.city || job.location} · {job.status}
+                      </p>
+                      <p className="text-sm text-[#31513c]">{job.salaryRange || job.salary || "Salary on request"}</p>
+                    </div>
+                    <button type="button" onClick={() => deleteJob(job.id)} className="rounded-full border border-[#e3decf] px-4 py-2 text-sm text-[#7a1f1f]">
+                      Delete
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => deleteJob(job.id)}
-                    className="rounded-full border border-[#e3decf] px-4 py-2 text-sm text-[#7a1f1f]"
-                  >
-                    Delete
-                  </button>
                 </div>
+              ))
+            ) : (
+              <div className="rounded-2xl border border-dashed border-[#d6d1c1] bg-[#fffdf6] p-5 text-sm text-[#56705d]">
+                No live job mandates yet. Add one above to start publishing.
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -323,51 +327,53 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
           <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Content store</p>
           <h2 className="mt-2 text-2xl font-semibold text-[#123622]">Edit key homepage content</h2>
           <div className="mt-6 space-y-4">
-            {content.map((item) => (
-              <div key={item.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
-                <input
-                  className="w-full rounded-xl border border-[#d6d1c1] px-3 py-2 text-sm text-[#123622] outline-none"
-                  value={editingContent[item.id]?.title || ""}
-                  onChange={(event) =>
-                    setEditingContent((current) => ({
-                      ...current,
-                      [item.id]: { ...current[item.id], title: event.target.value },
-                    }))
-                  }
-                />
-                <textarea
-                  className="mt-3 min-h-24 w-full rounded-xl border border-[#d6d1c1] px-3 py-2 text-sm text-[#123622] outline-none"
-                  value={editingContent[item.id]?.body || ""}
-                  onChange={(event) =>
-                    setEditingContent((current) => ({
-                      ...current,
-                      [item.id]: { ...current[item.id], body: event.target.value },
-                    }))
-                  }
-                />
-                <input
-                  className="mt-3 w-full rounded-xl border border-[#d6d1c1] px-3 py-2 text-sm text-[#123622] outline-none"
-                  placeholder="Optional media URL"
-                  value={editingContent[item.id]?.mediaUrl || ""}
-                  onChange={(event) =>
-                    setEditingContent((current) => ({
-                      ...current,
-                      [item.id]: { ...current[item.id], mediaUrl: event.target.value },
-                    }))
-                  }
-                />
-                <div className="mt-3 flex items-center justify-between gap-3">
-                  <p className="text-xs text-[#56705d]">Last updated: {new Date(item.updatedAt).toLocaleDateString()}</p>
-                  <button
-                    type="button"
-                    onClick={() => saveContent(item.id)}
-                    className="rounded-full border border-[#d6d1c1] px-4 py-2 text-sm font-medium text-[#123622]"
-                  >
-                    Save
-                  </button>
+            {content.length ? (
+              content.map((item) => (
+                <div key={item.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
+                  <input
+                    className="w-full rounded-xl border border-[#d6d1c1] px-3 py-2 text-sm text-[#123622] outline-none"
+                    value={editingContent[item.id]?.title || ""}
+                    onChange={(event) =>
+                      setEditingContent((current) => ({
+                        ...current,
+                        [item.id]: { ...current[item.id], title: event.target.value },
+                      }))
+                    }
+                  />
+                  <textarea
+                    className="mt-3 min-h-24 w-full rounded-xl border border-[#d6d1c1] px-3 py-2 text-sm text-[#123622] outline-none"
+                    value={editingContent[item.id]?.body || ""}
+                    onChange={(event) =>
+                      setEditingContent((current) => ({
+                        ...current,
+                        [item.id]: { ...current[item.id], body: event.target.value },
+                      }))
+                    }
+                  />
+                  <input
+                    className="mt-3 w-full rounded-xl border border-[#d6d1c1] px-3 py-2 text-sm text-[#123622] outline-none"
+                    placeholder="Optional media URL"
+                    value={editingContent[item.id]?.mediaUrl || ""}
+                    onChange={(event) =>
+                      setEditingContent((current) => ({
+                        ...current,
+                        [item.id]: { ...current[item.id], mediaUrl: event.target.value },
+                      }))
+                    }
+                  />
+                  <div className="mt-3 flex items-center justify-between gap-3">
+                    <p className="text-xs text-[#56705d]">Last updated: {new Date(item.updatedAt).toLocaleDateString()}</p>
+                    <button type="button" onClick={() => saveContent(item.id)} className="rounded-full border border-[#d6d1c1] px-4 py-2 text-sm font-medium text-[#123622]">
+                      Save
+                    </button>
+                  </div>
                 </div>
+              ))
+            ) : (
+              <div className="rounded-2xl border border-dashed border-[#d6d1c1] bg-[#fffdf6] p-5 text-sm text-[#56705d]">
+                No content items found yet. Seed data will populate this section once deployed.
               </div>
-            ))}
+            )}
             {contentMessage ? <p className="text-sm text-[#31513c]">{contentMessage}</p> : null}
           </div>
         </div>

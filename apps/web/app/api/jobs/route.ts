@@ -1,7 +1,11 @@
 ﻿import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { isAdminRequest } from "@/lib/clerk-access";
 
 export async function GET() {
+  const auth = await isAdminRequest();
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
   const jobs = await prisma.job.findMany({
     orderBy: { createdAt: "desc" },
     take: 100,
@@ -10,6 +14,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const auth = await isAdminRequest();
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
   try {
     const body = await req.json();
     const {

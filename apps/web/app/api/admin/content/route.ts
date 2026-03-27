@@ -1,34 +1,18 @@
 ﻿import { NextResponse } from "next/server";
-import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
-
-async function ensureAdmin() {
-  const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const user = await currentUser();
-  const email = user?.emailAddresses?.[0]?.emailAddress || "";
-  const role = user?.publicMetadata?.role;
-  const adminEmail = process.env.ADMIN_EMAIL || "admin@yeble.careers";
-
-  if (role !== "ADMIN" && email.toLowerCase() !== adminEmail.toLowerCase()) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
-  return null;
-}
+import { isAdminRequest } from "@/lib/clerk-access";
 
 export async function GET() {
-  const authError = await ensureAdmin();
-  if (authError) return authError;
+  const auth = await isAdminRequest();
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   const items = await prisma.siteContent.findMany({ orderBy: { id: "asc" } });
   return NextResponse.json(items);
 }
 
 export async function PATCH(req: Request) {
-  const authError = await ensureAdmin();
-  if (authError) return authError;
+  const auth = await isAdminRequest();
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
     const body = await req.json();
