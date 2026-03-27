@@ -1,7 +1,8 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 const links = [
@@ -12,10 +13,15 @@ const links = [
   { href: "/contact", label: "Contact" },
 ];
 
+function isActivePath(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function SiteNav() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // close menu on resize to desktop
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth >= 768) setOpen(false);
@@ -31,15 +37,22 @@ export function SiteNav() {
           <Image src="/logo.svg" alt="Yeble.careers logo" width={200} height={70} className="h-14 w-auto" priority />
         </Link>
         <div className="flex items-center gap-3">
-          <nav className="hidden items-center gap-3 text-sm text-[#0f2c1c] md:flex">
-            {links.map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-[#1c3e2a]">
-                {link.label}
-              </Link>
-            ))}
+          <nav className="hidden items-center gap-2 text-sm text-[#0f2c1c] md:flex">
+            {links.map((link) => {
+              const isActive = isActivePath(pathname, link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`rounded-full px-3 py-1.5 transition ${isActive ? "bg-[#123622] text-white shadow-sm" : "text-[#0f2c1c] hover:bg-white hover:text-[#1c3e2a]"}`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <Link
               href="/signin"
-              className="rounded-full border border-[#cfcabf] px-3 py-1 text-xs font-semibold text-[#0f2c1c] hover:border-[#1c3e2a]"
+              className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${isActivePath(pathname, "/signin") ? "border-[#123622] bg-[#123622] text-white" : "border-[#cfcabf] text-[#0f2c1c] hover:border-[#1c3e2a]"}`}
             >
               Admin
             </Link>
@@ -54,26 +67,26 @@ export function SiteNav() {
         </div>
       </div>
 
-      {/* mobile dropdown panel */}
       <div
-        className={`md:hidden transition-[max-height,opacity] duration-300 overflow-hidden ${
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-[max-height,opacity] duration-300 md:hidden ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
       >
         <nav className="flex flex-col gap-2 border-t border-[#dcd8cf] bg-[#f0ede6]/95 px-6 py-4 text-sm text-[#0f2c1c] shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-lg px-2 py-2 hover:bg-white"
-              onClick={() => setOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const isActive = isActivePath(pathname, link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`rounded-xl px-3 py-2 transition ${isActive ? "bg-[#123622] text-white" : "hover:bg-white"}`}
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           <Link
             href="/signin"
-            className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-[#cfcabf] px-3 py-2 text-xs font-semibold text-[#0f2c1c] hover:border-[#1c3e2a]"
+            className={`mt-2 inline-flex w-full items-center justify-center rounded-full border px-3 py-2 text-xs font-semibold transition ${isActivePath(pathname, "/signin") ? "border-[#123622] bg-[#123622] text-white" : "border-[#cfcabf] text-[#0f2c1c] hover:border-[#1c3e2a]"}`}
             onClick={() => setOpen(false)}
           >
             Admin
