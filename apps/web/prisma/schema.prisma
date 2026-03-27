@@ -8,27 +8,46 @@ datasource db {
 }
 
 model Job {
-  id          String   @id @default(uuid())
-  title       String
-  company     String
-  location    String
-  description String
-  salary      String?
-  tags        String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String        @id @default(uuid())
+  title        String
+  company      String
+  sector       String?
+  city         String?
+  locationType String?       @default("On-site")
+  experience   String?
+  salaryRange  String?
+  type         String?       @default("Full-time")
+  openings     Int           @default(1)
+  status       String        @default("Open")
+  location     String
+  description  String
+  salary       String?
+  tags         String[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   applications Application[]
 }
 
 model Candidate {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  headline   String?
-  linkedin   String?
-  resumeUrl  String?
-  createdAt  DateTime @default(now())
-  applications Application[]
+  id                     String           @id @default(uuid())
+  clerkUserId            String?          @unique
+  name                   String
+  email                  String           @unique
+  phone                  String?
+  currentCity            String?
+  headline               String?
+  experienceLevel        String?
+  serviceInterest        String?
+  linkedin               String?
+  resumeUrl              String?
+  note                   String?
+  paymentStatus          String           @default("pending")
+  latestPaymentReference String?
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  applications           Application[]
+  files                  RegistrantFile[]
+  payments               Payment[]
 }
 
 model Application {
@@ -48,11 +67,45 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  role      Role     @default(USER)
-  password  String?
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  clerkUserId String?  @unique
+  email       String   @unique
+  name        String?
+  role        Role     @default(USER)
+  password    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model RegistrantFile {
+  id          String    @id @default(cuid())
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId String
+  name        String
+  url         String
+  type        String?
+  createdAt   DateTime  @default(now())
+}
+
+model Payment {
+  id          String    @id @default(cuid())
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId String
+  provider    String    @default("razorpay")
+  status      String    @default("pending")
+  amount      Int
+  currency    String    @default("INR")
+  label       String?
+  orderId     String?
+  reference   String?   @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model SiteContent {
+  id        String   @id
+  title     String
+  body      String
+  mediaUrl  String?
   updatedAt DateTime @updatedAt
 }

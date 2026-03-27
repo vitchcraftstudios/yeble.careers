@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function SignInClient() {
   const params = useSearchParams();
-  const redirectUrl = params.get("callbackUrl") || "/admin";
+  const redirectUrl = params.get("callbackUrl") || "/dashboard";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
@@ -20,7 +20,6 @@ export default function SignInClient() {
             path="/signin"
             routing="path"
             signUpUrl="/signup"
-            // Clerk version in use expects forceRedirectUrl/fallbackRedirectUrl instead of redirectUrl
             forceRedirectUrl={redirectUrl}
             fallbackRedirectUrl={redirectUrl}
             appearance={{
@@ -39,6 +38,3 @@ export default function SignInClient() {
     </div>
   );
 }
-
-
-

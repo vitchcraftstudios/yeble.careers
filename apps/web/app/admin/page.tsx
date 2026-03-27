@@ -1,192 +1,94 @@
 ﻿import { redirect } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { candidates, jobs, opsChecklist, pipeline } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
+import { AdminDashboardClient } from "@/components/dashboard/admin-dashboard-client";
+
+const defaultContent = [
+  {
+    id: "home-hero",
+    title: "Homepage Hero",
+    body: "Connecting innovative companies with the talent that drives excellence and growth.",
+    mediaUrl: null,
+  },
+  {
+    id: "services-summary",
+    title: "Services Summary",
+    body: "Practical hiring support across sectors we can genuinely serve well.",
+    mediaUrl: null,
+  },
+  {
+    id: "contact-summary",
+    title: "Contact Summary",
+    body: "Connect with our hiring desk for mandates, enquiries, and regional hiring coordination.",
+    mediaUrl: null,
+  },
+];
 
 export default async function AdminPage() {
   const { userId } = await auth();
-  if (!userId) redirect("/signin");
+  if (!userId) redirect("/signin?callbackUrl=/admin");
 
   const user = await currentUser();
+  const email = user?.emailAddresses?.[0]?.emailAddress || "";
   const role = user?.publicMetadata?.role;
-  if (role && role !== "ADMIN") redirect("/signin");
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@yeble.careers";
 
-  const openRoles = jobs.filter((j) => j.status !== "Closed");
-  const metrics = [
-    { label: "Open roles", value: openRoles.length.toString(), delta: "+2 this week" },
-    { label: "Active candidates", value: "241", delta: "+18 interviewing" },
-    { label: "Avg. time to shortlist", value: "2.1 days", delta: "â†“ 0.3 day" },
-    { label: "Offer acceptance", value: "82%", delta: "â†‘ 4% vs last month" },
-  ];
+  if (role !== "ADMIN" && email.toLowerCase() !== adminEmail.toLowerCase()) {
+    redirect("/dashboard");
+  }
 
-  const pipelineBars = [
-    { label: "Inbound", value: pipeline.inbound, accent: "from-lime-300/90 via-emerald-300/60 to-yellow-200/70" },
-    {
-      label: "Shortlisted",
-      value: pipeline.shortlisted,
-      accent: "from-amber-200/80 via-lime-200/80 to-emerald-300/80",
-    },
-    {
-      label: "Interviewing",
-      value: pipeline.interviewing,
-      accent: "from-cyan-200/80 via-emerald-200/80 to-lime-200/80",
-    },
-    { label: "Offers", value: pipeline.offers, accent: "from-lime-200/80 via-yellow-200/80 to-amber-200/80" },
-  ];
+  const [jobs, registrants, content] = await Promise.all([
+    prisma.job.findMany({ orderBy: { createdAt: "desc" } }).catch(() => []),
+    prisma.candidate
+      .findMany({
+        orderBy: { createdAt: "desc" },
+        include: { files: true, applications: true },
+      })
+      .catch(() => []),
+    prisma.siteContent.findMany({ orderBy: { id: "asc" } }).catch(() => []),
+  ]);
+
+  const seededContent = content.length ? content : defaultContent.map((item) => ({ ...item, updatedAt: new Date() }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,#2dfb9c22,transparent_28%),radial-gradient(circle_at_82%_12%,#dffb5f1c,transparent_30%),radial-gradient(circle_at_60%_78%,#1bb86a1f,transparent_30%)]" />
-      <div className="relative mx-auto max-w-6xl px-6 py-12">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="min-h-screen bg-[#fffef0] text-[#0f2918]">
+      <div className="mx-auto max-w-7xl px-6 py-12">
+        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-[#2d6a3e]/80">Admin</p>
-            <h1 className="text-3xl font-semibold text-[#123622]">Operations Dashboard</h1>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Admin Dashboard</p>
+            <h1 className="mt-2 text-3xl font-semibold text-[#123622]">Jobs, registrants, and site content</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-[#31513c]">
+              Manage live mandates, monitor registrants and payments, and update key public-site content from one place.
+            </p>
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#e3decf] bg-white/10 px-3 py-1 text-sm text-[#2f4a35] shadow-lg shadow-emerald-500/10">
-            <span className="h-2 w-2 rounded-full bg-emerald-300 animate-pulse" />
-            {user?.primaryEmailAddress?.emailAddress ||
-              user?.phoneNumbers?.[0]?.phoneNumber ||
-              "Signed in"}
-          </div>
+          <div className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email || "Admin"}</div>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {metrics.map((metric) => (
-            <div
-              key={metric.label}
-              className="rounded-2xl border border-[#e3decf] bg-white/85 p-5 shadow-[0_20px_80px_rgba(20,255,140,0.08)] backdrop-blur"
-            >
-              <p className="text-xs uppercase tracking-[0.18em] text-[#2d6a3e]/70">{metric.label}</p>
-              <div className="mt-3 flex items-baseline justify-between">
-                <span className="text-3xl font-semibold text-[#123622]">{metric.value}</span>
-                <span className="text-xs rounded-full bg-white/10 px-3 py-1 text-[#2f4a35]">{metric.delta}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
-          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 shadow-[0_25px_90px_rgba(20,255,140,0.12)] backdrop-blur">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-lime-100">Open roles</h2>
-              <span className="text-xs text-[#2d6a3e]/70">Refreshing hourly</span>
-            </div>
-            <div className="mt-4 space-y-3">
-              {openRoles.map((role) => (
-                <div
-                  key={role.id}
-                  className="flex items-center justify-between rounded-2xl border border-[#e3decf] bg-white/85 px-4 py-3"
-                >
-                  <div>
-                    <p className="text-sm font-semibold text-[#123622]">{role.title}</p>
-                    <p className="text-xs text-[#31513c]">
-                      {role.company} Â· {role.city} Â· {role.locationType}
-                    </p>
-                    <p className="text-[11px] text-lime-100/60">
-                      {role.experience} Â· {role.salaryRange} Â· {role.type}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 text-xs">
-                    <span className="rounded-full bg-emerald-300/15 px-3 py-1 text-lime-100">{role.status}</span>
-                    <span className="rounded-full border border-[#e3decf] px-3 py-1 text-[#2d6a3e]/80">
-                      {role.openings} open
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 backdrop-blur">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-lime-100">Pipeline today</h2>
-              <span className="text-xs text-[#2d6a3e]/70">Live</span>
-            </div>
-            <div className="mt-4 space-y-3">
-              {pipelineBars.map((stage) => (
-                <div key={stage.label}>
-                  <div className="flex justify-between text-sm text-[#2f4a35]">
-                    <span>{stage.label}</span>
-                    <span className="font-semibold text-[#123622]">{stage.value}</span>
-                  </div>
-                  <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
-                    <div
-                      className={`h-full w-full bg-gradient-to-r ${stage.accent}`}
-                      style={{ width: `${Math.min(stage.value, 120)}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 rounded-2xl border border-white/5 bg-[#0b2716] px-4 py-3 text-xs text-[#2f4a35]">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-300" />
-                {(pipeline.onTimeInterviewRate * 100).toFixed(0)}% of interviews scheduled on time today.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 backdrop-blur">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-lime-100">Candidate feed</h2>
-              <span className="text-xs text-[#2d6a3e]/70">Next 24h</span>
-            </div>
-            <div className="mt-4 overflow-hidden rounded-2xl border border-[#e3decf]">
-              <table className="min-w-full divide-y divide-white/10 text-sm">
-                <thead className="bg-white/85 text-[#2d6a3e]/70">
-                  <tr>
-                    <th className="px-4 py-3 text-left font-medium">Candidate</th>
-                    <th className="px-4 py-3 text-left font-medium">Role</th>
-                    <th className="px-4 py-3 text-left font-medium">Stage</th>
-                    <th className="px-4 py-3 text-left font-medium">ETA</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5 bg-white/85">
-                  {candidates.map((candidate) => (
-                    <tr key={candidate.name} className="hover:bg-white/85">
-                      <td className="px-4 py-3 text-[#123622]">{candidate.name}</td>
-                      <td className="px-4 py-3 text-[#2f4a35]">{candidate.role}</td>
-                      <td className="px-4 py-3">
-                        <span className="rounded-full bg-emerald-300/15 px-3 py-1 text-xs text-lime-100">
-                          {candidate.stage}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-[#31513c]">{candidate.eta}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 backdrop-blur">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-lime-100">Ops checklist</h2>
-              <span className="text-xs text-[#2d6a3e]/70">Today</span>
-            </div>
-            <div className="mt-4 space-y-3 text-sm text-[#123622]">
-              {opsChecklist.map((task) => (
-                <label
-                  key={task}
-                  className="flex cursor-pointer items-start gap-3 rounded-2xl border border-[#e3decf] bg-white/85 px-3 py-3 transition hover:border-lime-200/40"
-                >
-                  <input type="checkbox" className="mt-1 h-4 w-4 rounded border-white/30 bg-transparent text-lime-300" />
-                  <span className="text-lime-100/85">{task}</span>
-                </label>
-              ))}
-            </div>
-            <div className="mt-4 rounded-2xl border border-lime-300/30 bg-lime-300/10 px-4 py-3 text-xs text-[#123622]">
-              Tip: align interviewers in local time before you launch the slot invites.
-            </div>
-          </div>
-        </div>
+        <AdminDashboardClient
+          initialJobs={jobs.map((job) => ({ ...job, createdAt: job.createdAt.toISOString() }))}
+          initialRegistrants={registrants.map((candidate) => ({
+            id: candidate.id,
+            name: candidate.name,
+            email: candidate.email,
+            phone: candidate.phone,
+            currentCity: candidate.currentCity,
+            experienceLevel: candidate.experienceLevel,
+            serviceInterest: candidate.serviceInterest,
+            paymentStatus: candidate.paymentStatus,
+            latestPaymentReference: candidate.latestPaymentReference,
+            filesCount: candidate.files.length,
+            applicationsCount: candidate.applications.length,
+            createdAt: candidate.createdAt.toISOString(),
+          }))}
+          initialContent={seededContent.map((item) => ({
+            id: item.id,
+            title: item.title,
+            body: item.body,
+            mediaUrl: item.mediaUrl,
+            updatedAt: item.updatedAt.toISOString(),
+          }))}
+        />
       </div>
     </div>
   );
 }
-
-
-
-

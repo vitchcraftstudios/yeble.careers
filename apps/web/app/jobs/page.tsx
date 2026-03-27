@@ -1,11 +1,30 @@
 ﻿import { ScrollReveal } from "@/components/scroll-reveal";
-import { jobs } from "@/lib/data";
+import { jobs as fallbackJobs } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Open Jobs | Yeble Careers",
 };
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const dbJobs = await prisma.job.findMany({ orderBy: { createdAt: "desc" } }).catch(() => []);
+
+  const jobs = dbJobs.length
+    ? dbJobs.map((job) => ({
+        id: job.id,
+        company: job.company,
+        title: job.title,
+        city: job.city || job.location,
+        locationType: job.locationType || "On-site",
+        experience: job.experience || "Experience on request",
+        type: job.type || "Full-time",
+        salaryRange: job.salaryRange || job.salary || "Compensation on request",
+        sector: job.sector || (job.tags[0] ?? "General hiring"),
+        openings: job.openings,
+        status: job.status,
+      }))
+    : fallbackJobs;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-6xl px-6 py-14 space-y-6">

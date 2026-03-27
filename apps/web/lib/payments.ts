@@ -5,7 +5,7 @@ const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
 export const paymentAmount = Number(process.env.RAZORPAY_AMOUNT || "49900");
 export const paymentCurrency = "INR";
-export const paymentLabel = process.env.RAZORPAY_PAYMENT_LABEL || "Employer Intake Fee";
+export const paymentLabel = process.env.RAZORPAY_PAYMENT_LABEL || "Job Seeker Registration Fee";
 
 export function getRazorpayClient() {
   if (!keyId || !keySecret) {
@@ -21,3 +21,4 @@ export function getRazorpayClient() {
 export function getRazorpayKeyId() {
   return process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || keyId || "";
 }
+

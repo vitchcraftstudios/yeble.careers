@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function SignUpClient() {
   const params = useSearchParams();
-  const redirectUrl = params.get("callbackUrl") || "/admin";
+  const redirectUrl = params.get("callbackUrl") || "/dashboard";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
@@ -38,6 +38,3 @@ export default function SignUpClient() {
     </div>
   );
 }
-
-
-

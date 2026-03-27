@@ -1,6 +1,7 @@
 ﻿import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { prisma } from "@/lib/prisma";
 import { paymentAmount, paymentCurrency, paymentLabel } from "@/lib/payments";
 
 const resendApiKey = process.env.RESEND_API_KEY;
@@ -74,6 +75,57 @@ export async function POST(req: Request) {
     if (expectedSignature !== razorpaySignature) {
       return NextResponse.json({ error: "Payment verification failed." }, { status: 400 });
     }
+
+    const candidate = await prisma.candidate.upsert({
+      where: { email: email.trim().toLowerCase() },
+      update: {
+        name: name.trim(),
+        phone: phone.trim(),
+        currentCity: currentCity.trim() || null,
+        experienceLevel: experienceLevel.trim() || null,
+        serviceInterest: service.trim(),
+        linkedin: resumeLink.trim().includes("linkedin.com") ? resumeLink.trim() : null,
+        resumeUrl: resumeLink.trim(),
+        note: note.trim() || null,
+        paymentStatus: "paid",
+        latestPaymentReference: razorpayPaymentId,
+      },
+      create: {
+        email: email.trim().toLowerCase(),
+        name: name.trim(),
+        phone: phone.trim(),
+        currentCity: currentCity.trim() || null,
+        experienceLevel: experienceLevel.trim() || null,
+        serviceInterest: service.trim(),
+        linkedin: resumeLink.trim().includes("linkedin.com") ? resumeLink.trim() : null,
+        resumeUrl: resumeLink.trim(),
+        note: note.trim() || null,
+        paymentStatus: "paid",
+        latestPaymentReference: razorpayPaymentId,
+      },
+    });
+
+    await prisma.payment.upsert({
+      where: { reference: razorpayPaymentId },
+      update: {
+        candidateId: candidate.id,
+        status: "paid",
+        amount: paymentAmount,
+        currency: paymentCurrency,
+        label: paymentLabel,
+        orderId: razorpayOrderId,
+      },
+      create: {
+        candidateId: candidate.id,
+        provider: "razorpay",
+        status: "paid",
+        amount: paymentAmount,
+        currency: paymentCurrency,
+        label: paymentLabel,
+        orderId: razorpayOrderId,
+        reference: razorpayPaymentId,
+      },
+    });
 
     const safeName = escapeHtml(name.trim());
     const safeEmail = escapeHtml(email.trim());
