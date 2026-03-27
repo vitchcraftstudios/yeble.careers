@@ -236,9 +236,10 @@ const processSteps = [
   },
 ];
 
-const heroImage = {
-  src: "https://images.pexels.com/photos/7652178/pexels-photo-7652178.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  alt: "Asian professionals in a collaborative business meeting",
+const heroMedia = {
+  poster: "https://images.pexels.com/photos/7652178/pexels-photo-7652178.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  video: "https://www.pexels.com/download/video/7643604/",
+  alt: "Professionals collaborating in a business meeting",
 };
 
 export default function Home() {
@@ -262,13 +263,13 @@ export default function Home() {
       <main className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-8">
         <ScrollReveal>
           <section className="overflow-hidden rounded-[2rem] border border-[#e3decf] bg-white/95 shadow-sm">
-            <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
-              <div className="p-6 sm:p-8 lg:p-10">
+            <div className="grid gap-0 lg:grid-cols-[1.18fr_0.82fr]">
+              <div className="p-6 sm:p-8 lg:p-10 xl:pr-8">
                 <p className="text-[11px] uppercase tracking-[0.28em] text-[#2d6a3e]">Yeble.careers - Accelerate your Placement</p>
-                <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[1.04] tracking-[-0.05em] text-[#123622] sm:text-5xl lg:text-[4.25rem]">
+                <h1 className="mt-4 max-w-4xl text-4xl font-black leading-[1.08] tracking-[-0.045em] text-[#123622] sm:text-[3.35rem] lg:text-[3.9rem]">
                   <strong>Powering Companies With Talent That Drives Real Growth.</strong>
                 </h1>
-                <p className="mt-5 max-w-2xl text-base leading-8 text-[#2f4a35]">
+                <p className="mt-5 max-w-3xl text-base leading-8 text-[#2f4a35]">
                   Founded in 2026 from Selaqui, Dehradun, Yeble works across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical hiring support, tighter follow-up, and clearer communication.
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -293,7 +294,18 @@ export default function Home() {
                 </div>
               </div>
               <div className="min-h-[260px] lg:min-h-full">
-                <img src={heroImage.src} alt={heroImage.alt} className="h-full w-full object-cover" loading="eager" />
+                <video
+                  className="h-full w-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster={heroMedia.poster}
+                  aria-label={heroMedia.alt}
+                >
+                  <source src={heroMedia.video} type="video/mp4" />
+                </video>
               </div>
             </div>
           </section>
@@ -395,58 +407,79 @@ export default function Home() {
 
         <ScrollReveal delay={140}>
           <section className="grid items-start gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="min-w-0 rounded-[2rem] border border-[#e3decf] bg-white/95 p-5 shadow-sm sm:p-7">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Testimonials</p>
-                  <h2 className="mt-2 text-xl font-semibold text-[#123622] sm:text-2xl">What people say about working with Yeble</h2>
-                </div>
-                <div className="hidden items-center gap-2 sm:flex">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTestimonial((current) => (current - 1 + testimonials.length) % testimonials.length)}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-[#123622] transition hover:border-[#2d6a3e]"
-                    aria-label="Previous testimonial"
-                  >
-                    <ChevronLeftIcon />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTestimonial((current) => (current + 1) % testimonials.length)}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-[#123622] transition hover:border-[#2d6a3e]"
-                    aria-label="Next testimonial"
-                  >
-                    <ChevronRightIcon />
-                  </button>
-                </div>
-              </div>
-              <div className="mt-5 overflow-hidden rounded-[1.5rem] border border-[#e8e1cd] bg-[#fffdf6]">
-                <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${activeTestimonial * 100}%)` }}>
-                  {testimonials.map((item) => (
-                    <article key={item.name} className="min-w-full p-5 sm:p-6">
-                      <p className="max-w-full break-words text-base leading-7 text-[#23422f] sm:text-lg sm:leading-8">“{item.quote}”</p>
-                      <div className="mt-5 border-t border-[#e7dfcb] pt-4">
-                        <p className="font-semibold text-[#123622]">{item.name}</p>
-                        <p className="text-sm text-[#31513c]">{item.role}</p>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
-              <div className="mt-4 flex items-center justify-between gap-4">
-                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#e4decd]">
-                  <div className="h-full rounded-full bg-[#2d6a3e] transition-all duration-500 ease-out" style={{ width: `${((activeTestimonial + 1) / testimonials.length) * 100}%` }} />
-                </div>
-                <div className="flex gap-2">
-                  {testimonials.map((item, index) => (
+            <div className="min-w-0 space-y-6">
+              <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-5 shadow-sm sm:p-7">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Testimonials</p>
+                    <h2 className="mt-2 text-xl font-semibold text-[#123622] sm:text-2xl">What people say about working with Yeble</h2>
+                  </div>
+                  <div className="hidden items-center gap-2 sm:flex">
                     <button
-                      key={item.name}
                       type="button"
-                      onClick={() => setActiveTestimonial(index)}
-                      className={`h-2.5 rounded-full transition-all duration-300 ${index === activeTestimonial ? "w-7 bg-[#2d6a3e]" : "w-2.5 bg-[#d9d4c3]"}`}
-                      aria-label={`Go to testimonial ${index + 1}`}
-                    />
-                  ))}
+                      onClick={() => setActiveTestimonial((current) => (current - 1 + testimonials.length) % testimonials.length)}
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-[#123622] transition hover:border-[#2d6a3e]"
+                      aria-label="Previous testimonial"
+                    >
+                      <ChevronLeftIcon />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTestimonial((current) => (current + 1) % testimonials.length)}
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-[#123622] transition hover:border-[#2d6a3e]"
+                      aria-label="Next testimonial"
+                    >
+                      <ChevronRightIcon />
+                    </button>
+                  </div>
+                </div>
+                <div className="mt-5 overflow-hidden rounded-[1.5rem] border border-[#e8e1cd] bg-[#fffdf6]">
+                  <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${activeTestimonial * 100}%)` }}>
+                    {testimonials.map((item) => (
+                      <article key={item.name} className="min-w-full p-5 sm:p-6">
+                        <p className="max-w-full break-words text-base leading-7 text-[#23422f] sm:text-lg sm:leading-8">“{item.quote}”</p>
+                        <div className="mt-5 border-t border-[#e7dfcb] pt-4">
+                          <p className="font-semibold text-[#123622]">{item.name}</p>
+                          <p className="text-sm text-[#31513c]">{item.role}</p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-4 flex items-center justify-between gap-4">
+                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#e4decd]">
+                    <div className="h-full rounded-full bg-[#2d6a3e] transition-all duration-500 ease-out" style={{ width: `${((activeTestimonial + 1) / testimonials.length) * 100}%` }} />
+                  </div>
+                  <div className="flex gap-2">
+                    {testimonials.map((item, index) => (
+                      <button
+                        key={item.name}
+                        type="button"
+                        onClick={() => setActiveTestimonial(index)}
+                        className={`h-2.5 rounded-full transition-all duration-300 ${index === activeTestimonial ? "w-7 bg-[#2d6a3e]" : "w-2.5 bg-[#d9d4c3]"}`}
+                        aria-label={`Go to testimonial ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-[2rem] border border-[#e3decf] bg-white/95 p-5 shadow-sm sm:p-6">
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Why it works</p>
+                <h3 className="mt-2 text-xl font-semibold text-[#123622]">Grounded support from first call to final shortlist</h3>
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <article className="rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4">
+                    <p className="text-2xl font-black text-[#123622]">72 hrs</p>
+                    <p className="mt-2 text-sm leading-6 text-[#31513c]">Typical shortlist turnaround for active mandates.</p>
+                  </article>
+                  <article className="rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4">
+                    <p className="text-2xl font-black text-[#123622]">4 states</p>
+                    <p className="mt-2 text-sm leading-6 text-[#31513c]">Core hiring coverage across the North India corridor we know best.</p>
+                  </article>
+                  <article className="rounded-2xl border border-[#e8e1cd] bg-[#fffdf6] p-4">
+                    <p className="text-2xl font-black text-[#123622]">Clear follow-up</p>
+                    <p className="mt-2 text-sm leading-6 text-[#31513c]">Practical updates for both employers and candidates at every stage.</p>
+                  </article>
                 </div>
               </div>
             </div>
@@ -480,6 +513,24 @@ export default function Home() {
                 <p className="mt-3 text-sm leading-7 text-[#31513c] sm:text-base">
                   We prefer clear expectations over vague promises. Here are a few common questions candidates and employers usually ask first.
                 </p>
+                <div className="mt-6 overflow-hidden rounded-[1.75rem] border border-[#e8e1cd] bg-[#fffdf6]">
+                  <img
+                    src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=900"
+                    alt="Professionals discussing documents in an office"
+                    className="h-52 w-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="grid gap-3 border-t border-[#e8e1cd] p-4 sm:grid-cols-2">
+                    <div className="rounded-2xl bg-white px-4 py-3">
+                      <p className="text-xs uppercase tracking-[0.18em] text-[#2d6a3e]">Quick response</p>
+                      <p className="mt-2 text-sm leading-6 text-[#31513c]">Straight answers on payments, next steps, and hiring coverage.</p>
+                    </div>
+                    <div className="rounded-2xl bg-white px-4 py-3">
+                      <p className="text-xs uppercase tracking-[0.18em] text-[#2d6a3e]">Human follow-up</p>
+                      <p className="mt-2 text-sm leading-6 text-[#31513c]">A practical team based in Dehradun, not a silent form inbox.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="space-y-3">
                 {faqs.map((faq, index) => {
