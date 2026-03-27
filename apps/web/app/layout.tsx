@@ -19,6 +19,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Yeble.careers - Accelerate your Placement",
   description: "Permanent & contract hiring across tech, product, analytics, GTM from Dehradun HQ.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/icon.svg",
+    apple: "/apple-icon.png",
+  },
 };
 
 export const viewport: Viewport = {
