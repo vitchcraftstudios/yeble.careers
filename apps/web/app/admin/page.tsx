@@ -2,6 +2,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { AdminDashboardClient } from "@/components/dashboard/admin-dashboard-client";
+import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-out-button";
 
 const defaultContent = [
   {
@@ -61,7 +62,10 @@ export default async function AdminPage() {
               Manage live mandates, monitor registrants and payments, and update key public-site content from one place.
             </p>
           </div>
-          <div className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email || "Admin"}</div>
+          <div className="flex flex-col items-start gap-3 sm:items-end">
+            <div className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email || "Admin"}</div>
+            <DashboardSignOutButton />
+          </div>
         </div>
 
         <AdminDashboardClient

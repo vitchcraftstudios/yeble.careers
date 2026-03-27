@@ -2,6 +2,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { RegistrantDashboardClient } from "@/components/dashboard/registrant-dashboard-client";
+import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-out-button";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -50,7 +51,10 @@ export default async function DashboardPage() {
               Keep your profile updated, upload documents, and track the registration and application records linked to your account.
             </p>
           </div>
-          <div className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email}</div>
+          <div className="flex flex-col items-start gap-3 sm:items-end">
+            <div className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email}</div>
+            <DashboardSignOutButton />
+          </div>
         </div>
 
         <RegistrantDashboardClient

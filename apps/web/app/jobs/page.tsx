@@ -27,12 +27,12 @@ export default async function JobsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
-      <div className="mx-auto max-w-6xl px-6 py-14 space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6 px-6 py-14">
         <ScrollReveal>
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Open roles</p>
             <h1 className="text-3xl font-semibold text-[#123622]">Current mandates</h1>
-            <p className="text-sm text-[#56705d]">Updated daily. Apply via hr@yeble.careers with the Job ID.</p>
+            <p className="text-sm text-[#56705d]">Updated regularly. Candidates can currently apply or reach out via growth@yeble.careers.</p>
           </div>
         </ScrollReveal>
 
@@ -61,9 +61,10 @@ export default async function JobsPage() {
         </div>
 
         <ScrollReveal delay={140}>
-          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 text-sm text-[#4d6654]">
-            To apply, email your resume with the Job ID to <a className="font-medium text-[#1f5c36]" href="mailto:hr@yeble.careers">hr@yeble.careers</a>.
-            Hiring managers can send new mandates to <a className="font-medium text-[#1f5c36]" href="mailto:hello@yeble.careers">hello@yeble.careers</a>.
+          <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 text-sm leading-7 text-[#4d6654]">
+            Candidates can currently apply or reach out with the Job ID at <a className="font-medium text-[#1f5c36]" href="mailto:growth@yeble.careers">growth@yeble.careers</a>.
+            <br />
+            A dedicated HR email will be released soon, but for now all job-related queries are being handled through the same inbox for faster coordination.
           </div>
         </ScrollReveal>
       </div>
