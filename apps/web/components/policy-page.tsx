@@ -1,16 +1,16 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { PolicyAccordion } from "@/components/policy-accordion";
 
 type PolicySection = {
   title: string;
-  content: string[];
+  content: readonly string[];
 };
 
 type PolicyPageProps = {
   eyebrow: string;
   title: string;
   intro: string;
-  sections: PolicySection[];
+  sections: readonly PolicySection[];
 };
 
 export function PolicyPage({ eyebrow, title, intro, sections }: PolicyPageProps) {
@@ -56,3 +56,4 @@ export function PolicyPage({ eyebrow, title, intro, sections }: PolicyPageProps)
     </main>
   );
 }
+

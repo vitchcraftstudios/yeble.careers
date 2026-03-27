@@ -1,14 +1,14 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
 type PolicySection = {
   title: string;
-  content: string[];
+  content: readonly string[];
 };
 
 type PolicyAccordionProps = {
-  sections: PolicySection[];
+  sections: readonly PolicySection[];
 };
 
 function PolicyToggleIcon({ open }: { open: boolean }) {
@@ -55,3 +55,4 @@ export function PolicyAccordion({ sections }: PolicyAccordionProps) {
     </div>
   );
 }
+
