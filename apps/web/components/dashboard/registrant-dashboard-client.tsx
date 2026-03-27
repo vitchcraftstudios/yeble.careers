@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 
@@ -50,6 +50,16 @@ type Props = {
   applications: ApplicationItem[];
 };
 
+async function readResponseJson(response: Response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    const text = await response.text();
+    throw new Error(text.includes("<!DOCTYPE") ? "The server returned an unexpected response. Please try again." : text || "Unexpected server response.");
+  }
+
+  return response.json();
+}
+
 export function RegistrantDashboardClient({ initialProfile, files: initialFiles, payments, applications }: Props) {
   const [profile, setProfile] = useState(initialProfile);
   const [files, setFiles] = useState(initialFiles);
@@ -65,22 +75,27 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
     setSavingProfile(true);
     setProfileMessage("");
 
-    const response = await fetch("/api/dashboard/profile", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(profile),
-    });
+    try {
+      const response = await fetch("/api/dashboard/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profile),
+      });
 
-    const data = await response.json();
-    if (!response.ok) {
-      setProfileMessage(data.error || "Unable to save profile.");
+      const data = await readResponseJson(response);
+      if (!response.ok) {
+        setProfileMessage(data.error || "Unable to save profile.");
+        setSavingProfile(false);
+        return;
+      }
+
+      setProfile(data.profile);
+      setProfileMessage("Profile updated successfully.");
+    } catch (error) {
+      setProfileMessage(error instanceof Error ? error.message : "Unable to save profile.");
+    } finally {
       setSavingProfile(false);
-      return;
     }
-
-    setProfile(data.profile);
-    setProfileMessage("Profile updated successfully.");
-    setSavingProfile(false);
   }
 
   async function uploadFile(event: React.ChangeEvent<HTMLInputElement>) {
@@ -98,7 +113,7 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
         method: "POST",
         body: formData,
       });
-      const blobData = await blobResponse.json();
+      const blobData = await readResponseJson(blobResponse);
       if (!blobResponse.ok) throw new Error(blobData.error || "Unable to upload file.");
 
       const saveResponse = await fetch("/api/dashboard/files", {
@@ -106,7 +121,7 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: file.name, url: blobData.url, type: file.type || null }),
       });
-      const saveData = await saveResponse.json();
+      const saveData = await readResponseJson(saveResponse);
       if (!saveResponse.ok) throw new Error(saveData.error || "Unable to save file.");
 
       setFiles((current) => [saveData.file, ...current]);

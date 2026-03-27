@@ -1,8 +1,9 @@
-﻿import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { AdminDashboardClient } from "@/components/dashboard/admin-dashboard-client";
 import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-out-button";
+import { isAdminUser } from "@/lib/clerk-access";
 
 const defaultContent = [
   {
@@ -32,9 +33,8 @@ export default async function AdminPage() {
   const user = await currentUser();
   const email = user?.emailAddresses?.[0]?.emailAddress || "";
   const role = user?.publicMetadata?.role;
-  const adminEmail = process.env.ADMIN_EMAIL || "admin@yeble.careers";
 
-  if (role !== "ADMIN" && email.toLowerCase() !== adminEmail.toLowerCase()) {
+  if (!(await isAdminUser(email, role))) {
     redirect("/dashboard");
   }
 
