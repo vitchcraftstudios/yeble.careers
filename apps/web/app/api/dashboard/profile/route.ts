@@ -65,7 +65,6 @@ export async function PATCH(req: Request) {
     const profile = await prisma.candidate.update({
       where: { id: candidate.id },
       data: {
-        clerkUserId: identity.userId,
         email: identity.email,
         name: body.name || identity.user?.fullName || identity.email,
         phone: body.phone || null,
