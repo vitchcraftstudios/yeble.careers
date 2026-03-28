@@ -1,8 +1,7 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { EmployerIntakeModal } from "@/components/employer-intake-modal";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { jobs } from "@/lib/data";
 
@@ -256,6 +255,8 @@ const processSteps = [
   },
 ];
 
+const registrationPageUrl = "https://rzp.io/rzp/NGttdbN";
+
 const heroMedia = {
   poster: "https://images.pexels.com/photos/7652178/pexels-photo-7652178.jpeg?auto=compress&cs=tinysrgb&w=1200",
   video: "https://www.pexels.com/download/video/7643604/",
@@ -264,7 +265,6 @@ const heroMedia = {
 
 export default function Home() {
   const featured = useMemo(() => jobs.slice(0, 3), []);
-  const [intakeOpen, setIntakeOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
 
@@ -293,13 +293,12 @@ export default function Home() {
                   Founded in 2026 from Selaqui, Dehradun, Yeble works across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical hiring support, tighter follow-up, and clearer communication.
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <button
-                    type="button"
-                    onClick={() => setIntakeOpen(true)}
+                  <a
+                    href={registrationPageUrl}
                     className="rounded-full bg-[#27c06b] px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-[#1fb35f]"
                   >
                     Register Now
-                  </button>
+                  </a>
                   <Link
                     href="/jobs"
                     className="rounded-full border border-[#cfd8d0] px-6 py-3 text-center text-sm font-semibold text-[#1d402a] transition hover:border-[#27c06b] hover:text-[#1a703d]"
@@ -377,7 +376,7 @@ export default function Home() {
                   <p className="text-xs uppercase tracking-[0.18em] text-[#2d6a3e]">{job.company}</p>
                   <h3 className="mt-2 text-xl font-semibold text-[#123622]">{job.title}</h3>
                   <p className="mt-2 text-sm leading-7 text-[#31513c]">
-                    {job.city} � {job.locationType} � {job.experience}
+                    {job.city} ï¿½ {job.locationType} ï¿½ {job.experience}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2 text-xs text-[#2f4a35]">
                     <span className="rounded-full bg-[#f4f2e3] px-3 py-1.5">{job.salaryRange}</span>
@@ -457,7 +456,7 @@ export default function Home() {
                   <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${activeTestimonial * 100}%)` }}>
                     {testimonials.map((item) => (
                       <article key={item.name} className="min-w-full p-5 sm:p-6">
-                        <p className="max-w-full break-words text-base leading-7 text-[#23422f] sm:text-lg sm:leading-8">�{item.quote}�</p>
+                        <p className="max-w-full break-words text-base leading-7 text-[#23422f] sm:text-lg sm:leading-8">ï¿½{item.quote}ï¿½</p>
                         <div className="mt-5 border-t border-[#e7dfcb] pt-4">
                           <p className="font-semibold text-[#123622]">{item.name}</p>
                           <p className="text-sm text-[#31513c]">{item.role}</p>
@@ -579,10 +578,11 @@ export default function Home() {
         </ScrollReveal>
       </main>
 
-      <EmployerIntakeModal open={intakeOpen} onClose={() => setIntakeOpen(false)} />
     </div>
   );
 }
+
+
 
 
 
