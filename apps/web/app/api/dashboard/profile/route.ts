@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
@@ -84,8 +84,9 @@ export async function PATCH(req: Request) {
   } catch (error) {
     console.error("Dashboard profile save error", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unable to save profile" },
+      { error: "We could not save your profile right now. Please try again in a moment." },
       { status: 500 },
     );
   }
 }
+

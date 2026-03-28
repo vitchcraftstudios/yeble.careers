@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
@@ -10,22 +10,32 @@ async function getCandidate() {
   const email = user?.emailAddresses?.[0]?.emailAddress?.toLowerCase();
   if (!email) return { error: NextResponse.json({ error: "Missing account email" }, { status: 400 }) };
 
-  const existing = await prisma.candidate.findFirst({
-    where: {
-      OR: [{ email }, { clerkUserId: userId }],
-    },
-  });
+  try {
+    const existing = await prisma.candidate.findFirst({
+      where: {
+        OR: [{ email }, { clerkUserId: userId }],
+      },
+    });
 
-  const candidate = existing
-    ? await prisma.candidate.update({
-        where: { id: existing.id },
-        data: { clerkUserId: userId, email, name: user?.fullName || email },
-      })
-    : await prisma.candidate.create({
-        data: { clerkUserId: userId, email, name: user?.fullName || email },
-      });
+    const candidate = existing
+      ? await prisma.candidate.update({
+          where: { id: existing.id },
+          data: { clerkUserId: userId, email, name: user?.fullName || email },
+        })
+      : await prisma.candidate.create({
+          data: { clerkUserId: userId, email, name: user?.fullName || email },
+        });
 
-  return { candidate };
+    return { candidate };
+  } catch (error) {
+    console.error("Dashboard candidate lookup error", error);
+    return {
+      error: NextResponse.json(
+        { error: "We could not connect to your profile data right now. Please try again in a moment." },
+        { status: 500 },
+      ),
+    };
+  }
 }
 
 export async function POST(req: Request) {
@@ -51,7 +61,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Dashboard file save error", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unable to save file" },
+      { error: "We could not save this file right now. Please try again in a moment." },
       { status: 500 },
     );
   }
@@ -74,8 +84,10 @@ export async function DELETE(req: Request) {
   } catch (error) {
     console.error("Dashboard file delete error", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unable to delete file" },
+      { error: "We could not remove this file right now. Please try again in a moment." },
       { status: 500 },
     );
   }
 }
+
+

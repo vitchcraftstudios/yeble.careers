@@ -1,9 +1,7 @@
 ﻿import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Manrope } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import { SiteNav } from "@/components/site-nav";
-import { Footer } from "@/components/footer";
-import { FloatingActions } from "@/components/floating-actions";
+import { SiteChrome } from "@/components/site-chrome";
 import "./globals.css";
 import Splash from "./(auth)/splash";
 
@@ -50,14 +48,13 @@ export default function RootLayout({
           className={`${brandSans.variable} ${geistMono.variable} antialiased`}
         >
           <Splash />
-          <SiteNav />
+          <SiteChrome />
           {children}
-          <FloatingActions />
-          <Footer />
         </body>
       </html>
     </ClerkProvider>
   );
 }
+
 
 

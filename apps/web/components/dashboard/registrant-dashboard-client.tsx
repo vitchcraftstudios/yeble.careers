@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 
@@ -153,7 +153,7 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
         <div className="rounded-2xl border border-[#e3decf] bg-white p-5 shadow-sm">
           <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Payment status</p>
           <p className="mt-3 text-2xl font-semibold text-[#123622]">{profile.paymentStatus || "pending"}</p>
-          <p className="mt-2 text-sm text-[#31513c]">{latestPayment ? `${latestPayment.label || "Registration fee"} · ${latestPayment.currency} ${latestPayment.amount / 100}` : "No payment history yet."}</p>
+          <p className="mt-2 text-sm text-[#31513c]">{latestPayment ? `${latestPayment.label || "Registration fee"} | ${latestPayment.currency} ${latestPayment.amount / 100}` : "No payment history yet."}</p>
         </div>
         <div className="rounded-2xl border border-[#e3decf] bg-white p-5 shadow-sm">
           <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Files</p>
@@ -293,3 +293,4 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
     </div>
   );
 }
+
