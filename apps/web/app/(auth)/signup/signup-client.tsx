@@ -31,8 +31,6 @@ export default function SignUpClient() {
                 headerTitle: "hidden",
                 headerSubtitle: "hidden",
                 main: "gap-0",
-                headerTitle: "text-[#123622]",
-                headerSubtitle: "text-lime-100/80",
                 socialButtonsBlockButton: "border-[#e3decf] bg-white/85 text-[#123622]",
                 formButtonPrimary: "bg-lime-400 text-[#06290f] hover:bg-lime-300",
                 footerActionLink: "text-[#2d6a3e]",
@@ -44,5 +42,7 @@ export default function SignUpClient() {
     </div>
   );
 }
+
+
 
 
