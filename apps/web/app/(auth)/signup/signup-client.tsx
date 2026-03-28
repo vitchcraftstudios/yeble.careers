@@ -24,7 +24,13 @@ export default function SignUpClient() {
             fallbackRedirectUrl={redirectUrl}
             appearance={{
               elements: {
-                card: "bg-transparent border-0 shadow-none",
+                rootBox: "w-full",
+                cardBox: "w-full",
+                card: "w-full bg-transparent border-0 shadow-none p-0",
+                header: "hidden",
+                headerTitle: "hidden",
+                headerSubtitle: "hidden",
+                main: "gap-0",
                 headerTitle: "text-[#123622]",
                 headerSubtitle: "text-lime-100/80",
                 socialButtonsBlockButton: "border-[#e3decf] bg-white/85 text-[#123622]",
@@ -38,3 +44,5 @@ export default function SignUpClient() {
     </div>
   );
 }
+
+

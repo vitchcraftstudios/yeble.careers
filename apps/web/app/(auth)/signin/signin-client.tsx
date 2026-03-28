@@ -8,33 +8,81 @@ export default function SignInClient() {
   const redirectUrl = params.get("callbackUrl") || "/dashboard";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
-      <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6">
-        <div className="rounded-2xl border border-[#e3decf] bg-white/85 p-6 shadow-[0_20px_80px_rgba(84,255,138,0.25)] backdrop-blur">
-          <div className="mb-4 text-center">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Yeble</p>
-            <h1 className="text-2xl font-semibold text-[#123622]">Sign in</h1>
-            <p className="mt-2 text-sm text-[#31513c]">Use email, phone OTP, or social</p>
+    <section className="bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
+      <div className="mx-auto flex min-h-[calc(100vh-11rem)] max-w-7xl items-center px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+        <div className="relative w-full overflow-hidden rounded-[2rem] border border-[#e3decf] bg-white/88 shadow-[0_24px_80px_rgba(84,255,138,0.14)] backdrop-blur-sm">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top_left,rgba(170,214,178,0.28),transparent_48%),radial-gradient(circle_at_top_right,rgba(255,238,188,0.5),transparent_40%)]" />
+          <div className="relative grid gap-0 lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="flex flex-col justify-center border-b border-[#ece6d7] px-6 py-8 sm:px-8 sm:py-10 lg:border-b-0 lg:border-r lg:px-12 lg:py-14">
+              <div className="max-w-xl">
+                <p className="text-xs uppercase tracking-[0.36em] text-[#2d6a3e]">Yeble Careers</p>
+                <h1 className="mt-4 max-w-lg text-3xl font-semibold leading-tight text-[#123622] sm:text-4xl lg:text-[3.25rem] lg:leading-[1.05]">
+                  Sign in to continue with your profile and application journey.
+                </h1>
+                <p className="mt-5 max-w-xl text-base leading-8 text-[#31513c] sm:text-lg">
+                  Access your registration details, payment status, resume links, and candidate profile from one clean dashboard built to feel like part of the Yeble experience.
+                </p>
+                <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-[#e3decf] bg-[#fffdf5] px-4 py-4">
+                    <p className="text-xs uppercase tracking-[0.22em] text-[#6c8d74]">Profile</p>
+                    <p className="mt-2 text-sm leading-6 text-[#21412b]">Keep your details, links, and role preferences updated.</p>
+                  </div>
+                  <div className="rounded-2xl border border-[#e3decf] bg-[#fffdf5] px-4 py-4">
+                    <p className="text-xs uppercase tracking-[0.22em] text-[#6c8d74]">Payments</p>
+                    <p className="mt-2 text-sm leading-6 text-[#21412b]">Check registration status and stay clear on the next step.</p>
+                  </div>
+                  <div className="rounded-2xl border border-[#e3decf] bg-[#fffdf5] px-4 py-4">
+                    <p className="text-xs uppercase tracking-[0.22em] text-[#6c8d74]">Updates</p>
+                    <p className="mt-2 text-sm leading-6 text-[#21412b]">Return anytime to manage your documents and activity.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+              <div className="w-full rounded-[1.75rem] border border-[#e7e1d2] bg-[#fffef9] p-4 shadow-[0_18px_50px_rgba(18,54,34,0.08)] sm:p-6 lg:p-7">
+                <div className="mb-5 border-b border-[#ece6d7] pb-5 text-center lg:text-left">
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Welcome back</p>
+                  <h2 className="mt-3 text-2xl font-semibold text-[#123622]">Sign in</h2>
+                  <p className="mt-2 text-sm leading-6 text-[#4e6958]">
+                    Use your email, phone OTP, or available social sign-in method to access your Yeble account.
+                  </p>
+                </div>
+                <SignIn
+                  path="/signin"
+                  routing="path"
+                  signUpUrl="/signup"
+                  forceRedirectUrl={redirectUrl}
+                  fallbackRedirectUrl={redirectUrl}
+                  appearance={{
+                    elements: {
+                      rootBox: "w-full",
+                      cardBox: "w-full",
+                      card: "w-full bg-transparent border-0 shadow-none p-0",
+                      header: "hidden",
+                      headerTitle: "hidden",
+                      headerSubtitle: "hidden",
+                      main: "gap-0",
+                      footer: "pt-4",
+                      socialButtonsBlockButton:
+                        "border-[#e3decf] bg-white text-[#123622] shadow-none hover:bg-[#f8f4e7]",
+                      formFieldLabel: "text-[#21412b]",
+                      formFieldInput:
+                        "border-[#ddd5c5] bg-white text-[#123622] focus:border-[#2d6a3e] focus:ring-[#2d6a3e]",
+                      formButtonPrimary:
+                        "bg-[#2fc267] text-white hover:bg-[#29af5d] shadow-[0_10px_24px_rgba(47,194,103,0.22)]",
+                      footerActionLink: "text-[#2d6a3e] hover:text-[#21412b]",
+                      identityPreviewText: "text-[#31513c]",
+                      formResendCodeLink: "text-[#2d6a3e]",
+                      otpCodeFieldInput:
+                        "border-[#ddd5c5] bg-white text-[#123622] focus:border-[#2d6a3e] focus:ring-[#2d6a3e]",
+                    },
+                  }}
+                />
+              </div>
+            </div>
           </div>
-          <SignIn
-            path="/signin"
-            routing="path"
-            signUpUrl="/signup"
-            forceRedirectUrl={redirectUrl}
-            fallbackRedirectUrl={redirectUrl}
-            appearance={{
-              elements: {
-                card: "bg-transparent border-0 shadow-none",
-                headerTitle: "text-[#123622]",
-                headerSubtitle: "text-lime-100/80",
-                socialButtonsBlockButton: "border-[#e3decf] bg-white/85 text-[#123622]",
-                formButtonPrimary: "bg-lime-400 text-[#06290f] hover:bg-lime-300",
-                footerActionLink: "text-[#2d6a3e]",
-              },
-            }}
-          />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
