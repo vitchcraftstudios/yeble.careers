@@ -3,6 +3,17 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
+function buildUniquePathname(filename: string) {
+  const cleaned = filename.trim().replace(/[^a-zA-Z0-9._-]/g, "-");
+  const dotIndex = cleaned.lastIndexOf(".");
+  const hasExtension = dotIndex > 0 && dotIndex < cleaned.length - 1;
+  const base = hasExtension ? cleaned.slice(0, dotIndex) : cleaned;
+  const extension = hasExtension ? cleaned.slice(dotIndex) : "";
+  const stamp = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+  return `registrant-files/${base || "file"}-${stamp}${extension}`;
+}
+
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
@@ -16,9 +27,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing BLOB_READ_WRITE_TOKEN" }, { status: 500 });
     }
 
-    const blob = await put(file.name, file, {
+    const blob = await put(buildUniquePathname(file.name), file, {
       access: "private",
       token: process.env.BLOB_READ_WRITE_TOKEN,
+      addRandomSuffix: false,
     });
 
     return NextResponse.json(blob);
