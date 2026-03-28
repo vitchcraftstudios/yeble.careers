@@ -112,8 +112,8 @@ function PlusChevronIcon({ open }: { open: boolean }) {
 
 const industries = [
   {
-    title: "Technology & SaaS",
-    description: "Engineering, product support, QA, and software delivery roles for lean teams building steadily.",
+    title: "Office Administration & MIS",
+    description: "Hiring support for office admins, coordinators, documentation roles, MIS support, and dependable back-office teams.",
     icon: CodeIcon,
     image: "/industry-technology.svg",
   },
@@ -585,6 +585,8 @@ export default function Home() {
     </div>
   );
 }
+
+
 
 
 
