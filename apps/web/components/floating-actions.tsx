@@ -153,15 +153,18 @@ export function FloatingActions() {
           </a>
         ))}
 
-        <button
-          type="button"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className={`pointer-events-auto ml-auto inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d8e5d9] bg-white text-[#123622] shadow-[0_10px_20px_rgba(15,41,24,0.08)] transition ${showBackToTop ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"}`}
-          aria-label="Back to top"
-        >
-          <ArrowUpIcon />
-        </button>
       </div>
+
+      <button
+        type="button"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className={`pointer-events-auto fixed bottom-6 right-3 z-50 hidden h-9 w-9 items-center justify-center rounded-full border border-[#d8e5d9] bg-white text-[#123622] shadow-[0_10px_20px_rgba(15,41,24,0.08)] transition md:inline-flex ${showBackToTop ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"}`}
+        aria-label="Back to top"
+      >
+        <ArrowUpIcon />
+      </button>
     </>
   );
 }
+
+
