@@ -1,4 +1,3 @@
-import { head } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
@@ -58,13 +57,24 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Missing BLOB_READ_WRITE_TOKEN" }, { status: 500 });
     }
 
-    const blob = await head(file.url, {
-      token: process.env.BLOB_READ_WRITE_TOKEN,
+    const blobResponse = await fetch(file.url, {
+      headers: {
+        Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`,
+      },
+      cache: "no-store",
     });
 
-    return NextResponse.redirect(blob.downloadUrl, {
+    if (!blobResponse.ok || !blobResponse.body) {
+      return NextResponse.json({ error: "We could not open this file right now. Please try again in a moment." }, { status: blobResponse.status || 500 });
+    }
+
+    return new NextResponse(blobResponse.body, {
+      status: 200,
       headers: {
+        "Content-Type": blobResponse.headers.get("content-type") || file.type || "application/octet-stream",
+        "Content-Disposition": blobResponse.headers.get("content-disposition") || `inline; filename="${file.name.replace(/"/g, "")}"`,
         "Cache-Control": "private, no-store",
+        "X-Content-Type-Options": "nosniff",
       },
     });
   } catch (error) {
