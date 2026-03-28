@@ -1,6 +1,7 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { resolveCandidate } from "@/lib/dashboard-candidate";
 
 async function getCandidate() {
   const { userId } = await auth();
@@ -11,20 +12,11 @@ async function getCandidate() {
   if (!email) return { error: NextResponse.json({ error: "Missing account email" }, { status: 400 }) };
 
   try {
-    const existing = await prisma.candidate.findFirst({
-      where: {
-        OR: [{ email }, { clerkUserId: userId }],
-      },
+    const candidate = await resolveCandidate({
+      userId,
+      email,
+      name: user?.fullName || email,
     });
-
-    const candidate = existing
-      ? await prisma.candidate.update({
-          where: { id: existing.id },
-          data: { clerkUserId: userId, email, name: user?.fullName || email },
-        })
-      : await prisma.candidate.create({
-          data: { clerkUserId: userId, email, name: user?.fullName || email },
-        });
 
     return { candidate };
   } catch (error) {
@@ -89,5 +81,3 @@ export async function DELETE(req: Request) {
     );
   }
 }
-
-
