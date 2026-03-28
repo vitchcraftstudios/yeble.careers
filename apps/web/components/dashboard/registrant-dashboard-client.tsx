@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 
@@ -222,7 +222,7 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="font-semibold text-[#123622]">{file.name}</p>
-                      <a href={file.url} target="_blank" rel="noreferrer" className="text-sm text-[#2d6a3e] underline">
+                      <a href={`/api/dashboard/files/open?id=${file.id}`} target="_blank" rel="noreferrer" className="text-sm text-[#2d6a3e] underline">
                         Open file
                       </a>
                     </div>
@@ -293,4 +293,5 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
     </div>
   );
 }
+
 

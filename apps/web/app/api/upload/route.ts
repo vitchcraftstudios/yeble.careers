@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     }
 
     const blob = await put(file.name, file, {
-      access: "public",
+      access: "private",
       token: process.env.BLOB_READ_WRITE_TOKEN,
     });
 
@@ -25,7 +25,14 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Blob upload error", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unable to upload file" },
+      {
+        error:
+          error instanceof Error && error.message.includes("access")
+            ? "File storage is not available right now. Please try again in a moment."
+            : error instanceof Error
+              ? error.message
+              : "Unable to upload file",
+      },
       { status: 500 },
     );
   }
