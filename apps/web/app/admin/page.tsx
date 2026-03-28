@@ -3,6 +3,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { AdminDashboardClient } from "@/components/dashboard/admin-dashboard-client";
 import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-out-button";
+import { DashboardHomeLink } from "@/components/dashboard/dashboard-home-link";
 import { isAdminUser } from "@/lib/clerk-access";
 
 const defaultContent = [
@@ -64,7 +65,10 @@ export default async function AdminPage() {
           </div>
           <div className="flex flex-col items-start gap-3 sm:items-end">
             <div className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email || "Admin"}</div>
-            <DashboardSignOutButton />
+            <div className="flex flex-wrap gap-3">
+              <DashboardHomeLink />
+              <DashboardSignOutButton />
+            </div>
           </div>
         </div>
 

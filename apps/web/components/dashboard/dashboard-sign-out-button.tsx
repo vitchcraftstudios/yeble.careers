@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useClerk } from "@clerk/nextjs";
@@ -9,7 +9,7 @@ export function DashboardSignOutButton() {
 
   async function handleSignOut() {
     setSigningOut(true);
-    await signOut({ redirectUrl: "/" });
+    await signOut({ redirectUrl: "/signed-out" });
   }
 
   return (
