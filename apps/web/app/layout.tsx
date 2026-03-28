@@ -3,6 +3,7 @@ import { Geist_Mono, Manrope } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SiteNav } from "@/components/site-nav";
 import { Footer } from "@/components/footer";
+import { FloatingActions } from "@/components/floating-actions";
 import "./globals.css";
 import Splash from "./(auth)/splash";
 
@@ -51,9 +52,12 @@ export default function RootLayout({
           <Splash />
           <SiteNav />
           {children}
+          <FloatingActions />
           <Footer />
         </body>
       </html>
     </ClerkProvider>
   );
 }
+
+
