@@ -14,15 +14,18 @@ export default function Splash() {
   }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => setHide(true), 2600);
+    const t = setTimeout(() => {
+      setHide(true);
+      window.dispatchEvent(new CustomEvent("yeble:splash-hidden"));
+    }, 2600);
     return () => clearTimeout(t);
   }, []);
 
   if (hide) return null;
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#fffef0] overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,#2cff9188,transparent_30%),radial-gradient(circle_at_75%_20%,#dffb5f55,transparent_32%),radial-gradient(circle_at_65%_80%,#24c86c55,transparent_28%)] blur-3xl opacity-80 animate-sway" />
+    <div className="fixed inset-0 z-40 flex items-center justify-center overflow-hidden bg-[#fffef0]">
+      <div className="absolute inset-0 animate-sway bg-[radial-gradient(circle_at_30%_30%,#2cff9188,transparent_30%),radial-gradient(circle_at_75%_20%,#dffb5f55,transparent_32%),radial-gradient(circle_at_65%_80%,#24c86c55,transparent_28%)] blur-3xl opacity-80" />
       <div className="absolute inset-0 bg-[linear-gradient(150deg,#fffef0,#f7f3dc_45%,#fffef0)] opacity-85" />
       <div className="absolute inset-[-20%] bg-grid" />
       <div className="relative w-[520px] max-w-[92vw] rounded-[32px] border border-[#e3decf] bg-white/80 px-10 py-12 shadow-[0_25px_120px_rgba(90,255,130,0.35)] backdrop-blur-2xl">
