@@ -1,4 +1,4 @@
-import { get } from "@vercel/blob";
+import { head } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
@@ -36,11 +36,6 @@ async function getCandidate() {
   }
 }
 
-function getBlobPathname(url: string) {
-  const parsedUrl = new URL(url);
-  return parsedUrl.pathname.replace(/^\//, "");
-}
-
 export async function GET(req: Request) {
   const result = await getCandidate();
   if ("error" in result) return result.error;
@@ -59,22 +54,17 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "File not found" }, { status: 404 });
     }
 
-    const pathname = getBlobPathname(file.url);
-    const blob = await get(pathname, {
-      access: "private",
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      return NextResponse.json({ error: "Missing BLOB_READ_WRITE_TOKEN" }, { status: 500 });
+    }
+
+    const blob = await head(file.url, {
       token: process.env.BLOB_READ_WRITE_TOKEN,
     });
 
-    if (!blob || blob.statusCode !== 200) {
-      return NextResponse.json({ error: "File not found" }, { status: 404 });
-    }
-
-    return new NextResponse(blob.stream, {
+    return NextResponse.redirect(blob.downloadUrl, {
       headers: {
-        "Content-Type": blob.blob.contentType || file.type || "application/octet-stream",
-        "Content-Disposition": `inline; filename="${file.name.replace(/"/g, "")}"`,
         "Cache-Control": "private, no-store",
-        "X-Content-Type-Options": "nosniff",
       },
     });
   } catch (error) {
