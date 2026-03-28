@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { EmployerIntakeModal } from "@/components/employer-intake-modal";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { jobs } from "@/lib/data";
 
@@ -265,6 +266,7 @@ const heroMedia = {
 
 export default function Home() {
   const featured = useMemo(() => jobs.slice(0, 3), []);
+  const [intakeOpen, setIntakeOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
 
@@ -293,12 +295,13 @@ export default function Home() {
                   Founded in 2026 from Selaqui, Dehradun, Yeble works across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical hiring support, tighter follow-up, and clearer communication.
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <a
-                    href={registrationPageUrl}
+                  <button
+                    type="button"
+                    onClick={() => setIntakeOpen(true)}
                     className="rounded-full bg-[#27c06b] px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-[#1fb35f]"
                   >
                     Register Now
-                  </a>
+                  </button>
                   <Link
                     href="/jobs"
                     className="rounded-full border border-[#cfd8d0] px-6 py-3 text-center text-sm font-semibold text-[#1d402a] transition hover:border-[#27c06b] hover:text-[#1a703d]"
@@ -578,9 +581,11 @@ export default function Home() {
         </ScrollReveal>
       </main>
 
+      <EmployerIntakeModal open={intakeOpen} onClose={() => setIntakeOpen(false)} paymentPageUrl={registrationPageUrl} />
     </div>
   );
 }
+
 
 
 
