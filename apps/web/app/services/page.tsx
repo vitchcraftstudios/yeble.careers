@@ -1,8 +1,8 @@
-﻿import { ScrollReveal } from "@/components/scroll-reveal";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 function BriefcaseIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.9">
       <path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7" />
       <path d="M4 9.5A1.5 1.5 0 0 1 5.5 8h13A1.5 1.5 0 0 1 20 9.5v8A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5z" />
       <path d="M4 12h16" />
@@ -12,7 +12,7 @@ function BriefcaseIcon() {
 
 function GraduationIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.9">
       <path d="m3 9 9-4 9 4-9 4-9-4Z" />
       <path d="M7 11.5V15c0 1.7 2.2 3 5 3s5-1.3 5-3v-3.5" />
       <path d="M21 10v5" />
@@ -22,7 +22,7 @@ function GraduationIcon() {
 
 function UsersIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.9">
       <path d="M16.5 19a4.5 4.5 0 0 0-9 0" />
       <circle cx="12" cy="9" r="3" />
       <path d="M19.5 19a3.5 3.5 0 0 0-3-3.45" />
@@ -33,7 +33,7 @@ function UsersIcon() {
 
 function ShieldIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.9">
       <path d="M12 3 5.5 5.5v5.7c0 4 2.5 7 6.5 9.8 4-2.8 6.5-5.8 6.5-9.8V5.5z" />
       <path d="m9.5 12 1.7 1.7 3.3-3.7" />
     </svg>
@@ -183,14 +183,14 @@ export default function ServicesPage() {
               return (
                 <div key={service.title} className="rounded-2xl border border-[#e3decf] bg-white/85 p-5">
                   <div className="flex items-start gap-3">
-                    <div className="rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] p-3 text-[#2d6a3e]">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e] sm:h-16 sm:w-16">
                       <Icon />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-[#123622]">{service.title}</h3>
                       <ul className="mt-3 space-y-2 text-sm leading-7 text-[#2f4a35]">
                         {service.points.map((point) => (
-                          <li key={point}>• {point}</li>
+                          <li key={point}>� {point}</li>
                         ))}
                       </ul>
                     </div>
