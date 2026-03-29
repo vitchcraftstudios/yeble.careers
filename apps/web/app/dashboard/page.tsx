@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { RegistrantDashboardClient } from "@/components/dashboard/registrant-dashboard-client";
 import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-out-button";
 import { DashboardHomeLink } from "@/components/dashboard/dashboard-home-link";
+import { isAdminUser } from "@/lib/clerk-access";
 
 function MailIcon() {
   return (
@@ -19,8 +20,14 @@ export default async function DashboardPage() {
   if (!userId) redirect("/signin?callbackUrl=/dashboard");
 
   const user = await currentUser();
-  const email = user?.emailAddresses?.[0]?.emailAddress;
+  if (!user) redirect("/signin?callbackUrl=/dashboard");
+  const emails = (user?.emailAddresses || []).map((address) => address.emailAddress || "");
+  const email = user?.primaryEmailAddress?.emailAddress || emails[0] || "";
   if (!email) redirect("/signin?callbackUrl=/dashboard");
+
+  if (await isAdminUser(emails)) {
+    redirect("/admin");
+  }
 
   const candidate = await prisma.candidate
     .findUnique({
