@@ -20,12 +20,40 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-brand-sans), sans-serif;
   font-weight: 500;
   letter-spacing: -0.01em;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+main,
+section,
+div,
+form,
+article,
+aside {
+  min-width: 0;
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-width: 100%;
 }
 
 h1,
@@ -47,6 +75,13 @@ textarea {
   font: inherit;
 }
 
+textarea,
+input,
+select,
+button {
+  max-width: 100%;
+}
+
 .font-sans {
   font-family: var(--font-brand-sans), sans-serif;
 }
@@ -55,10 +90,6 @@ textarea {
   font-family: var(--font-brand-sans), sans-serif;
   font-weight: 800;
   letter-spacing: -0.04em;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 [data-reveal] {
@@ -73,6 +104,39 @@ html {
 [data-reveal="visible"] {
   opacity: 1;
   transform: translateY(0);
+}
+
+.auth-mobile-fix [class*="cl-"] {
+  max-width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .auth-mobile-fix [class*="cl-cardBox"],
+  .auth-mobile-fix [class*="cl-rootBox"],
+  .auth-mobile-fix [class*="cl-main"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .auth-mobile-fix [class*="cl-formButtonPrimary"],
+  .auth-mobile-fix [class*="cl-socialButtonsBlockButton"],
+  .auth-mobile-fix [class*="cl-formFieldInput"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .auth-mobile-fix [class*="cl-identityPreview"] {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .auth-mobile-fix [class*="cl-badge"] {
+    transform: scale(0.92);
+    transform-origin: right center;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

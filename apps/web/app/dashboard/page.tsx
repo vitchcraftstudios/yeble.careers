@@ -42,20 +42,20 @@ export default async function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fffef0] text-[#0f2918]">
-      <div className="mx-auto max-w-7xl px-6 py-12">
-        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+    <div className="min-h-screen overflow-x-hidden bg-[#fffef0] text-[#0f2918]">
+      <div className="mx-auto max-w-7xl px-3 py-8 sm:px-6 sm:py-12">
+        <div className="mb-8 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Registrant Dashboard</p>
-            <h1 className="mt-2 text-3xl font-semibold text-[#123622]">Profile, files, and payment status</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-7 text-[#31513c]">
+            <h1 className="mt-2 break-words text-3xl font-semibold text-[#123622]">Profile, files, and payment status</h1>
+            <p className="mt-2 max-w-2xl break-words text-sm leading-7 text-[#31513c]">
               Keep your profile updated, upload documents, and track the registration and application records linked to your account.
             </p>
           </div>
-          <div className="flex flex-col items-start gap-3 sm:items-end">
-            <div className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email}</div>
-            <div className="flex flex-wrap gap-3">
-              <DashboardHomeLink />
+          <div className="flex min-w-0 flex-col items-start gap-3 sm:items-end">
+            <div className="max-w-full break-all rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email}</div>
+            <div className="flex w-full flex-wrap gap-3 sm:w-auto sm:justify-end">
+              <DashboardHomeLink className="w-full sm:w-auto" />
               <DashboardSignOutButton />
             </div>
           </div>
