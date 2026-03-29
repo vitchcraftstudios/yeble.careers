@@ -17,20 +17,50 @@ function MailIcon() {
 
 const defaultContent = [
   {
-    id: "home-hero",
-    title: "Homepage Hero",
-    body: "Connecting innovative companies with the talent that drives excellence and growth.",
+    id: "home-hero-title",
+    title: "Home - Hero Title",
+    body: "Powering Companies With Talent That Drives Real Growth.",
     mediaUrl: null,
   },
   {
-    id: "services-summary",
-    title: "Services Summary",
-    body: "Practical hiring support across sectors we can genuinely serve well.",
+    id: "home-hero-summary",
+    title: "Home - Hero Summary",
+    body: "Founded in 2026 from Selaqui, Dehradun, Yeble works across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical hiring support, tighter follow-up, and clearer communication.",
     mediaUrl: null,
   },
   {
-    id: "contact-summary",
-    title: "Contact Summary",
+    id: "home-testimonials-heading",
+    title: "Home - Testimonials Heading",
+    body: "What people say about working with Yeble",
+    mediaUrl: null,
+  },
+  {
+    id: "services-page-intro",
+    title: "Services - Intro",
+    body: "Strategic Talent Solutions Rooted in Regional Insight, Built for Professional Growth.",
+    mediaUrl: null,
+  },
+  {
+    id: "services-page-media",
+    title: "Services - Hero Media",
+    body: "Primary supporting media for the services page.",
+    mediaUrl: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: "jobs-page-intro",
+    title: "Jobs - Intro",
+    body: "Explore active roles across the North India hiring corridor.",
+    mediaUrl: null,
+  },
+  {
+    id: "about-page-summary",
+    title: "About - Summary",
+    body: "A Dehradun-led hiring team focused on practical support, regional understanding, and dependable communication.",
+    mediaUrl: null,
+  },
+  {
+    id: "contact-page-summary",
+    title: "Contact - Summary",
     body: "Connect with our hiring desk for mandates, enquiries, and regional hiring coordination.",
     mediaUrl: null,
   },
@@ -42,9 +72,8 @@ export default async function AdminPage() {
 
   const user = await currentUser();
   const email = user?.emailAddresses?.[0]?.emailAddress || "";
-  const role = user?.publicMetadata?.role;
 
-  if (!(await isAdminUser(email, role))) {
+  if (!(await isAdminUser(email))) {
     redirect("/dashboard");
   }
 
@@ -53,7 +82,14 @@ export default async function AdminPage() {
     prisma.candidate
       .findMany({
         orderBy: { createdAt: "desc" },
-        include: { files: true, applications: true },
+        include: {
+          files: { orderBy: { createdAt: "desc" } },
+          applications: {
+            orderBy: { createdAt: "desc" },
+            include: { job: true },
+          },
+          payments: { orderBy: { createdAt: "desc" } },
+        },
       })
       .catch(() => []),
     prisma.siteContent.findMany({ orderBy: { id: "asc" } }).catch(() => []),
@@ -66,10 +102,10 @@ export default async function AdminPage() {
       <div className="mx-auto max-w-7xl px-3 py-8 sm:px-6 sm:py-12">
         <div className="mb-8 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Admin Dashboard</p>
-            <h1 className="mt-2 break-words text-3xl font-semibold text-[#123622]">Jobs, registrants, and site content</h1>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Admin CMS</p>
+            <h1 className="mt-2 break-words text-3xl font-semibold text-[#123622]">Content, jobs, and registrations</h1>
             <p className="mt-2 max-w-2xl break-words text-sm leading-7 text-[#31513c]">
-              Manage live mandates, monitor registrants and payments, and update key public-site content from one place.
+              Run the site from one workspace: publish jobs, manage registrant profiles, review files and payments, and maintain editable page content blocks.
             </p>
           </div>
           <div className="flex min-w-0 flex-col items-start gap-3 sm:items-end">
@@ -92,13 +128,43 @@ export default async function AdminPage() {
             email: candidate.email,
             phone: candidate.phone,
             currentCity: candidate.currentCity,
+            headline: candidate.headline,
             experienceLevel: candidate.experienceLevel,
             serviceInterest: candidate.serviceInterest,
+            linkedin: candidate.linkedin,
+            resumeUrl: candidate.resumeUrl,
+            note: candidate.note,
             paymentStatus: candidate.paymentStatus,
             latestPaymentReference: candidate.latestPaymentReference,
             filesCount: candidate.files.length,
             applicationsCount: candidate.applications.length,
             createdAt: candidate.createdAt.toISOString(),
+            updatedAt: candidate.updatedAt.toISOString(),
+            files: candidate.files.map((file) => ({
+              id: file.id,
+              name: file.name,
+              url: file.url,
+              type: file.type,
+              createdAt: file.createdAt.toISOString(),
+            })),
+            applications: candidate.applications.map((application) => ({
+              id: application.id,
+              status: application.status,
+              note: application.note,
+              createdAt: application.createdAt.toISOString(),
+              jobTitle: application.job.title,
+              company: application.job.company,
+            })),
+            payments: candidate.payments.map((payment) => ({
+              id: payment.id,
+              provider: payment.provider,
+              status: payment.status,
+              amount: payment.amount,
+              currency: payment.currency,
+              label: payment.label,
+              reference: payment.reference,
+              createdAt: payment.createdAt.toISOString(),
+            })),
           }))}
           initialContent={seededContent.map((item) => ({
             id: item.id,

@@ -1,19 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { prisma } from "@/lib/prisma";
 
-function getAdminEmails() {
-  const configured = [
-    process.env.ADMIN_EMAILS,
-    process.env.ADMIN_EMAIL,
-    "admin@yeble.careers",
-    "vitchcraft14@gmail.com",
-  ]
-    .filter(Boolean)
-    .flatMap((value) => (value as string).split(","))
-    .map((value) => value.trim().toLowerCase())
-    .filter(Boolean);
-
-  return Array.from(new Set(configured));
+function getAdminEmail() {
+  return (process.env.ADMIN_EMAIL || "vitchcraft14@gmail.com").trim().toLowerCase();
 }
 
 export async function isAdminRequest() {
@@ -24,27 +12,15 @@ export async function isAdminRequest() {
 
   const user = await currentUser();
   const email = user?.emailAddresses?.[0]?.emailAddress?.toLowerCase() || "";
-  const role = user?.publicMetadata?.role;
 
-  const dbUser = email
-    ? await prisma.user.findUnique({ where: { email } }).catch(() => null)
-    : null;
-
-  if (role !== "ADMIN" && dbUser?.role !== "ADMIN" && !getAdminEmails().includes(email)) {
+  if (!email || email !== getAdminEmail()) {
     return { ok: false as const, status: 403, error: "Forbidden" };
   }
 
   return { ok: true as const, email };
 }
 
-export async function isAdminUser(email: string, role: unknown) {
+export async function isAdminUser(email: string) {
   const normalizedEmail = email.trim().toLowerCase();
-  if (!normalizedEmail) return false;
-
-  if (role === "ADMIN" || getAdminEmails().includes(normalizedEmail)) {
-    return true;
-  }
-
-  const dbUser = await prisma.user.findUnique({ where: { email: normalizedEmail } }).catch(() => null);
-  return dbUser?.role === "ADMIN";
+  return Boolean(normalizedEmail) && normalizedEmail === getAdminEmail();
 }

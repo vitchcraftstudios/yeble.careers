@@ -1,5 +1,6 @@
-﻿import { ScrollReveal } from "@/components/scroll-reveal";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { ContactForm } from "@/components/contact-form";
+import { getSiteContentMap } from "@/lib/site-content";
 
 function PhoneIcon() {
   return (
@@ -40,7 +41,8 @@ export const metadata = {
   title: "Contact | Yeble Careers",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const content = await getSiteContentMap();
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-8">
@@ -48,12 +50,8 @@ export default function ContactPage() {
           <div className="grid gap-6 md:grid-cols-[1.05fr_0.95fr] md:items-start">
             <div className="space-y-4">
               <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Contact</p>
-              <h1 className="text-4xl font-semibold leading-tight text-[#123622]">Partner with our Strategic Placement Hub</h1>
-              <p className="max-w-3xl text-base leading-8 text-[#2f4a35]">
-                Employers can share open mandates, team expansion plans, and hiring timelines. Candidates may send their
-                profile, preferred location, and Job ID for faster screening support. Our team works with employers across
-                Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh.
-              </p>
+              <h1 className="text-4xl font-semibold leading-tight text-[#123622]">{content["contact-page-title"]?.body || "Partner with our Strategic Placement Hub"}</h1>
+              <p className="max-w-3xl text-base leading-8 text-[#2f4a35]">{content["contact-page-summary"]?.body || "Employers can share open mandates, team expansion plans, and hiring timelines. Candidates may send their profile, preferred location, and Job ID for faster screening support. Our team works with employers across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh."}</p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-[#e3decf] bg-white/85 p-4">
                   <div className="flex items-center gap-3 text-[#123622]">

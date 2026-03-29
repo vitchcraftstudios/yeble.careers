@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -258,6 +258,12 @@ const processSteps = [
 
 const registrationPageUrl = "https://rzp.io/rzp/NGttdbN";
 
+const homeContentDefaults = {
+  heroTitle: "Powering Companies With Talent That Drives Real Growth.",
+  heroSummary: "Founded in 2026 from Selaqui, Dehradun, Yeble works across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical hiring support, tighter follow-up, and clearer communication.",
+  testimonialsHeading: "What people say about working with Yeble",
+};
+
 const heroMedia = {
   poster: "https://images.pexels.com/photos/7652178/pexels-photo-7652178.jpeg?auto=compress&cs=tinysrgb&w=1200",
   video: "https://www.pexels.com/download/video/7643604/",
@@ -269,6 +275,7 @@ export default function Home() {
   const [intakeOpen, setIntakeOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
+  const [homeContent, setHomeContent] = useState(homeContentDefaults);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -276,6 +283,33 @@ export default function Home() {
     }, 5200);
 
     return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadContent() {
+      try {
+        const response = await fetch("/api/public/content", { cache: "no-store" });
+        if (!response.ok) return;
+        const data = (await response.json()) as Record<string, { body?: string }>;
+        if (!mounted) return;
+
+        setHomeContent({
+          heroTitle: data["home-hero-title"]?.body || homeContentDefaults.heroTitle,
+          heroSummary: data["home-hero-summary"]?.body || homeContentDefaults.heroSummary,
+          testimonialsHeading: data["home-testimonials-heading"]?.body || homeContentDefaults.testimonialsHeading,
+        });
+      } catch {
+        // keep design stable with built-in defaults when content fetch is unavailable
+      }
+    }
+
+    loadContent();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (
@@ -289,10 +323,10 @@ export default function Home() {
               <div className="p-6 sm:p-8 lg:p-10 xl:pr-8">
                 <p className="text-[11px] uppercase tracking-[0.28em] text-[#2d6a3e]">Yeble.careers - Accelerate your Placement</p>
                 <h1 className="mt-4 max-w-4xl text-4xl font-black leading-[1.08] tracking-[-0.045em] text-[#123622] sm:text-[3.35rem] lg:text-[3.9rem]">
-                  <strong>Powering Companies With Talent That Drives Real Growth.</strong>
+                  <strong>{homeContent.heroTitle}</strong>
                 </h1>
                 <p className="mt-5 max-w-3xl text-base leading-8 text-[#2f4a35]">
-                  Founded in 2026 from Selaqui, Dehradun, Yeble works across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical hiring support, tighter follow-up, and clearer communication.
+                  {homeContent.heroSummary}
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
@@ -434,7 +468,7 @@ export default function Home() {
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <p className="text-[11px] uppercase tracking-[0.24em] text-[#2d6a3e]">Testimonials</p>
-                    <h2 className="mt-2 text-xl font-semibold text-[#123622] sm:text-2xl">What people say about working with Yeble</h2>
+                    <h2 className="mt-2 text-xl font-semibold text-[#123622] sm:text-2xl">{homeContent.testimonialsHeading}</h2>
                   </div>
                   <div className="hidden items-center gap-2 sm:flex">
                     <button
@@ -585,7 +619,6 @@ export default function Home() {
     </div>
   );
 }
-
 
 
 

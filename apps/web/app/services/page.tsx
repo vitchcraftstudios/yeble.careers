@@ -1,4 +1,5 @@
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { getSiteContentMap } from "@/lib/site-content";
 
 function BriefcaseIcon() {
   return (
@@ -160,19 +161,16 @@ export const metadata = {
   title: "Services | Yeble Careers",
 };
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const content = await getSiteContentMap();
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-8">
         <ScrollReveal>
           <div className="space-y-3">
             <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Services</p>
-            <h1 className="text-3xl font-semibold text-[#123622]">Strategic Talent Solutions Rooted in Regional Insight, Built for Professional Growth.</h1>
-            <p className="text-lg leading-8 text-[#2f4a35]">
-              Yeble Careers works from Dehradun and supports both employers and job seekers across North India. Our
-              services are built around practical hiring needs, honest communication, and a simple idea that good roles
-              should reach the right people without unnecessary confusion or delay.
-            </p>
+            <h1 className="text-3xl font-semibold text-[#123622]">{content["services-page-intro"]?.body || "Strategic Talent Solutions Rooted in Regional Insight, Built for Professional Growth."}</h1>
+            <p className="text-lg leading-8 text-[#2f4a35]">{content["services-page-summary"]?.body || "Yeble Careers works from Dehradun and supports both employers and job seekers across North India. Our services are built around practical hiring needs, honest communication, and a simple idea that good roles should reach the right people without unnecessary confusion or delay."}</p>
           </div>
         </ScrollReveal>
 
@@ -226,7 +224,7 @@ export default function ServicesPage() {
             </div>
             <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85">
               <img
-                src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80"
+                src={content["services-page-media"]?.mediaUrl || "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80"}
                 alt="Hiring team reviewing active placement work"
                 className="h-full w-full object-cover"
                 loading="lazy"

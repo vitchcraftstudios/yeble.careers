@@ -1,4 +1,5 @@
-﻿import { ScrollReveal } from "@/components/scroll-reveal";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { getSiteContentMap } from "@/lib/site-content";
 
 function CalendarIcon() {
   return (
@@ -134,7 +135,8 @@ const candidateSupport = [
   "Guidance at the offer stage so deserving talent can evaluate the opportunity with confidence.",
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getSiteContentMap();
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-10">
@@ -142,13 +144,8 @@ export default function AboutPage() {
           <div className="grid gap-6 md:grid-cols-[1.08fr_0.92fr] md:items-start">
             <div className="space-y-4">
               <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">About us</p>
-              <h1 className="text-4xl font-semibold leading-tight text-[#123622]">Your Partner in Building Resilient Teams for Emerging Growth Corridors.</h1>
-              <p className="text-lg leading-8 text-[#2f4a35]">
-                Yeble Careers started in 2026 with a simple belief: strong companies deserve better hiring support, and good
-                candidates deserve access to genuine opportunities. From our Dehradun base, we work closely with employers
-                and job seekers to make hiring more transparent, faster, and more dependable across regional and growth
-                markets.
-              </p>
+              <h1 className="text-4xl font-semibold leading-tight text-[#123622]">{content["about-page-title"]?.body || "Your Partner in Building Resilient Teams for Emerging Growth Corridors."}</h1>
+              <p className="text-lg leading-8 text-[#2f4a35]">{content["about-page-summary"]?.body || "Yeble Careers started in 2026 with a simple belief: strong companies deserve better hiring support, and good candidates deserve access to genuine opportunities. From our Dehradun base, we work closely with employers and job seekers to make hiring more transparent, faster, and more dependable across regional and growth markets."}</p>
             </div>
             <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/85 shadow-sm">
               <img

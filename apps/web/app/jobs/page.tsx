@@ -1,12 +1,14 @@
-﻿import { ScrollReveal } from "@/components/scroll-reveal";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { jobs as fallbackJobs } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
+import { getSiteContentMap } from "@/lib/site-content";
 
 export const metadata = {
   title: "Open Jobs | Yeble Careers",
 };
 
 export default async function JobsPage() {
+  const content = await getSiteContentMap();
   const dbJobs = await prisma.job.findMany({ orderBy: { createdAt: "desc" } }).catch(() => []);
 
   const jobs = dbJobs.length
@@ -32,7 +34,7 @@ export default async function JobsPage() {
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Open roles</p>
             <h1 className="text-3xl font-semibold text-[#123622]">Current mandates</h1>
-            <p className="text-sm text-[#56705d]">Updated regularly. Candidates can currently apply or reach out via growth@yeble.careers.</p>
+            <p className="text-sm text-[#56705d]">{content["jobs-page-intro"]?.body || "Updated regularly. Candidates can currently apply or reach out via growth@yeble.careers."}</p>
           </div>
         </ScrollReveal>
 
@@ -45,9 +47,9 @@ export default async function JobsPage() {
                     <p className="text-xs uppercase tracking-[0.2em] text-[#2d6a3e]/80">{job.company}</p>
                     <h2 className="text-xl font-semibold text-[#123622]">{job.title}</h2>
                     <p className="text-sm text-[#31513c]">
-                      {job.city} · {job.locationType} · {job.experience} · {job.type}
+                      {job.city} | {job.locationType} | {job.experience} | {job.type}
                     </p>
-                    <p className="text-sm text-[#31513c]">Salary: {job.salaryRange} · Job ID: {job.id}</p>
+                    <p className="text-sm text-[#31513c]">Salary: {job.salaryRange} | Job ID: {job.id}</p>
                   </div>
                   <div className="flex flex-wrap gap-2 text-xs text-[#2f4a35]">
                     <span className="rounded-full bg-[#f6f2e6] px-3 py-1">{job.sector}</span>
