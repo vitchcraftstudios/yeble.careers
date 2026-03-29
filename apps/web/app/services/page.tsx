@@ -190,7 +190,7 @@ export default function ServicesPage() {
                       <h3 className="text-lg font-semibold text-[#123622]">{service.title}</h3>
                       <ul className="mt-3 space-y-2 text-sm leading-7 text-[#2f4a35]">
                         {service.points.map((point) => (
-                          <li key={point}>• {point}</li>
+                          <li key={point}>- {point}</li>
                         ))}
                       </ul>
                     </div>
