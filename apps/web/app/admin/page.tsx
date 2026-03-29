@@ -5,6 +5,7 @@ import { AdminDashboardClient } from "@/components/dashboard/admin-dashboard-cli
 import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-out-button";
 import { DashboardHomeLink } from "@/components/dashboard/dashboard-home-link";
 import { isAdminUser } from "@/lib/clerk-access";
+import { normalizeOptionalText, normalizeText } from "@/lib/text-normalize";
 
 function MailIcon() {
   return (
@@ -125,16 +126,16 @@ export default async function AdminPage() {
           initialJobs={jobs.map((job) => ({ ...job, createdAt: job.createdAt.toISOString() }))}
           initialRegistrants={registrants.map((candidate) => ({
             id: candidate.id,
-            name: candidate.name,
-            email: candidate.email,
-            phone: candidate.phone,
-            currentCity: candidate.currentCity,
-            headline: candidate.headline,
-            experienceLevel: candidate.experienceLevel,
-            serviceInterest: candidate.serviceInterest,
-            linkedin: candidate.linkedin,
-            resumeUrl: candidate.resumeUrl,
-            note: candidate.note,
+            name: normalizeText(candidate.name),
+            email: normalizeText(candidate.email),
+            phone: normalizeOptionalText(candidate.phone),
+            currentCity: normalizeOptionalText(candidate.currentCity),
+            headline: normalizeOptionalText(candidate.headline),
+            experienceLevel: normalizeOptionalText(candidate.experienceLevel),
+            serviceInterest: normalizeOptionalText(candidate.serviceInterest),
+            linkedin: normalizeOptionalText(candidate.linkedin),
+            resumeUrl: normalizeOptionalText(candidate.resumeUrl),
+            note: normalizeOptionalText(candidate.note),
             paymentStatus: candidate.paymentStatus,
             latestPaymentReference: candidate.latestPaymentReference,
             filesCount: candidate.files.length,
@@ -143,35 +144,35 @@ export default async function AdminPage() {
             updatedAt: candidate.updatedAt.toISOString(),
             files: candidate.files.map((file) => ({
               id: file.id,
-              name: file.name,
+              name: normalizeText(file.name),
               url: file.url,
               type: file.type,
               createdAt: file.createdAt.toISOString(),
             })),
             applications: candidate.applications.map((application) => ({
               id: application.id,
-              status: application.status,
-              note: application.note,
+              status: normalizeText(application.status),
+              note: normalizeOptionalText(application.note),
               createdAt: application.createdAt.toISOString(),
-              jobTitle: application.job.title,
-              company: application.job.company,
+              jobTitle: normalizeText(application.job.title),
+              company: normalizeText(application.job.company),
             })),
             payments: candidate.payments.map((payment) => ({
               id: payment.id,
               provider: payment.provider,
-              status: payment.status,
+              status: normalizeText(payment.status),
               amount: payment.amount,
               currency: payment.currency,
-              label: payment.label,
-              reference: payment.reference,
+              label: normalizeOptionalText(payment.label),
+              reference: normalizeOptionalText(payment.reference),
               createdAt: payment.createdAt.toISOString(),
             })),
           }))}
           initialContent={seededContent.map((item) => ({
             id: item.id,
-            title: item.title,
-            body: item.body,
-            mediaUrl: item.mediaUrl,
+            title: normalizeText(item.title),
+            body: normalizeText(item.body),
+            mediaUrl: normalizeOptionalText(item.mediaUrl),
             updatedAt: item.updatedAt.toISOString(),
           }))}
         />

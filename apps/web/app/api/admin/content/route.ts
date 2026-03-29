@@ -1,6 +1,7 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRequest } from "@/lib/clerk-access";
+import { normalizeOptionalText, normalizeText } from "@/lib/text-normalize";
 
 export async function GET() {
   const auth = await isAdminRequest();
@@ -23,15 +24,15 @@ export async function PATCH(req: Request) {
     const item = await prisma.siteContent.upsert({
       where: { id: body.id },
       update: {
-        title: body.title,
-        body: body.body,
-        mediaUrl: body.mediaUrl || null,
+        title: normalizeText(body.title),
+        body: normalizeText(body.body),
+        mediaUrl: normalizeOptionalText(body.mediaUrl),
       },
       create: {
         id: body.id,
-        title: body.title,
-        body: body.body,
-        mediaUrl: body.mediaUrl || null,
+        title: normalizeText(body.title),
+        body: normalizeText(body.body),
+        mediaUrl: normalizeOptionalText(body.mediaUrl),
       },
     });
 

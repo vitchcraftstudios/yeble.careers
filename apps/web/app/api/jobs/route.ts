@@ -1,6 +1,7 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRequest } from "@/lib/clerk-access";
+import { normalizeOptionalText, normalizeText, normalizeTextArray } from "@/lib/text-normalize";
 
 export async function GET() {
   const auth = await isAdminRequest();
@@ -42,20 +43,20 @@ export async function POST(req: Request) {
 
     const job = await prisma.job.create({
       data: {
-        title,
-        company,
-        sector: sector ?? null,
-        city: city ?? null,
-        locationType: locationType ?? "On-site",
-        experience: experience ?? null,
-        salaryRange: salaryRange ?? null,
-        type: type ?? "Full-time",
+        title: normalizeText(title),
+        company: normalizeText(company),
+        sector: normalizeOptionalText(sector),
+        city: normalizeOptionalText(city),
+        locationType: normalizeText(locationType ?? "On-site"),
+        experience: normalizeOptionalText(experience),
+        salaryRange: normalizeOptionalText(salaryRange),
+        type: normalizeText(type ?? "Full-time"),
         openings: Number(openings || 1),
-        status: status ?? "Open",
-        location,
-        description,
-        salary: salary ?? null,
-        tags: Array.isArray(tags) ? tags : [],
+        status: normalizeText(status ?? "Open"),
+        location: normalizeText(location),
+        description: normalizeText(description),
+        salary: normalizeOptionalText(salary),
+        tags: normalizeTextArray(Array.isArray(tags) ? tags : []),
       },
     });
 

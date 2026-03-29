@@ -2,6 +2,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { jobs as fallbackJobs } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 import { getSiteContentMap } from "@/lib/site-content";
+import { normalizeText } from "@/lib/text-normalize";
 
 export const metadata = {
   title: "Open Jobs | Yeble Careers",
@@ -14,16 +15,16 @@ export default async function JobsPage() {
   const jobs = dbJobs.length
     ? dbJobs.map((job) => ({
         id: job.id,
-        company: job.company,
-        title: job.title,
-        city: job.city || job.location,
-        locationType: job.locationType || "On-site",
-        experience: job.experience || "Experience on request",
-        type: job.type || "Full-time",
-        salaryRange: job.salaryRange || job.salary || "Compensation on request",
-        sector: job.sector || (job.tags[0] ?? "General hiring"),
+        company: normalizeText(job.company),
+        title: normalizeText(job.title),
+        city: normalizeText(job.city || job.location),
+        locationType: normalizeText(job.locationType || "On-site"),
+        experience: normalizeText(job.experience || "Experience on request"),
+        type: normalizeText(job.type || "Full-time"),
+        salaryRange: normalizeText(job.salaryRange || job.salary || "Compensation on request"),
+        sector: normalizeText(job.sector || (job.tags[0] ?? "General hiring")),
         openings: job.openings,
-        status: job.status,
+        status: normalizeText(job.status),
       }))
     : fallbackJobs;
 

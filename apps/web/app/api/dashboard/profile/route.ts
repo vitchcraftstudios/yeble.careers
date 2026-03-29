@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { resolveCandidate } from "@/lib/dashboard-candidate";
+import { normalizeOptionalText, normalizeText } from "@/lib/text-normalize";
 
 async function getCurrentIdentity() {
   const { userId } = await auth();
@@ -18,16 +19,16 @@ async function getCurrentIdentity() {
 
 function serializeProfile(profile: Awaited<ReturnType<typeof resolveCandidate>>) {
   return {
-    name: profile.name,
+    name: normalizeText(profile.name),
     email: profile.email,
     phone: profile.phone || "",
-    currentCity: profile.currentCity || "",
-    headline: profile.headline || "",
-    experienceLevel: profile.experienceLevel || "",
-    serviceInterest: profile.serviceInterest || "",
+    currentCity: normalizeText(profile.currentCity || ""),
+    headline: normalizeText(profile.headline || ""),
+    experienceLevel: normalizeText(profile.experienceLevel || ""),
+    serviceInterest: normalizeText(profile.serviceInterest || ""),
     linkedin: profile.linkedin || "",
     resumeUrl: profile.resumeUrl || "",
-    note: profile.note || "",
+    note: normalizeText(profile.note || ""),
     paymentStatus: profile.paymentStatus,
   };
 }
@@ -66,15 +67,15 @@ export async function PATCH(req: Request) {
       where: { id: candidate.id },
       data: {
         email: identity.email,
-        name: body.name || identity.user?.fullName || identity.email,
-        phone: body.phone || null,
-        currentCity: body.currentCity || null,
-        headline: body.headline || null,
-        experienceLevel: body.experienceLevel || null,
-        serviceInterest: body.serviceInterest || null,
-        linkedin: body.linkedin || null,
-        resumeUrl: body.resumeUrl || null,
-        note: body.note || null,
+        name: normalizeText(body.name || identity.user?.fullName || identity.email),
+        phone: normalizeOptionalText(body.phone),
+        currentCity: normalizeOptionalText(body.currentCity),
+        headline: normalizeOptionalText(body.headline),
+        experienceLevel: normalizeOptionalText(body.experienceLevel),
+        serviceInterest: normalizeOptionalText(body.serviceInterest),
+        linkedin: normalizeOptionalText(body.linkedin),
+        resumeUrl: normalizeOptionalText(body.resumeUrl),
+        note: normalizeOptionalText(body.note),
       },
     });
 

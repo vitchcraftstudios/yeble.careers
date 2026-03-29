@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRequest } from "@/lib/clerk-access";
+import { normalizeOptionalText, normalizeText } from "@/lib/text-normalize";
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await isAdminRequest();
@@ -13,18 +14,18 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     const candidate = await prisma.candidate.update({
       where: { id },
       data: {
-        name: body.name,
-        email: body.email,
-        phone: body.phone || null,
-        currentCity: body.currentCity || null,
-        headline: body.headline || null,
-        experienceLevel: body.experienceLevel || null,
-        serviceInterest: body.serviceInterest || null,
-        linkedin: body.linkedin || null,
-        resumeUrl: body.resumeUrl || null,
-        note: body.note || null,
+        name: normalizeText(body.name),
+        email: normalizeText(body.email).toLowerCase(),
+        phone: normalizeOptionalText(body.phone),
+        currentCity: normalizeOptionalText(body.currentCity),
+        headline: normalizeOptionalText(body.headline),
+        experienceLevel: normalizeOptionalText(body.experienceLevel),
+        serviceInterest: normalizeOptionalText(body.serviceInterest),
+        linkedin: normalizeOptionalText(body.linkedin),
+        resumeUrl: normalizeOptionalText(body.resumeUrl),
+        note: normalizeOptionalText(body.note),
         paymentStatus: body.paymentStatus || undefined,
-        latestPaymentReference: body.latestPaymentReference || null,
+        latestPaymentReference: normalizeOptionalText(body.latestPaymentReference),
       },
       include: {
         files: { orderBy: { createdAt: "desc" } },
@@ -56,27 +57,27 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       updatedAt: candidate.updatedAt.toISOString(),
       files: candidate.files.map((file) => ({
         id: file.id,
-        name: file.name,
+        name: normalizeText(file.name),
         url: file.url,
         type: file.type,
         createdAt: file.createdAt.toISOString(),
       })),
       applications: candidate.applications.map((application) => ({
         id: application.id,
-        status: application.status,
-        note: application.note,
+        status: normalizeText(application.status),
+        note: normalizeOptionalText(application.note),
         createdAt: application.createdAt.toISOString(),
-        jobTitle: application.job.title,
-        company: application.job.company,
+        jobTitle: normalizeText(application.job.title),
+        company: normalizeText(application.job.company),
       })),
       payments: candidate.payments.map((payment) => ({
         id: payment.id,
         provider: payment.provider,
-        status: payment.status,
+        status: normalizeText(payment.status),
         amount: payment.amount,
         currency: payment.currency,
-        label: payment.label,
-        reference: payment.reference,
+        label: normalizeOptionalText(payment.label),
+        reference: normalizeOptionalText(payment.reference),
         createdAt: payment.createdAt.toISOString(),
       })),
     });

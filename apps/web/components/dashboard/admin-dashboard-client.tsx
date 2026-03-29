@@ -521,7 +521,7 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div>
                         <p className="font-semibold text-[#123622]">{job.title}</p>
-                        <p className="text-sm text-[#31513c]">{job.company} Ã‚Â· {job.city || job.location} Ã‚Â· {job.status}</p>
+                        <p className="text-sm text-[#31513c]">{job.company} | {job.city || job.location} | {job.status}</p>
                         <p className="text-sm text-[#31513c]">{job.salaryRange || job.salary || "Salary on request"}</p>
                       </div>
                       <div className="flex gap-2">
@@ -569,7 +569,7 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
                       </div>
                       <span className="rounded-full border border-[#d6d1c1] px-3 py-1 text-xs text-[#2d6a3e]">{registrant.paymentStatus}</span>
                     </div>
-                    <p className="mt-3 text-sm text-[#31513c]">Files: {registrant.filesCount} Ã‚Â· Applications: {registrant.applicationsCount}</p>
+                    <p className="mt-3 text-sm text-[#31513c]">Files: {registrant.filesCount} | Applications: {registrant.applicationsCount}</p>
                   </button>
                 ))
               ) : (
@@ -653,7 +653,7 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
                           <div key={payment.id} className="rounded-2xl border border-[#e3decf] bg-white p-3">
                             <p className="font-semibold text-[#123622]">{payment.label || "Registration payment"}</p>
                             <p className="text-sm text-[#31513c]">{payment.currency} {payment.amount / 100}</p>
-                            <p className="text-sm text-[#31513c]">{payment.status} Ã‚Â· {payment.reference || "Awaiting ref"}</p>
+                            <p className="text-sm text-[#31513c]">{payment.status} | {payment.reference || "Awaiting ref"}</p>
                           </div>
                         ))
                       ) : (
