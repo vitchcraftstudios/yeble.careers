@@ -71,9 +71,10 @@ export default async function AdminPage() {
   if (!userId) redirect("/signin?callbackUrl=/admin");
 
   const user = await currentUser();
-  const email = user?.emailAddresses?.[0]?.emailAddress || "";
+  const emails = (user?.emailAddresses || []).map((address) => address.emailAddress || "");
+  const email = user?.primaryEmailAddress?.emailAddress || emails[0] || "";
 
-  if (!(await isAdminUser(email))) {
+  if (!(await isAdminUser(emails))) {
     redirect("/dashboard");
   }
 
