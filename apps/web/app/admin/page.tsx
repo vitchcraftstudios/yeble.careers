@@ -6,6 +6,15 @@ import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-ou
 import { DashboardHomeLink } from "@/components/dashboard/dashboard-home-link";
 import { isAdminUser } from "@/lib/clerk-access";
 
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.9">
+      <path d="M4 7.5h16v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5v-9Z" />
+      <path d="m5 8 7 5 7-5" />
+    </svg>
+  );
+}
+
 const defaultContent = [
   {
     id: "home-hero",
@@ -53,19 +62,22 @@ export default async function AdminPage() {
   const seededContent = content.length ? content : defaultContent.map((item) => ({ ...item, updatedAt: new Date() }));
 
   return (
-    <div className="min-h-screen bg-[#fffef0] text-[#0f2918]">
-      <div className="mx-auto max-w-7xl px-6 py-12">
-        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+    <div className="min-h-screen overflow-x-hidden bg-[#fffef0] text-[#0f2918]">
+      <div className="mx-auto max-w-7xl px-3 py-8 sm:px-6 sm:py-12">
+        <div className="mb-8 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Admin Dashboard</p>
-            <h1 className="mt-2 text-3xl font-semibold text-[#123622]">Jobs, registrants, and site content</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-7 text-[#31513c]">
+            <h1 className="mt-2 break-words text-3xl font-semibold text-[#123622]">Jobs, registrants, and site content</h1>
+            <p className="mt-2 max-w-2xl break-words text-sm leading-7 text-[#31513c]">
               Manage live mandates, monitor registrants and payments, and update key public-site content from one place.
             </p>
           </div>
-          <div className="flex flex-col items-start gap-3 sm:items-end">
-            <div className="rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email || "Admin"}</div>
-            <div className="flex flex-wrap gap-3">
+          <div className="flex min-w-0 flex-col items-start gap-3 sm:items-end">
+            <div className="flex w-full items-center gap-2 sm:w-auto sm:justify-end">
+              <div className="flex min-w-0 items-center gap-2 rounded-full border border-[#d6d1c1] bg-white px-3 py-2 text-sm text-[#31513c] sm:max-w-[260px]">
+                <MailIcon />
+                <span className="min-w-0 truncate">{email || "Admin"}</span>
+              </div>
               <DashboardHomeLink />
               <DashboardSignOutButton />
             </div>

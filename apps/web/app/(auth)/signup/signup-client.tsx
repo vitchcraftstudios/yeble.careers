@@ -9,9 +9,9 @@ export default function SignUpClient() {
   const redirectUrl = `/auth-complete?callbackUrl=${encodeURIComponent(callbackUrl)}`;
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] px-4 py-6 text-[#0f2918] sm:px-6 sm:py-8">
-      <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-md items-center">
-        <div className="w-full rounded-[2rem] border border-[#e3decf] bg-white/92 p-5 shadow-[0_20px_80px_rgba(84,255,138,0.14)] backdrop-blur">
+    <section className="min-h-screen overflow-x-hidden bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] px-4 py-6 text-[#0f2918] sm:px-6 sm:py-8">
+      <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-md min-w-0 items-center">
+        <div className="w-full min-w-0 overflow-hidden rounded-[2rem] border border-[#e3decf] bg-white/92 p-4 shadow-[0_20px_80px_rgba(84,255,138,0.14)] backdrop-blur sm:p-5">
           <div className="mb-5 border-b border-[#ece6d7] pb-5 text-center">
             <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Yeble Careers</p>
             <h1 className="mt-3 text-3xl font-semibold text-[#123622]">Create account</h1>
@@ -25,9 +25,9 @@ export default function SignUpClient() {
             fallbackRedirectUrl={redirectUrl}
             appearance={{
               elements: {
-                rootBox: "w-full",
-                cardBox: "w-full",
-                card: "w-full bg-transparent border-0 shadow-none p-0",
+                rootBox: "w-full max-w-full",
+                cardBox: "w-full max-w-full",
+                card: "w-full max-w-full bg-transparent border-0 shadow-none p-0",
                 header: "hidden",
                 headerTitle: "hidden",
                 headerSubtitle: "hidden",
@@ -46,3 +46,4 @@ export default function SignUpClient() {
     </section>
   );
 }
+

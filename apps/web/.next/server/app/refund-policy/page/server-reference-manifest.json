@@ -1,0 +1,65 @@
+{
+  "node": {
+    "006e6823e050a66ff357c17149a1e98ae2c2fdd8f1": {
+      "workers": {
+        "app/refund-policy/page": {
+          "moduleId": 24799,
+          "async": false,
+          "exportedName": "invalidateCacheAction",
+          "filename": "apps/web/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js"
+        }
+      },
+      "layer": {
+        "app/refund-policy/page": "action-browser"
+      },
+      "exportedName": "invalidateCacheAction",
+      "filename": "apps/web/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js"
+    },
+    "00cc0f644c45752b3f7e0f11e1db4cde2368f3246a": {
+      "workers": {
+        "app/refund-policy/page": {
+          "moduleId": 24799,
+          "async": false,
+          "exportedName": "createOrReadKeylessAction",
+          "filename": "apps/web/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
+        }
+      },
+      "layer": {
+        "app/refund-policy/page": "rsc"
+      },
+      "exportedName": "createOrReadKeylessAction",
+      "filename": "apps/web/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
+    },
+    "00d73d055a0c8d66d800170e15faa8df9f302a9f6b": {
+      "workers": {
+        "app/refund-policy/page": {
+          "moduleId": 24799,
+          "async": false,
+          "exportedName": "deleteKeylessAction",
+          "filename": "apps/web/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
+        }
+      },
+      "layer": {
+        "app/refund-policy/page": "action-browser"
+      },
+      "exportedName": "deleteKeylessAction",
+      "filename": "apps/web/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
+    },
+    "4005f8fc80d6a65875ea6377720d992250ce0d4ec2": {
+      "workers": {
+        "app/refund-policy/page": {
+          "moduleId": 24799,
+          "async": false,
+          "exportedName": "syncKeylessConfigAction",
+          "filename": "apps/web/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
+        }
+      },
+      "layer": {
+        "app/refund-policy/page": "action-browser"
+      },
+      "exportedName": "syncKeylessConfigAction",
+      "filename": "apps/web/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js"
+    }
+  },
+  "edge": {}
+}

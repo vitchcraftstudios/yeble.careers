@@ -5,6 +5,15 @@ import { RegistrantDashboardClient } from "@/components/dashboard/registrant-das
 import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-out-button";
 import { DashboardHomeLink } from "@/components/dashboard/dashboard-home-link";
 
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.9">
+      <path d="M4 7.5h16v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5v-9Z" />
+      <path d="m5 8 7 5 7-5" />
+    </svg>
+  );
+}
+
 export default async function DashboardPage() {
   const { userId } = await auth();
   if (!userId) redirect("/signin?callbackUrl=/dashboard");
@@ -44,7 +53,7 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#fffef0] text-[#0f2918]">
       <div className="mx-auto max-w-7xl px-3 py-8 sm:px-6 sm:py-12">
-        <div className="mb-8 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-8 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Registrant Dashboard</p>
             <h1 className="mt-2 break-words text-3xl font-semibold text-[#123622]">Profile, files, and payment status</h1>
@@ -53,9 +62,12 @@ export default async function DashboardPage() {
             </p>
           </div>
           <div className="flex min-w-0 flex-col items-start gap-3 sm:items-end">
-            <div className="max-w-full break-all rounded-full border border-[#d6d1c1] bg-white px-4 py-2 text-sm text-[#31513c]">{email}</div>
-            <div className="flex w-full flex-wrap gap-3 sm:w-auto sm:justify-end">
-              <DashboardHomeLink className="w-full sm:w-auto" />
+            <div className="flex w-full items-center gap-2 sm:w-auto sm:justify-end">
+              <div className="flex min-w-0 items-center gap-2 rounded-full border border-[#d6d1c1] bg-white px-3 py-2 text-sm text-[#31513c] sm:max-w-[260px]">
+                <MailIcon />
+                <span className="min-w-0 truncate">{email}</span>
+              </div>
+              <DashboardHomeLink />
               <DashboardSignOutButton />
             </div>
           </div>
