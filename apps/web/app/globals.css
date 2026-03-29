@@ -162,3 +162,52 @@ button {
     stroke-dashoffset: 0;
   }
 }
+
+@keyframes success-check-float {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.88);
+  }
+
+  55% {
+    opacity: 1;
+    transform: translateY(0) scale(1.03);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes success-check-ripple {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.55;
+    transform: scale(1.06);
+  }
+}
+
+.success-check-shell {
+  animation: success-check-float 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.success-check-core {
+  animation: success-check-float 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.success-check-ripple {
+  animation: success-check-ripple 1.4s ease-out infinite;
+}
+
+.success-check-ripple-delay {
+  animation-delay: 0.2s;
+}

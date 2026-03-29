@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { FormEvent, useState } from "react";
 import { OverlayModal } from "@/components/overlay-modal";
@@ -21,7 +21,7 @@ const initialState: FormState = {
 
 function CheckIcon() {
   return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg viewBox="0 0 20 20" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.15">
       <circle cx="10" cy="10" r="7" />
       <path d="m7.5 10 1.6 1.6L12.5 8.4" />
     </svg>
@@ -129,10 +129,16 @@ export function ContactForm() {
         widthClassName="max-w-xl"
       >
         <div className="space-y-4 sm:space-y-5">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#d8e5d9] bg-[#f5fbf6] text-[#2d6a3e] sm:h-14 sm:w-14">
-            <CheckIcon />
+          <div className="flex justify-center">
+            <div className="success-check-shell relative flex h-24 w-24 items-center justify-center sm:h-28 sm:w-28">
+              <span className="success-check-ripple absolute inset-0 rounded-full border border-[#cfe6d4] bg-[radial-gradient(circle,rgba(255,255,255,0.95)_0%,rgba(245,251,246,0.92)_62%,rgba(236,247,239,0.65)_100%)]" />
+              <span className="success-check-ripple success-check-ripple-delay absolute inset-[10px] rounded-full border border-[#d8e5d9] bg-[#f8fcf8]" />
+              <span className="success-check-core relative inline-flex h-14 w-14 items-center justify-center rounded-full border border-[#c5ddcb] bg-white text-[#2d6a3e] shadow-[0_16px_36px_rgba(39,192,107,0.16)] sm:h-16 sm:w-16">
+                <CheckIcon />
+              </span>
+            </div>
           </div>
-          <p className="text-sm leading-7 text-[#31513c]">
+          <p className="text-center text-sm leading-7 text-[#31513c] sm:text-base">
             Thank you for reaching out. Our Dehradun hiring desk will review your enquiry and get back to you on the
             contact details you shared.
           </p>
