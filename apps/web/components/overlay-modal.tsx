@@ -56,7 +56,7 @@ export function OverlayModal({
               className="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-lg text-[#123622] transition hover:border-[#2d6a3e] sm:right-4 sm:top-4"
               aria-label="Close modal"
             >
-              ×
+              x
             </button>
           ) : null}
           <div className="flex max-h-[calc(100dvh-1.5rem)] flex-col sm:max-h-[calc(100dvh-3rem)]">
