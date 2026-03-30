@@ -15,7 +15,12 @@ function MailIcon() {
   );
 }
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ applied?: string }>;
+}) {
+  const params = await searchParams;
   const { userId } = await auth();
   if (!userId) redirect("/signin?callbackUrl=/dashboard");
 
@@ -79,6 +84,12 @@ export default async function DashboardPage() {
             </div>
           </div>
         </div>
+
+        {params?.applied ? (
+          <div className="mb-6 rounded-2xl border border-[#b9e3c8] bg-[#e8f7ee] px-4 py-3 text-sm text-[#1f5c36]">
+            Your application was recorded successfully.
+          </div>
+        ) : null}
 
         <RegistrantDashboardClient
           initialProfile={profile}

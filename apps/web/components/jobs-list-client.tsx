@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
@@ -186,10 +187,18 @@ export function JobsListClient({ jobs }: { jobs: JobListItem[] }) {
                       </a>
                     ) : null}
                   </div>
-                  <div className="flex flex-wrap gap-2 text-xs text-[#2f4a35]">
-                    <span className="rounded-full bg-[#f6f2e6] px-3 py-1">{job.sector}</span>
-                    <span className="rounded-full border border-[#e3decf] bg-white px-3 py-1">{job.openings} openings</span>
-                    <span className="rounded-full border border-[#e3decf] bg-white px-3 py-1">{job.status}</span>
+                  <div className="flex flex-col items-start gap-3 md:items-end">
+                    <Link
+                      href={`/apply/${job.id}`}
+                      className="inline-flex items-center justify-center rounded-full bg-[#27c06b] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1ea95c]"
+                    >
+                      Apply now
+                    </Link>
+                    <div className="flex flex-wrap gap-2 text-xs text-[#2f4a35]">
+                      <span className="rounded-full bg-[#f6f2e6] px-3 py-1">{job.sector}</span>
+                      <span className="rounded-full border border-[#e3decf] bg-white px-3 py-1">{job.openings} openings</span>
+                      <span className="rounded-full border border-[#e3decf] bg-white px-3 py-1">{job.status}</span>
+                    </div>
                   </div>
                 </div>
               </article>
