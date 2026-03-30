@@ -36,6 +36,7 @@ export function JobsListClient({ jobs }: { jobs: JobListItem[] }) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [sourceFilter, setSourceFilter] = useState("all");
+  const [pendingApplyJobId, setPendingApplyJobId] = useState<string | null>(null);
 
   const filteredAndSortedJobs = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -190,9 +191,20 @@ export function JobsListClient({ jobs }: { jobs: JobListItem[] }) {
                   <div className="flex flex-col items-start gap-3 md:items-end">
                     <Link
                       href={`/apply/${job.id}`}
-                      className="inline-flex items-center justify-center rounded-full bg-[#27c06b] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1ea95c]"
+                      onClick={() => setPendingApplyJobId(job.id)}
+                      aria-busy={pendingApplyJobId === job.id}
+                      className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white transition ${
+                        pendingApplyJobId === job.id ? "bg-[#1ea95c] pointer-events-none" : "bg-[#27c06b] hover:bg-[#1ea95c]"
+                      }`}
                     >
-                      Apply now
+                      {pendingApplyJobId === job.id ? (
+                        <>
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden="true" />
+                          Redirecting...
+                        </>
+                      ) : (
+                        "Apply now"
+                      )}
                     </Link>
                     <div className="flex flex-wrap gap-2 text-xs text-[#2f4a35]">
                       <span className="rounded-full bg-[#f6f2e6] px-3 py-1">{job.sector}</span>
