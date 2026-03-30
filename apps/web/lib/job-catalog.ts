@@ -1,7 +1,13 @@
 import { jobs as fallbackJobs } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 
-export async function ensureJobRecord(jobId: string) {
+type JobSummary = {
+  id: string;
+  title: string;
+  company: string;
+};
+
+export async function getJobSummary(jobId: string): Promise<JobSummary | null> {
   const existingJob = await prisma.job.findUnique({
     where: { id: jobId },
     select: { id: true, title: true, company: true },
@@ -14,6 +20,33 @@ export async function ensureJobRecord(jobId: string) {
   const fallbackJob = fallbackJobs.find((job) => job.id === jobId);
   if (!fallbackJob) {
     return null;
+  }
+
+  return {
+    id: fallbackJob.id,
+    title: fallbackJob.title,
+    company: fallbackJob.company,
+  };
+}
+
+export async function ensureJobRecord(jobId: string) {
+  const existingJob = await getJobSummary(jobId);
+  if (!existingJob) {
+    return null;
+  }
+
+  const alreadyPersisted = await prisma.job.findUnique({
+    where: { id: jobId },
+    select: { id: true, title: true, company: true },
+  });
+
+  if (alreadyPersisted) {
+    return alreadyPersisted;
+  }
+
+  const fallbackJob = fallbackJobs.find((job) => job.id === jobId);
+  if (!fallbackJob) {
+    return existingJob;
   }
 
   try {

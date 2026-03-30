@@ -2,7 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolveCandidate } from "@/lib/dashboard-candidate";
-import { ensureJobRecord } from "@/lib/job-catalog";
+import { getJobSummary } from "@/lib/job-catalog";
 
 const APPLY_REDIRECT_COOKIE = "yeble_apply_callback";
 
@@ -40,53 +40,59 @@ export async function GET(request: Request, context: RouteContext) {
   const { jobId } = await context.params;
   const callbackUrl = `/apply/${jobId}`;
 
-  const { userId } = await auth();
-  if (!userId) {
-    const response = buildRedirectResponse(request, `/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`);
-    attachPendingApplyCookie(response, callbackUrl);
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      const response = buildRedirectResponse(request, `/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+      attachPendingApplyCookie(response, callbackUrl);
+      return response;
+    }
+
+    const user = await currentUser();
+    const emails = (user?.emailAddresses || []).map((address) => address.emailAddress || "");
+    const email = user?.primaryEmailAddress?.emailAddress || emails[0] || "";
+    const name = user?.fullName || "";
+
+    if (!user || !email) {
+      const response = buildRedirectResponse(request, `/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+      attachPendingApplyCookie(response, callbackUrl);
+      return response;
+    }
+
+    const job = await getJobSummary(jobId);
+
+    if (!job) {
+      const response = buildRedirectResponse(request, "/jobs?apply=unavailable");
+      clearPendingApplyCookie(response);
+      return response;
+    }
+
+    const candidate = await resolveCandidate({
+      userId,
+      email,
+      name,
+    });
+
+    const existingApplication = await prisma.application.findFirst({
+      where: {
+        jobId,
+        candidateId: candidate.id,
+      },
+      select: { id: true },
+    });
+
+    if (existingApplication) {
+      const response = buildRedirectResponse(request, `/dashboard?applied=${encodeURIComponent(jobId)}`);
+      clearPendingApplyCookie(response);
+      return response;
+    }
+
+    const response = buildRedirectResponse(request, `/dashboard?applyJobId=${encodeURIComponent(jobId)}`);
+    clearPendingApplyCookie(response);
     return response;
-  }
-
-  const user = await currentUser();
-  const emails = (user?.emailAddresses || []).map((address) => address.emailAddress || "");
-  const email = user?.primaryEmailAddress?.emailAddress || emails[0] || "";
-  const name = user?.fullName || "";
-
-  if (!user || !email) {
-    const response = buildRedirectResponse(request, `/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`);
-    attachPendingApplyCookie(response, callbackUrl);
-    return response;
-  }
-
-  const job = await ensureJobRecord(jobId);
-
-  if (!job) {
-    const response = buildRedirectResponse(request, "/jobs?apply=unavailable");
+  } catch {
+    const response = buildRedirectResponse(request, `/dashboard?applyJobId=${encodeURIComponent(jobId)}`);
     clearPendingApplyCookie(response);
     return response;
   }
-
-  const candidate = await resolveCandidate({
-    userId,
-    email,
-    name,
-  });
-
-  const existingApplication = await prisma.application.findFirst({
-    where: {
-      jobId,
-      candidateId: candidate.id,
-    },
-    select: { id: true },
-  });
-
-  if (existingApplication) {
-    const response = buildRedirectResponse(request, `/dashboard?applied=${encodeURIComponent(jobId)}`);
-    clearPendingApplyCookie(response);
-    return response;
-  }
-
-  const response = buildRedirectResponse(request, `/dashboard?applyJobId=${encodeURIComponent(jobId)}`);
-  clearPendingApplyCookie(response);
-  return response;
 }
