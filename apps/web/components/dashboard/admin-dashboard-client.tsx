@@ -84,6 +84,8 @@ type Props = {
   initialJobs: JobItem[];
   initialRegistrants: RegistrantItem[];
   initialContent: ContentItem[];
+  initialSelectedRegistrantId?: string | null;
+  initialSection?: AdminSection;
 };
 
 type JobFormState = {
@@ -182,14 +184,14 @@ function getContentGroup(id: string) {
   return "General";
 }
 
-export function AdminDashboardClient({ initialJobs, initialRegistrants, initialContent }: Props) {
-  const [activeSection, setActiveSection] = useState<AdminSection>("overview");
+export function AdminDashboardClient({ initialJobs, initialRegistrants, initialContent, initialSelectedRegistrantId = null, initialSection = "overview" }: Props) {
+  const [activeSection, setActiveSection] = useState<AdminSection>(initialSection);
   const [jobs, setJobs] = useState<JobItem[]>(initialJobs);
   const [registrants, setRegistrants] = useState<RegistrantItem[]>(initialRegistrants);
   const [content, setContent] = useState<ContentItem[]>(initialContent);
   const [jobForm, setJobForm] = useState<JobFormState>(emptyJob);
   const [editingJobId, setEditingJobId] = useState<string | null>(null);
-  const [selectedRegistrantId, setSelectedRegistrantId] = useState<string | null>(initialRegistrants[0]?.id || null);
+  const [selectedRegistrantId, setSelectedRegistrantId] = useState<string | null>(initialSelectedRegistrantId || initialRegistrants[0]?.id || null);
   const [registrantForm, setRegistrantForm] = useState<RegistrantFormState | null>(initialRegistrants[0] ? toRegistrantForm(initialRegistrants[0]) : null);
   const [savingJob, setSavingJob] = useState(false);
   const [savingRegistrant, setSavingRegistrant] = useState(false);
@@ -325,6 +327,30 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
     }
   }
 
+
+  async function deleteRegistrant() {
+    if (!selectedRegistrant) return;
+
+    const confirmed = window.confirm(`Delete ${selectedRegistrant.name} and all linked files, applications, and payment records?`);
+    if (!confirmed) return;
+
+    const response = await fetch(`/api/admin/registrants/${selectedRegistrant.id}`, { method: "DELETE" });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      setRegistrantMessage(data.error || "Unable to delete registrant profile.");
+      return;
+    }
+
+    setRegistrants((current) => {
+      const next = current.filter((item) => item.id !== selectedRegistrant.id);
+      setSelectedRegistrantId(next[0]?.id || null);
+      if (!next.length) {
+        setRegistrantForm(null);
+      }
+      return next;
+    });
+    setRegistrantMessage("Registrant profile deleted successfully.");
+  }
   async function saveContent(id: string) {
     setContentMessage("");
     const payload = editingContent[id];
@@ -638,9 +664,14 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <button type="button" onClick={saveRegistrant} disabled={savingRegistrant} className="rounded-full bg-[#27c06b] px-6 py-3 text-sm font-semibold text-white disabled:opacity-70">
-                    {savingRegistrant ? "Saving profile..." : "Save registrant profile"}
-                  </button>
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <button type="button" onClick={saveRegistrant} disabled={savingRegistrant} className="rounded-full bg-[#27c06b] px-6 py-3 text-sm font-semibold text-white disabled:opacity-70">
+                      {savingRegistrant ? "Saving profile..." : "Save registrant profile"}
+                    </button>
+                    <button type="button" onClick={deleteRegistrant} className="rounded-full border border-[#e3decf] px-6 py-3 text-sm font-semibold text-[#8c2d2d]">
+                      Delete registrant
+                    </button>
+                  </div>
                   {registrantMessage ? <p className="text-sm text-[#31513c]">{registrantMessage}</p> : null}
                 </div>
 
@@ -774,5 +805,13 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
     </div>
   );
 }
+
+
+
+
+
+
+
+
 
 

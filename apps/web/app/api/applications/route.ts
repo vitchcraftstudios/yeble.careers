@@ -28,7 +28,7 @@ function buildApplicationSnapshot(candidate: {
   linkedin: string | null;
   resumeUrl: string | null;
   note: string | null;
-  files: { name: string; type: string | null }[];
+  files: { id: string; name: string; type: string | null; url: string }[];
 }, applicantNote: string | null) {
   const lines = [
     `Phone: ${candidate.phone || "Not provided"}`,
@@ -50,7 +50,9 @@ function buildApplicationSnapshot(candidate: {
 }
 
 async function notifyNewApplication(args: {
+  baseUrl: string;
   candidate: {
+    id: string;
     name: string;
     email: string;
     phone: string | null;
@@ -61,7 +63,7 @@ async function notifyNewApplication(args: {
     linkedin: string | null;
     resumeUrl: string | null;
     note: string | null;
-    files: { name: string; type: string | null }[];
+    files: { id: string; name: string; type: string | null; url: string }[];
   };
   job: {
     title: string;
@@ -72,8 +74,14 @@ async function notifyNewApplication(args: {
 }) {
   if (!resend || !mailFrom) return;
 
+  const adminRegistrantUrl = `${args.baseUrl}/admin?section=registrants&registrantId=${encodeURIComponent(args.candidate.id)}`;
+  const primaryResumeFile = args.candidate.files.find((file) => file.url === args.candidate.resumeUrl) || args.candidate.files[0] || null;
+  const primaryResumeReference = primaryResumeFile
+    ? `${args.baseUrl}/api/admin/files/open?id=${encodeURIComponent(primaryResumeFile.id)}`
+    : args.candidate.resumeUrl || "Not provided";
+
   const text = [
-    `New application received`,
+    "New application received",
     `Job: ${args.job.title}`,
     `Company: ${args.job.company}`,
     `Job ID: ${args.job.id}`,
@@ -85,14 +93,20 @@ async function notifyNewApplication(args: {
     `Experience level: ${args.candidate.experienceLevel || "Not provided"}`,
     `Service interest: ${args.candidate.serviceInterest || "Not provided"}`,
     `LinkedIn: ${args.candidate.linkedin || "Not provided"}`,
-    `Primary resume: ${args.candidate.resumeUrl || "Not provided"}`,
-    `Uploaded documents: ${args.candidate.files.length ? args.candidate.files.map((file) => `${file.name}${file.type ? ` (${file.type})` : ""}`).join(", ") : "None"}`,
+    `Primary resume: ${primaryResumeReference}`,
+    `Admin review: ${adminRegistrantUrl}`,
+    `Uploaded documents: ${args.candidate.files.length ? args.candidate.files.map((file) => `${file.name}: ${args.baseUrl}/api/admin/files/open?id=${encodeURIComponent(file.id)}`).join(", ") : "None"}`,
     `Profile note: ${args.candidate.note || "Not provided"}`,
     `Application note: ${args.applicantNote || "Not provided"}`,
   ].join("\n");
 
   const safeFiles = args.candidate.files.length
-    ? args.candidate.files.map((file) => `<li>${escapeHtml(file.name)}${file.type ? ` <span style="color:#56705d;">(${escapeHtml(file.type)})</span>` : ""}</li>`).join("")
+    ? args.candidate.files
+        .map(
+          (file) =>
+            `<li><a href="${escapeHtml(`${args.baseUrl}/api/admin/files/open?id=${encodeURIComponent(file.id)}`)}">${escapeHtml(file.name)}</a>${file.type ? ` <span style="color:#56705d;">(${escapeHtml(file.type)})</span>` : ""}</li>`,
+        )
+        .join("")
     : "<li>No supporting documents uploaded.</li>";
 
   await resend.emails.send({
@@ -115,7 +129,8 @@ async function notifyNewApplication(args: {
         <p style="margin: 0 0 8px;"><strong>Experience level:</strong> ${escapeHtml(args.candidate.experienceLevel || "Not provided")}</p>
         <p style="margin: 0 0 8px;"><strong>Service interest:</strong> ${escapeHtml(args.candidate.serviceInterest || "Not provided")}</p>
         <p style="margin: 0 0 8px;"><strong>LinkedIn:</strong> ${args.candidate.linkedin ? `<a href="${escapeHtml(args.candidate.linkedin)}">${escapeHtml(args.candidate.linkedin)}</a>` : "Not provided"}</p>
-        <p style="margin: 0 0 8px;"><strong>Primary resume:</strong> ${args.candidate.resumeUrl ? `<a href="${escapeHtml(args.candidate.resumeUrl)}">${escapeHtml(args.candidate.resumeUrl)}</a>` : "Not provided"}</p>
+        <p style="margin: 0 0 8px;"><strong>Primary resume:</strong> ${primaryResumeReference === "Not provided" ? "Not provided" : `<a href="${escapeHtml(primaryResumeReference)}">Open resume</a>`}</p>
+        <p style="margin: 0 0 8px;"><strong>Admin review:</strong> <a href="${escapeHtml(adminRegistrantUrl)}">Open candidate in admin</a></p>
         <p style="margin: 16px 0 8px;"><strong>Uploaded documents</strong></p>
         <ul style="margin: 0 0 16px 18px; padding: 0;">${safeFiles}</ul>
         <p style="margin: 16px 0 8px;"><strong>Profile note</strong></p>
@@ -145,6 +160,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
+    const baseUrl = new URL(req.url).origin;
     const jobId = (body.jobId || "").trim();
     const applicantNote = (body.note || "").trim() || null;
 
@@ -232,7 +248,7 @@ export async function POST(req: Request) {
         linkedin: hydratedCandidate.linkedin,
         resumeUrl: hydratedCandidate.resumeUrl,
         note: hydratedCandidate.note,
-        files: hydratedCandidate.files.map((file) => ({ name: file.name, type: file.type })),
+        files: hydratedCandidate.files.map((file) => ({ id: file.id, name: file.name, type: file.type, url: file.url })),
       },
       applicantNote,
     );
@@ -250,7 +266,9 @@ export async function POST(req: Request) {
 
     try {
       await notifyNewApplication({
+        baseUrl,
         candidate: {
+          id: hydratedCandidate.id,
           name: hydratedCandidate.name,
           email: hydratedCandidate.email,
           phone: hydratedCandidate.phone,
@@ -261,7 +279,7 @@ export async function POST(req: Request) {
           linkedin: hydratedCandidate.linkedin,
           resumeUrl: hydratedCandidate.resumeUrl,
           note: hydratedCandidate.note,
-          files: hydratedCandidate.files.map((file) => ({ name: file.name, type: file.type })),
+          files: hydratedCandidate.files.map((file) => ({ id: file.id, name: file.name, type: file.type, url: file.url })),
         },
         job,
         applicantNote,
@@ -288,4 +306,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unable to submit application" }, { status: 500 });
   }
 }
-

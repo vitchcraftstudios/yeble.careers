@@ -67,7 +67,17 @@ const defaultContent = [
   },
 ];
 
-export default async function AdminPage() {
+type SearchParams = {
+  registrantId?: string;
+  section?: string;
+};
+
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams?: Promise<SearchParams>;
+}) {
+  const params = await searchParams;
   const { userId } = await auth();
   if (!userId) redirect("/signin?callbackUrl=/admin");
 
@@ -175,6 +185,8 @@ export default async function AdminPage() {
             mediaUrl: normalizeOptionalText(item.mediaUrl),
             updatedAt: item.updatedAt.toISOString(),
           }))}
+          initialSelectedRegistrantId={params?.registrantId || null}
+          initialSection={params?.section === "registrants" ? "registrants" : undefined}
         />
       </div>
     </div>
