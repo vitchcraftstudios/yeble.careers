@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { resolveCandidate } from "@/lib/dashboard-candidate";
 import { getMissingCandidateProfileFields } from "@/lib/candidate-profile";
+import { ensureJobRecord } from "@/lib/job-catalog";
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const mailFrom = process.env.MAIL_FROM;

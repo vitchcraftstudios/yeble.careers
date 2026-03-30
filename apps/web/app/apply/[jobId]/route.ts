@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolveCandidate } from "@/lib/dashboard-candidate";
+import { ensureJobRecord } from "@/lib/job-catalog";
 
 const APPLY_REDIRECT_COOKIE = "yeble_apply_callback";
 
@@ -57,10 +58,7 @@ export async function GET(request: Request, context: RouteContext) {
     return response;
   }
 
-  const job = await prisma.job.findUnique({
-    where: { id: jobId },
-    select: { id: true },
-  });
+  const job = await ensureJobRecord(jobId);
 
   if (!job) {
     const response = buildRedirectResponse(request, "/jobs?apply=unavailable");

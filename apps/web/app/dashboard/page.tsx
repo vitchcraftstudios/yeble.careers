@@ -5,6 +5,7 @@ import { RegistrantDashboardClient } from "@/components/dashboard/registrant-das
 import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-out-button";
 import { DashboardHomeLink } from "@/components/dashboard/dashboard-home-link";
 import { isAdminUser } from "@/lib/clerk-access";
+import { ensureJobRecord } from "@/lib/job-catalog";
 
 type SearchParams = {
   applied?: string;
@@ -54,12 +55,7 @@ export default async function DashboardPage({
       })
       .catch(() => null),
     params?.applyJobId
-      ? prisma.job
-          .findUnique({
-            where: { id: params.applyJobId },
-            select: { id: true, title: true, company: true },
-          })
-          .catch(() => null)
+      ? ensureJobRecord(params.applyJobId).catch(() => null)
       : Promise.resolve(null),
   ]);
 
