@@ -35,7 +35,7 @@ export function DashboardSignOutButton({ className = "" }: Props) {
       title={signingOut ? "Signing out" : "Sign out"}
       className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d6d1c1] bg-white text-[#31513c] transition hover:border-[#2d6a3e] hover:text-[#123622] disabled:cursor-not-allowed disabled:opacity-70 ${className}`.trim()}
     >
-      <SignOutIcon />
+      {signingOut ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#31513c]/35 border-t-[#31513c]" aria-hidden="true" /> : <SignOutIcon />}
     </button>
   );
 }

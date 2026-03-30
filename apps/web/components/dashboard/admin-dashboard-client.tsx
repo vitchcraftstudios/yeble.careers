@@ -181,6 +181,8 @@ export function AdminDashboardClient({
   const [registrantForm, setRegistrantForm] = useState<RegistrantFormState | null>(initialRegistrants[0] ? toRegistrantForm(initialRegistrants[0]) : null);
   const [savingJob, setSavingJob] = useState(false);
   const [savingRegistrant, setSavingRegistrant] = useState(false);
+  const [deletingJobId, setDeletingJobId] = useState<string | null>(null);
+  const [deletingRegistrant, setDeletingRegistrant] = useState(false);
   const [jobMessage, setJobMessage] = useState("");
   const [registrantMessage, setRegistrantMessage] = useState("");
   const [showAllJobs, setShowAllJobs] = useState(false);
@@ -265,15 +267,22 @@ export function AdminDashboardClient({
     const confirmed = window.confirm("Delete this job mandate?");
     if (!confirmed) return;
 
-    const response = await fetch(`/api/jobs/${id}`, { method: "DELETE" });
-    if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
-      window.alert(data.error || "Unable to delete the job.");
-      return;
-    }
+    setDeletingJobId(id);
+    setJobMessage("");
 
-    setJobs((current) => current.filter((item) => item.id !== id));
-    if (editingJobId === id) resetJobForm();
+    try {
+      const response = await fetch(`/api/jobs/${id}`, { method: "DELETE" });
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        window.alert(data.error || "Unable to delete the job.");
+        return;
+      }
+
+      setJobs((current) => current.filter((item) => item.id !== id));
+      if (editingJobId === id) resetJobForm();
+    } finally {
+      setDeletingJobId(null);
+    }
   }
 
   async function saveRegistrant() {
@@ -307,22 +316,29 @@ export function AdminDashboardClient({
     const confirmed = window.confirm(`Delete ${selectedRegistrant.name} and all linked files, applications, and payment records?`);
     if (!confirmed) return;
 
-    const response = await fetch(`/api/admin/registrants/${selectedRegistrant.id}`, { method: "DELETE" });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      setRegistrantMessage(data.error || "Unable to delete registrant profile.");
-      return;
-    }
+    setDeletingRegistrant(true);
+    setRegistrantMessage("");
 
-    setRegistrants((current) => {
-      const next = current.filter((item) => item.id !== selectedRegistrant.id);
-      setSelectedRegistrantId(next[0]?.id || null);
-      if (!next.length) {
-        setRegistrantForm(null);
+    try {
+      const response = await fetch(`/api/admin/registrants/${selectedRegistrant.id}`, { method: "DELETE" });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setRegistrantMessage(data.error || "Unable to delete registrant profile.");
+        return;
       }
-      return next;
-    });
-    setRegistrantMessage("Registrant profile deleted successfully.");
+
+      setRegistrants((current) => {
+        const next = current.filter((item) => item.id !== selectedRegistrant.id);
+        setSelectedRegistrantId(next[0]?.id || null);
+        if (!next.length) {
+          setRegistrantForm(null);
+        }
+        return next;
+      });
+      setRegistrantMessage("Registrant profile deleted successfully.");
+    } finally {
+      setDeletingRegistrant(false);
+    }
   }
 
   return (
@@ -508,8 +524,8 @@ export function AdminDashboardClient({
                           <button type="button" onClick={() => startEditingJob(job)} className="rounded-full border border-[#d6d1c1] px-4 py-2 text-sm text-[#123622]">
                             Edit
                           </button>
-                          <button type="button" onClick={() => deleteJob(job.id)} className="rounded-full border border-[#e3decf] px-4 py-2 text-sm text-[#7a1f1f]">
-                            Delete
+                          <button type="button" disabled={deletingJobId === job.id} onClick={() => deleteJob(job.id)} className="rounded-full border border-[#e3decf] px-4 py-2 text-sm text-[#7a1f1f] disabled:opacity-70">
+                            {deletingJobId === job.id ? "Deleting..." : "Delete"}
                           </button>
                         </div>
                       </div>
@@ -635,8 +651,8 @@ export function AdminDashboardClient({
                     <button type="button" onClick={saveRegistrant} disabled={savingRegistrant} className="rounded-full bg-[#27c06b] px-6 py-3 text-sm font-semibold text-white disabled:opacity-70">
                       {savingRegistrant ? "Saving profile..." : "Save registrant profile"}
                     </button>
-                    <button type="button" onClick={deleteRegistrant} className="rounded-full border border-[#e3decf] px-6 py-3 text-sm font-semibold text-[#8c2d2d]">
-                      Delete registrant
+                    <button type="button" onClick={deleteRegistrant} disabled={deletingRegistrant} className="rounded-full border border-[#e3decf] px-6 py-3 text-sm font-semibold text-[#8c2d2d] disabled:opacity-70">
+                      {deletingRegistrant ? "Deleting registrant..." : "Delete registrant"}
                     </button>
                   </div>
                   {registrantMessage ? <p className="text-sm text-[#31513c]">{registrantMessage}</p> : null}

@@ -84,6 +84,8 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
   const [savingProfile, setSavingProfile] = useState(false);
   const [uploadingFile, setUploadingFile] = useState(false);
   const [submittingApplication, setSubmittingApplication] = useState(false);
+  const [deletingFileId, setDeletingFileId] = useState<string | null>(null);
+  const [changingView, setChangingView] = useState<DashboardView | null>(null);
   const [activeView, setActiveView] = useState<DashboardView>(pendingApplicationJob ? "profile" : "overview");
 
   const latestPayment = useMemo(() => payments[0] || null, [payments]);
@@ -92,6 +94,12 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
   const hasDocuments = files.length > 0;
   const profileReadyToApply = hasRequiredProfile && hasDocuments;
   const shouldShowApplyModal = Boolean(pendingApplicationJob);
+
+  function switchView(view: DashboardView) {
+    setChangingView(view);
+    setActiveView(view);
+    window.setTimeout(() => setChangingView((current) => (current === view ? null : current)), 250);
+  }
 
   async function saveProfile(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -151,7 +159,7 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
         setProfile((current) => ({ ...current, resumeUrl: blobData.url }));
       }
       setFileMessage("File uploaded successfully.");
-      setActiveView("overview");
+      switchView("overview");
       return true;
     } catch (error) {
       setFileMessage(error instanceof Error ? error.message : "Unable to upload file.");
@@ -169,13 +177,21 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
   }
 
   async function deleteFile(id: string) {
-    const response = await fetch(`/api/dashboard/files?id=${id}`, { method: "DELETE" });
-    if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
-      setFileMessage(data.error || "Unable to delete file.");
-      return;
+    setDeletingFileId(id);
+    setFileMessage("");
+
+    try {
+      const response = await fetch(`/api/dashboard/files?id=${id}`, { method: "DELETE" });
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        setFileMessage(data.error || "Unable to delete file.");
+        return;
+      }
+      setFiles((current) => current.filter((item) => item.id !== id));
+      setFileMessage("File removed successfully.");
+    } finally {
+      setDeletingFileId(null);
     }
-    setFiles((current) => current.filter((item) => item.id !== id));
   }
 
   async function submitApplication() {
@@ -259,7 +275,7 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
             <div className="w-full sm:w-auto">
               <select
                 value={activeView}
-                onChange={(event) => setActiveView(event.target.value as DashboardView)}
+                onChange={(event) => switchView(event.target.value as DashboardView)}
                 className="w-full rounded-full border border-[#d6d1c1] bg-white px-4 py-2.5 text-sm font-medium text-[#123622] outline-none sm:min-w-[220px]"
               >
                 <option value="overview">Overview</option>
@@ -316,10 +332,11 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
                   </button>
                   <button
                     type="button"
-                    onClick={() => setActiveView("overview")}
-                    className="w-full rounded-full border border-[#d6d1c1] bg-white px-6 py-3 text-sm font-semibold text-[#123622] sm:w-auto"
+                    onClick={() => switchView("overview")}
+                    disabled={changingView === "overview"}
+                    className="w-full rounded-full border border-[#d6d1c1] bg-white px-6 py-3 text-sm font-semibold text-[#123622] disabled:opacity-70 sm:w-auto"
                   >
-                    Back to overview
+                    {changingView === "overview" ? "Opening overview..." : "Back to overview"}
                   </button>
                 </div>
                 {profileMessage ? <p className="min-w-0 break-words text-sm text-[#31513c]">{profileMessage}</p> : null}
@@ -355,14 +372,15 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
                   </div>
                   <button
                     type="button"
-                    onClick={() => setActiveView("profile")}
-                    className="rounded-full border border-[#d6d1c1] bg-[#fffdf6] px-4 py-2 text-sm font-semibold text-[#123622]"
+                    onClick={() => switchView("profile")}
+                    disabled={changingView === "profile"}
+                    className="rounded-full border border-[#d6d1c1] bg-[#fffdf6] px-4 py-2 text-sm font-semibold text-[#123622] disabled:opacity-70"
                   >
-                    Manage profile
+                    {changingView === "profile" ? "Opening profile..." : "Manage profile"}
                   </button>
                 </div>
                 <p className="mt-4 text-sm text-[#56705d]">{getRegistrantFileValidationMessage()}</p>
-                <label className="mt-6 inline-flex max-w-full cursor-pointer items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622]">
+                <label className={`mt-6 inline-flex max-w-full cursor-pointer items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622] ${uploadingFile ? "opacity-70" : ""}`}>
                   {uploadingFile ? "Uploading..." : "Upload file"}
                   <input type="file" className="hidden" onChange={uploadFile} disabled={uploadingFile} accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.csv,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" />
                 </label>
@@ -378,8 +396,8 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
                               Open file
                             </a>
                           </div>
-                          <button type="button" onClick={() => deleteFile(file.id)} className="shrink-0 text-left text-sm text-[#8c2d2d] sm:text-right">
-                            Remove
+                          <button type="button" disabled={deletingFileId === file.id} onClick={() => deleteFile(file.id)} className="shrink-0 text-left text-sm text-[#8c2d2d] disabled:opacity-70 sm:text-right">
+                            {deletingFileId === file.id ? "Removing..." : "Remove"}
                           </button>
                         </div>
                       </div>
@@ -502,7 +520,7 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
 
           <div className="rounded-2xl border border-[#e3decf] bg-white p-4">
             <p className="text-sm text-[#31513c]">{getRegistrantFileValidationMessage()}</p>
-            <label className="mt-4 inline-flex cursor-pointer items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622]">
+            <label className={`mt-4 inline-flex cursor-pointer items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622] ${uploadingFile ? "opacity-70" : ""}`}>
               {uploadingFile ? "Uploading..." : "Upload resume or supporting file"}
               <input type="file" className="hidden" onChange={uploadFile} disabled={uploadingFile} accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.csv,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" />
             </label>
