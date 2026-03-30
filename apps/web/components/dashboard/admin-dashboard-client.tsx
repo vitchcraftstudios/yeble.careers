@@ -72,18 +72,9 @@ type RegistrantItem = {
   payments: RegistrantPaymentItem[];
 };
 
-type ContentItem = {
-  id: string;
-  title: string;
-  body: string;
-  mediaUrl: string | null;
-  updatedAt: string;
-};
-
 type Props = {
   initialJobs: JobItem[];
   initialRegistrants: RegistrantItem[];
-  initialContent: ContentItem[];
   initialSelectedRegistrantId?: string | null;
   initialSection?: AdminSection;
 };
@@ -120,7 +111,7 @@ type RegistrantFormState = {
   latestPaymentReference: string;
 };
 
-type AdminSection = "overview" | "jobs" | "registrants" | "content";
+type AdminSection = "overview" | "jobs" | "registrants";
 
 const emptyJob: JobFormState = {
   title: "",
@@ -175,20 +166,15 @@ function toRegistrantForm(registrant: RegistrantItem): RegistrantFormState {
   };
 }
 
-function getContentGroup(id: string) {
-  if (id.startsWith("home-")) return "Home";
-  if (id.startsWith("services-")) return "Services";
-  if (id.startsWith("jobs-")) return "Jobs";
-  if (id.startsWith("about-")) return "About";
-  if (id.startsWith("contact-")) return "Contact";
-  return "General";
-}
-
-export function AdminDashboardClient({ initialJobs, initialRegistrants, initialContent, initialSelectedRegistrantId = null, initialSection = "overview" }: Props) {
+export function AdminDashboardClient({
+  initialJobs,
+  initialRegistrants,
+  initialSelectedRegistrantId = null,
+  initialSection = "overview",
+}: Props) {
   const [activeSection, setActiveSection] = useState<AdminSection>(initialSection);
   const [jobs, setJobs] = useState<JobItem[]>(initialJobs);
   const [registrants, setRegistrants] = useState<RegistrantItem[]>(initialRegistrants);
-  const [content, setContent] = useState<ContentItem[]>(initialContent);
   const [jobForm, setJobForm] = useState<JobFormState>(emptyJob);
   const [editingJobId, setEditingJobId] = useState<string | null>(null);
   const [selectedRegistrantId, setSelectedRegistrantId] = useState<string | null>(initialSelectedRegistrantId || initialRegistrants[0]?.id || null);
@@ -197,12 +183,6 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
   const [savingRegistrant, setSavingRegistrant] = useState(false);
   const [jobMessage, setJobMessage] = useState("");
   const [registrantMessage, setRegistrantMessage] = useState("");
-  const [contentMessage, setContentMessage] = useState("");
-  const [editingContent, setEditingContent] = useState<Record<string, { title: string; body: string; mediaUrl: string }>>(
-    Object.fromEntries(
-      initialContent.map((item) => [item.id, { title: item.title, body: item.body, mediaUrl: item.mediaUrl || "" }]),
-    ),
-  );
 
   const selectedRegistrant = useMemo(
     () => registrants.find((item) => item.id === selectedRegistrantId) || null,
@@ -220,18 +200,9 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
       { label: "Live mandates", value: jobs.length, helper: "Structured roles published to the jobs page" },
       { label: "Paid registrants", value: registrants.filter((item) => item.paymentStatus === "paid").length, helper: "Candidates who completed payment verification" },
       { label: "Files uploaded", value: registrants.reduce((sum, item) => sum + item.filesCount, 0), helper: "Resumes and supporting documents in the dashboard" },
-      { label: "Content blocks", value: content.length, helper: "Editable site blocks stored in the CMS layer" },
     ],
-    [jobs, registrants, content],
+    [jobs, registrants],
   );
-
-  const contentByGroup = useMemo(() => {
-    return content.reduce<Record<string, ContentItem[]>>((acc, item) => {
-      const key = getContentGroup(item.id);
-      acc[key] = acc[key] ? [...acc[key], item] : [item];
-      return acc;
-    }, {});
-  }, [content]);
 
   async function saveJob(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -327,7 +298,6 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
     }
   }
 
-
   async function deleteRegistrant() {
     if (!selectedRegistrant) return;
 
@@ -351,29 +321,10 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
     });
     setRegistrantMessage("Registrant profile deleted successfully.");
   }
-  async function saveContent(id: string) {
-    setContentMessage("");
-    const payload = editingContent[id];
-
-    const response = await fetch("/api/admin/content", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, ...payload }),
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-      setContentMessage(data.error || "Unable to save content right now.");
-      return;
-    }
-
-    setContent((current) => current.map((item) => (item.id === id ? data : item)));
-    setContentMessage("Content updated successfully.");
-  }
 
   return (
     <div className="space-y-8">
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {metrics.map((metric) => (
           <div key={metric.label} className="rounded-2xl border border-[#e3decf] bg-white p-5 shadow-sm">
             <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">{metric.label}</p>
@@ -394,7 +345,6 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
               ["overview", "Overview"],
               ["jobs", "Jobs"],
               ["registrants", "Registrants"],
-              ["content", "Page Content"],
             ].map(([value, label]) => (
               <button
                 key={value}
@@ -415,13 +365,13 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
         <section className="grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
           <div className="rounded-3xl border border-[#e3decf] bg-white p-6 shadow-sm">
             <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Overview</p>
-            <h3 className="mt-2 text-2xl font-semibold text-[#123622]">What this CMS can already run</h3>
+            <h3 className="mt-2 text-2xl font-semibold text-[#123622]">What this admin workspace can run</h3>
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {[
                 "Create, update, and remove live jobs",
                 "Review full registrant profiles, files, and payment records",
-                "Edit stored content blocks for public pages",
-                "Use one admin desk instead of changing source files for every update",
+                "Track application history and uploaded resumes from one place",
+                "Use one admin desk instead of changing source files for every hiring update",
               ].map((item) => (
                 <div key={item} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] px-4 py-4 text-sm leading-6 text-[#31513c]">
                   {item}
@@ -431,13 +381,13 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
           </div>
           <div className="rounded-3xl border border-[#e3decf] bg-white p-6 shadow-sm">
             <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Next expansion</p>
-            <h3 className="mt-2 text-2xl font-semibold text-[#123622]">Recommended next CMS slices</h3>
+            <h3 className="mt-2 text-2xl font-semibold text-[#123622]">Recommended next admin slices</h3>
             <div className="mt-5 space-y-3">
               {[
-                "Replace more hardcoded page sections with CMS-backed content blocks",
-                "Add media uploads instead of URL-only media fields",
-                "Support page builder style repeatable blocks for testimonials, FAQs, and hero sections",
-                "Add application management workflows and internal notes",
+                "Add application pipeline stages and recruiter notes",
+                "Support internal candidate tags and shortlist filters",
+                "Add richer document preview and download controls",
+                "Layer in payment workflows when you are ready for that rollout",
               ].map((item) => (
                 <div key={item} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] px-4 py-4 text-sm leading-6 text-[#31513c]">
                   {item}
@@ -740,78 +690,6 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
           </div>
         </section>
       ) : null}
-
-      {activeSection === "content" ? (
-        <section className="rounded-3xl border border-[#e3decf] bg-white p-6 shadow-sm">
-          <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Page Content</p>
-          <h2 className="mt-2 text-2xl font-semibold text-[#123622]">Edit stored content blocks</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-7 text-[#31513c]">This is the CMS content layer for text and media-backed sections. Public pages can progressively read from these blocks instead of staying hardcoded.</p>
-          <div className="mt-6 space-y-6">
-            {Object.entries(contentByGroup).map(([group, items]) => (
-              <div key={group} className="rounded-3xl border border-[#e3decf] bg-[#fffdf6] p-4 sm:p-5">
-                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">{group}</p>
-                <div className="mt-4 space-y-4">
-                  {items.map((item) => (
-                    <div key={item.id} className="rounded-2xl border border-[#e3decf] bg-white p-4">
-                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs uppercase tracking-[0.18em] text-[#56705d]">{item.id}</p>
-                        <p className="text-xs text-[#56705d]">Updated {new Date(item.updatedAt).toLocaleDateString()}</p>
-                      </div>
-                      <input
-                        className="mt-3 w-full rounded-xl border border-[#d6d1c1] px-3 py-2 text-sm text-[#123622] outline-none"
-                        value={editingContent[item.id]?.title || ""}
-                        onChange={(event) =>
-                          setEditingContent((current) => ({
-                            ...current,
-                            [item.id]: { ...current[item.id], title: event.target.value },
-                          }))
-                        }
-                      />
-                      <textarea
-                        className="mt-3 min-h-28 w-full rounded-xl border border-[#d6d1c1] px-3 py-2 text-sm text-[#123622] outline-none"
-                        value={editingContent[item.id]?.body || ""}
-                        onChange={(event) =>
-                          setEditingContent((current) => ({
-                            ...current,
-                            [item.id]: { ...current[item.id], body: event.target.value },
-                          }))
-                        }
-                      />
-                      <input
-                        className="mt-3 w-full rounded-xl border border-[#d6d1c1] px-3 py-2 text-sm text-[#123622] outline-none"
-                        placeholder="Optional media URL"
-                        value={editingContent[item.id]?.mediaUrl || ""}
-                        onChange={(event) =>
-                          setEditingContent((current) => ({
-                            ...current,
-                            [item.id]: { ...current[item.id], mediaUrl: event.target.value },
-                          }))
-                        }
-                      />
-                      <div className="mt-3 flex justify-end">
-                        <button type="button" onClick={() => saveContent(item.id)} className="rounded-full border border-[#d6d1c1] px-4 py-2 text-sm font-medium text-[#123622]">
-                          Save block
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-            {contentMessage ? <p className="text-sm text-[#31513c]">{contentMessage}</p> : null}
-          </div>
-        </section>
-      ) : null}
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-

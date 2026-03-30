@@ -16,57 +16,6 @@ function MailIcon() {
   );
 }
 
-const defaultContent = [
-  {
-    id: "home-hero-title",
-    title: "Home - Hero Title",
-    body: "Powering Companies With Talent That Drives Real Growth.",
-    mediaUrl: null,
-  },
-  {
-    id: "home-hero-summary",
-    title: "Home - Hero Summary",
-    body: "Founded in 2026 from Selaqui, Dehradun, Yeble works across Uttarakhand, Uttar Pradesh, Haryana, and Himachal Pradesh with practical hiring support, tighter follow-up, and clearer communication.",
-    mediaUrl: null,
-  },
-  {
-    id: "home-testimonials-heading",
-    title: "Home - Testimonials Heading",
-    body: "What people say about working with Yeble",
-    mediaUrl: null,
-  },
-  {
-    id: "services-page-intro",
-    title: "Services - Intro",
-    body: "Strategic Talent Solutions Rooted in Regional Insight, Built for Professional Growth.",
-    mediaUrl: null,
-  },
-  {
-    id: "services-page-media",
-    title: "Services - Hero Media",
-    body: "Primary supporting media for the services page.",
-    mediaUrl: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "jobs-page-intro",
-    title: "Jobs - Intro",
-    body: "Explore active roles across the North India hiring corridor.",
-    mediaUrl: null,
-  },
-  {
-    id: "about-page-summary",
-    title: "About - Summary",
-    body: "A Dehradun-led hiring team focused on practical support, regional understanding, and dependable communication.",
-    mediaUrl: null,
-  },
-  {
-    id: "contact-page-summary",
-    title: "Contact - Summary",
-    body: "Connect with our hiring desk for mandates, enquiries, and regional hiring coordination.",
-    mediaUrl: null,
-  },
-];
-
 type SearchParams = {
   registrantId?: string;
   section?: string;
@@ -89,7 +38,7 @@ export default async function AdminPage({
     redirect("/dashboard");
   }
 
-  const [jobs, registrants, content] = await Promise.all([
+  const [jobs, registrants] = await Promise.all([
     prisma.job.findMany({ orderBy: { createdAt: "desc" } }).catch(() => []),
     prisma.candidate
       .findMany({
@@ -104,10 +53,7 @@ export default async function AdminPage({
         },
       })
       .catch(() => []),
-    prisma.siteContent.findMany({ orderBy: { id: "asc" } }).catch(() => []),
   ]);
-
-  const seededContent = content.length ? content : defaultContent.map((item) => ({ ...item, updatedAt: new Date() }));
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#fffef0] text-[#0f2918]">
@@ -115,9 +61,9 @@ export default async function AdminPage({
         <div className="mb-8 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Admin CMS</p>
-            <h1 className="mt-2 break-words text-3xl font-semibold text-[#123622]">Content, jobs, and registrations</h1>
+            <h1 className="mt-2 break-words text-3xl font-semibold text-[#123622]">Jobs and registrations</h1>
             <p className="mt-2 max-w-2xl break-words text-sm leading-7 text-[#31513c]">
-              Run the site from one workspace: publish jobs, manage registrant profiles, review files and payments, and maintain editable page content blocks.
+              Run the site from one workspace: publish jobs, manage registrant profiles, and review files, applications, and payments.
             </p>
           </div>
           <div className="flex min-w-0 flex-col items-start gap-3 sm:items-end">
@@ -177,13 +123,6 @@ export default async function AdminPage({
               reference: normalizeOptionalText(payment.reference),
               createdAt: payment.createdAt.toISOString(),
             })),
-          }))}
-          initialContent={seededContent.map((item) => ({
-            id: item.id,
-            title: normalizeText(item.title),
-            body: normalizeText(item.body),
-            mediaUrl: normalizeOptionalText(item.mediaUrl),
-            updatedAt: item.updatedAt.toISOString(),
           }))}
           initialSelectedRegistrantId={params?.registrantId || null}
           initialSection={params?.section === "registrants" ? "registrants" : undefined}
