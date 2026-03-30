@@ -10,7 +10,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   try {
     const { id } = await params;
     const body = await req.json();
-    const job = await prisma.job.update({
+    const job = await (prisma.job as any).update({
       where: { id },
       data: {
         title: normalizeText(body.title),
@@ -27,6 +27,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         description: normalizeText(body.description),
         salary: normalizeOptionalText(body.salary),
         tags: Array.isArray(body.tags) ? normalizeTextArray(body.tags) : undefined,
+        source: "manual",
+        isImported: false,
+        isVerified: true,
+        isActive: body.isActive === false ? false : true,
+        syncStatus: "manual",
       },
     });
 

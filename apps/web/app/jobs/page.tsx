@@ -15,7 +15,7 @@ export const revalidate = 0;
 
 export default async function JobsPage() {
   const content = await getSiteContentMap();
-  const dbJobs = await prisma.job
+  const dbJobs = await (prisma.job as any)
     .findMany({
       where: { isActive: true },
       orderBy: [
@@ -24,10 +24,10 @@ export default async function JobsPage() {
         { createdAt: "desc" },
       ],
     })
-    .catch(() => []);
+    .catch(() => [] as any[]);
 
   const jobs: JobListItem[] = dbJobs.length
-    ? dbJobs.map((job) => ({
+    ? dbJobs.map((job: any) => ({
         id: job.id,
         company: normalizeText(job.company),
         title: normalizeText(job.title),
@@ -36,13 +36,13 @@ export default async function JobsPage() {
         experience: normalizeText(job.experience || "Experience on request"),
         type: normalizeText(job.type || "Full-time"),
         salaryRange: normalizeText(job.salaryRange || job.salary || "Compensation on request"),
-        sector: normalizeText(job.sector || (job.tags[0] ?? "General hiring")),
-        openings: job.openings,
+        sector: normalizeText(job.sector || (job.tags?.[0] ?? "General hiring")),
+        openings: Number(job.openings || 1),
         status: normalizeText(job.status),
-        postedAt: job.createdAt.toISOString(),
+        postedAt: new Date(job.createdAt).toISOString(),
         sourceLabel: getJobSourceLabel(job),
         sourceTone: getJobSourceTone(job),
-        sourceUrl: job.sourceUrl,
+        sourceUrl: job.sourceUrl || null,
       }))
     : fallbackJobs.map((job) => ({
         ...job,

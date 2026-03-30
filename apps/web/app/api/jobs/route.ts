@@ -7,9 +7,13 @@ export async function GET() {
   const auth = await isAdminRequest();
   if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
-  const jobs = await prisma.job.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 100,
+  const jobs = await (prisma.job as any).findMany({
+    orderBy: [
+      { isVerified: "desc" },
+      { isImported: "asc" },
+      { createdAt: "desc" },
+    ],
+    take: 250,
   });
   return NextResponse.json(jobs);
 }
@@ -41,7 +45,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const job = await prisma.job.create({
+    const job = await (prisma.job as any).create({
       data: {
         title: normalizeText(title),
         company: normalizeText(company),
@@ -57,6 +61,11 @@ export async function POST(req: Request) {
         description: normalizeText(description),
         salary: normalizeOptionalText(salary),
         tags: normalizeTextArray(Array.isArray(tags) ? tags : []),
+        source: "manual",
+        isImported: false,
+        isVerified: true,
+        isActive: true,
+        syncStatus: "manual",
       },
     });
 
