@@ -196,7 +196,7 @@ export function AdminDashboardClient({
     }
   }, [selectedRegistrant]);
 
-  const visibleJobs = useMemo(() => (showAllJobs ? jobs : jobs.slice(0, 8)), [jobs, showAllJobs]);
+  const visibleJobs = useMemo(() => (showAllJobs ? jobs : jobs.slice(0, 5)), [jobs, showAllJobs]);
 
   const metrics = useMemo(
     () => [
@@ -515,9 +515,9 @@ export function AdminDashboardClient({
                       </div>
                     </div>
                   ))}
-                  {jobs.length > 8 ? (
+                  {jobs.length > 5 ? (
                     <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#e3decf] bg-[#fffdf6] px-4 py-3 text-sm text-[#31513c]">
-                      <p>{showAllJobs ? `Showing all ${jobs.length} mandates.` : `Showing 8 of ${jobs.length} mandates.`}</p>
+                      <p>{showAllJobs ? `Showing all ${jobs.length} mandates.` : `Showing 5 of ${jobs.length} mandates.`}</p>
                       <button
                         type="button"
                         onClick={() => setShowAllJobs((current) => !current)}
