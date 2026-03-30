@@ -1,12 +1,22 @@
 "use client";
 
+import { useEffect } from "react";
 import { SignIn } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 
+const APPLY_CALLBACK_STORAGE_KEY = "yeble_auth_callback_url";
+
 export default function SignInClient() {
   const params = useSearchParams();
-  const callbackUrl = params.get("callbackUrl") || "/dashboard";
+  const callbackParam = params.get("callbackUrl");
+  const callbackUrl = callbackParam || "/dashboard";
   const redirectUrl = `/auth-complete?callbackUrl=${encodeURIComponent(callbackUrl)}`;
+  const signUpUrl = `/signup?callbackUrl=${encodeURIComponent(callbackUrl)}`;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.sessionStorage.setItem(APPLY_CALLBACK_STORAGE_KEY, callbackUrl);
+  }, [callbackUrl]);
 
   return (
     <section className="min-h-screen overflow-x-hidden bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] px-3 py-5 text-[#0f2918] sm:px-6 sm:py-8 lg:px-8 lg:py-12">
@@ -58,7 +68,7 @@ export default function SignInClient() {
                   <SignIn
                     path="/signin"
                     routing="path"
-                    signUpUrl="/signup"
+                    signUpUrl={signUpUrl}
                     forceRedirectUrl={redirectUrl}
                     fallbackRedirectUrl={redirectUrl}
                     appearance={{

@@ -1,8 +1,10 @@
-﻿"use client";
+"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+
+const APPLY_CALLBACK_STORAGE_KEY = "yeble_auth_callback_url";
 
 function CheckIcon() {
   return (
@@ -17,7 +19,17 @@ export default function AuthCompleteClient() {
   const params = useSearchParams();
   const { isLoaded, userId } = useAuth();
   const [status, setStatus] = useState<"checking" | "success">("checking");
-  const callbackUrl = params.get("callbackUrl") || "/dashboard";
+
+  const callbackUrl = useMemo(() => {
+    const fromParams = params.get("callbackUrl");
+    if (fromParams) return fromParams;
+
+    if (typeof window !== "undefined") {
+      return window.sessionStorage.getItem(APPLY_CALLBACK_STORAGE_KEY) || "/dashboard";
+    }
+
+    return "/dashboard";
+  }, [params]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -29,8 +41,15 @@ export default function AuthCompleteClient() {
       return;
     }
 
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem(APPLY_CALLBACK_STORAGE_KEY, callbackUrl);
+    }
+
     setStatus("success");
     const timer = window.setTimeout(() => {
+      if (typeof window !== "undefined") {
+        window.sessionStorage.removeItem(APPLY_CALLBACK_STORAGE_KEY);
+      }
       router.replace(callbackUrl);
     }, 1200);
 
