@@ -1,6 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { OverlayModal } from "@/components/overlay-modal";
+import { getMissingCandidateProfileFields } from "@/lib/candidate-profile";
+import { getRegistrantFileValidationMessage } from "@/lib/registrant-files";
 
 type ApplicationItem = {
   id: string;
@@ -43,11 +47,18 @@ type CandidateProfile = {
   paymentStatus: string;
 };
 
+type PendingApplicationJob = {
+  id: string;
+  title: string;
+  company: string;
+};
+
 type Props = {
   initialProfile: CandidateProfile;
   files: FileItem[];
   payments: PaymentItem[];
   applications: ApplicationItem[];
+  pendingApplicationJob: PendingApplicationJob | null;
 };
 
 type DashboardView = "overview" | "profile";
@@ -62,16 +73,25 @@ async function readResponseJson(response: Response) {
   return response.json();
 }
 
-export function RegistrantDashboardClient({ initialProfile, files: initialFiles, payments, applications }: Props) {
+export function RegistrantDashboardClient({ initialProfile, files: initialFiles, payments, applications: initialApplications, pendingApplicationJob }: Props) {
+  const router = useRouter();
   const [profile, setProfile] = useState(initialProfile);
   const [files, setFiles] = useState(initialFiles);
+  const [applications, setApplications] = useState(initialApplications);
   const [profileMessage, setProfileMessage] = useState("");
   const [fileMessage, setFileMessage] = useState("");
+  const [applicationMessage, setApplicationMessage] = useState("");
   const [savingProfile, setSavingProfile] = useState(false);
   const [uploadingFile, setUploadingFile] = useState(false);
-  const [activeView, setActiveView] = useState<DashboardView>("overview");
+  const [submittingApplication, setSubmittingApplication] = useState(false);
+  const [activeView, setActiveView] = useState<DashboardView>(pendingApplicationJob ? "profile" : "overview");
 
   const latestPayment = useMemo(() => payments[0] || null, [payments]);
+  const missingFields = useMemo(() => getMissingCandidateProfileFields(profile), [profile]);
+  const hasRequiredProfile = missingFields.length === 0;
+  const hasDocuments = files.length > 0;
+  const profileReadyToApply = hasRequiredProfile && hasDocuments;
+  const shouldShowApplyModal = Boolean(pendingApplicationJob);
 
   async function saveProfile(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -89,22 +109,21 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
       if (!response.ok) {
         setProfileMessage(data.error || "Unable to save profile.");
         setSavingProfile(false);
-        return;
+        return false;
       }
 
       setProfile(data.profile);
       setProfileMessage("Profile updated successfully.");
+      return true;
     } catch (error) {
       setProfileMessage(error instanceof Error ? error.message : "Unable to save profile.");
+      return false;
     } finally {
       setSavingProfile(false);
     }
   }
 
-  async function uploadFile(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
+  async function uploadSelectedFile(file: File) {
     setUploadingFile(true);
     setFileMessage("");
 
@@ -128,17 +147,25 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
       if (!saveResponse.ok) throw new Error(saveData.error || "Unable to save file.");
 
       setFiles((current) => [saveData.file, ...current]);
-      if (!profile.resumeUrl && file.type.includes("pdf")) {
+      if (!profile.resumeUrl && file.name.toLowerCase().endsWith(".pdf")) {
         setProfile((current) => ({ ...current, resumeUrl: blobData.url }));
       }
       setFileMessage("File uploaded successfully.");
       setActiveView("overview");
+      return true;
     } catch (error) {
       setFileMessage(error instanceof Error ? error.message : "Unable to upload file.");
+      return false;
     } finally {
       setUploadingFile(false);
-      event.target.value = "";
     }
+  }
+
+  async function uploadFile(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    await uploadSelectedFile(file);
+    event.target.value = "";
   }
 
   async function deleteFile(id: string) {
@@ -151,201 +178,368 @@ export function RegistrantDashboardClient({ initialProfile, files: initialFiles,
     setFiles((current) => current.filter((item) => item.id !== id));
   }
 
+  async function submitApplication() {
+    if (!pendingApplicationJob) return;
+
+    setApplicationMessage("");
+
+    const saved = await (async () => {
+      setSavingProfile(true);
+      setProfileMessage("");
+
+      try {
+        const response = await fetch("/api/dashboard/profile", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(profile),
+        });
+
+        const data = await readResponseJson(response);
+        if (!response.ok) {
+          const message = data.error || "Unable to save profile.";
+          setProfileMessage(message);
+          setApplicationMessage(message);
+          return false;
+        }
+
+        setProfile(data.profile);
+        setProfileMessage("Profile updated successfully.");
+        return true;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Unable to save profile.";
+        setProfileMessage(message);
+        setApplicationMessage(message);
+        return false;
+      } finally {
+        setSavingProfile(false);
+      }
+    })();
+
+    if (!saved) return;
+
+    setSubmittingApplication(true);
+    try {
+      const response = await fetch("/api/applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId: pendingApplicationJob.id }),
+      });
+
+      const data = await readResponseJson(response);
+      if (!response.ok) {
+        setApplicationMessage(data.error || "Unable to submit application.");
+        return;
+      }
+
+      if (data.application) {
+        setApplications((current) => {
+          const exists = current.some((item) => item.id === data.application.id);
+          return exists ? current : [data.application, ...current];
+        });
+      }
+
+      router.replace(`/dashboard?applied=${encodeURIComponent(pendingApplicationJob.id)}`);
+      router.refresh();
+    } catch (error) {
+      setApplicationMessage(error instanceof Error ? error.message : "Unable to submit application.");
+    } finally {
+      setSubmittingApplication(false);
+    }
+  }
+
   return (
-    <div className="min-w-0 space-y-6 overflow-x-hidden">
-      <section className="rounded-3xl border border-[#e3decf] bg-white/80 p-4 shadow-sm sm:p-5">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Dashboard sections</p>
-            <h2 className="mt-1 text-xl font-semibold text-[#123622]">Choose what you want to work on</h2>
+    <>
+      <div className="min-w-0 space-y-6 overflow-x-hidden">
+        <section className="rounded-3xl border border-[#e3decf] bg-white/80 p-4 shadow-sm sm:p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Dashboard sections</p>
+              <h2 className="mt-1 text-xl font-semibold text-[#123622]">Choose what you want to work on</h2>
+            </div>
+            <div className="w-full sm:w-auto">
+              <select
+                value={activeView}
+                onChange={(event) => setActiveView(event.target.value as DashboardView)}
+                className="w-full rounded-full border border-[#d6d1c1] bg-white px-4 py-2.5 text-sm font-medium text-[#123622] outline-none sm:min-w-[220px]"
+              >
+                <option value="overview">Overview</option>
+                <option value="profile">Manage profile</option>
+              </select>
+            </div>
           </div>
-          <div className="w-full sm:w-auto">
-            <select
-              value={activeView}
-              onChange={(event) => setActiveView(event.target.value as DashboardView)}
-              className="w-full rounded-full border border-[#d6d1c1] bg-white px-4 py-2.5 text-sm font-medium text-[#123622] outline-none sm:min-w-[220px]"
-            >
-              <option value="overview">Overview</option>
-              <option value="profile">Manage profile</option>
-            </select>
-          </div>
-        </div>
-      </section>
-
-      {activeView === "profile" ? (
-        <section className="grid min-w-0 gap-6">
-          <form onSubmit={saveProfile} className="min-w-0 overflow-hidden rounded-3xl border border-[#e3decf] bg-white p-4 shadow-sm sm:p-6">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Registrant profile</p>
-                <h2 className="mt-2 break-words text-2xl font-semibold text-[#123622]">Manage your profile</h2>
-                <p className="mt-2 max-w-2xl break-words text-sm leading-6 text-[#31513c]">
-                  Update your contact details, role preferences, and key profile links from this dedicated tab.
-                </p>
-              </div>
-            </div>
-            <div className="mt-6 grid min-w-0 gap-4 md:grid-cols-2">
-              {[
-                ["name", "Full name"],
-                ["email", "Email"],
-                ["phone", "Phone number"],
-                ["currentCity", "Current city"],
-                ["headline", "Headline"],
-                ["experienceLevel", "Experience level"],
-                ["serviceInterest", "Service interest"],
-                ["linkedin", "LinkedIn URL"],
-                ["resumeUrl", "Resume URL"],
-              ].map(([key, label]) => (
-                <input
-                  key={key}
-                  className="min-w-0 w-full rounded-2xl border border-[#d6d1c1] px-4 py-3 text-sm text-[#123622] outline-none"
-                  placeholder={label}
-                  value={profile[key as keyof CandidateProfile] as string}
-                  onChange={(event) => setProfile((current) => ({ ...current, [key]: event.target.value }))}
-                  disabled={key === "email"}
-                />
-              ))}
-              <textarea
-                className="min-h-32 min-w-0 w-full rounded-2xl border border-[#d6d1c1] px-4 py-3 text-sm text-[#123622] outline-none md:col-span-2"
-                placeholder="Add notes about roles, locations, or salary expectations"
-                value={profile.note}
-                onChange={(event) => setProfile((current) => ({ ...current, note: event.target.value }))}
-              />
-            </div>
-            <div className="mt-5 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <button type="submit" disabled={savingProfile} className="w-full rounded-full bg-[#27c06b] px-6 py-3 text-sm font-semibold text-white disabled:opacity-70 sm:w-auto">
-                  {savingProfile ? "Saving profile..." : "Save profile"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveView("overview")}
-                  className="w-full rounded-full border border-[#d6d1c1] bg-white px-6 py-3 text-sm font-semibold text-[#123622] sm:w-auto"
-                >
-                  Back to overview
-                </button>
-              </div>
-              {profileMessage ? <p className="min-w-0 break-words text-sm text-[#31513c]">{profileMessage}</p> : null}
-            </div>
-          </form>
         </section>
-      ) : (
-        <>
-          <section className="grid min-w-0 gap-4 md:grid-cols-3">
-            <div className="min-w-0 rounded-2xl border border-[#e3decf] bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Payment status</p>
-              <p className="mt-3 text-2xl font-semibold text-[#123622]">{profile.paymentStatus || "pending"}</p>
-              <p className="mt-2 break-words text-sm text-[#31513c]">{latestPayment ? `${latestPayment.label || "Registration fee"} | ${latestPayment.currency} ${latestPayment.amount / 100}` : "No payment history yet."}</p>
-            </div>
-            <div className="min-w-0 rounded-2xl border border-[#e3decf] bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Files</p>
-              <p className="mt-3 text-2xl font-semibold text-[#123622]">{files.length}</p>
-              <p className="mt-2 break-words text-sm text-[#31513c]">Resume, LinkedIn exports, certificates, and profile documents.</p>
-            </div>
-            <div className="min-w-0 rounded-2xl border border-[#e3decf] bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Applications</p>
-              <p className="mt-3 text-2xl font-semibold text-[#123622]">{applications.length}</p>
-              <p className="mt-2 break-words text-sm text-[#31513c]">Roles you have been submitted to through the Yeble desk.</p>
-            </div>
-          </section>
 
-          <section className="grid min-w-0 gap-6 xl:grid-cols-[1fr_1fr]">
-            <div className="min-w-0 overflow-hidden rounded-3xl border border-[#e3decf] bg-white p-4 shadow-sm sm:p-6">
+        {activeView === "profile" ? (
+          <section className="grid min-w-0 gap-6">
+            <form onSubmit={saveProfile} className="min-w-0 overflow-hidden rounded-3xl border border-[#e3decf] bg-white p-4 shadow-sm sm:p-6">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Files</p>
-                  <h2 className="mt-2 break-words text-2xl font-semibold text-[#123622]">Resume and documents</h2>
+                  <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Registrant profile</p>
+                  <h2 className="mt-2 break-words text-2xl font-semibold text-[#123622]">Manage your profile</h2>
+                  <p className="mt-2 max-w-2xl break-words text-sm leading-6 text-[#31513c]">
+                    Update your contact details, role preferences, and key profile links from this dedicated tab.
+                  </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setActiveView("profile")}
-                  className="rounded-full border border-[#d6d1c1] bg-[#fffdf6] px-4 py-2 text-sm font-semibold text-[#123622]"
-                >
-                  Manage profile
-                </button>
               </div>
-              <label className="mt-6 inline-flex max-w-full cursor-pointer items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622]">
-                {uploadingFile ? "Uploading..." : "Upload file"}
-                <input type="file" className="hidden" onChange={uploadFile} disabled={uploadingFile} />
-              </label>
-              {fileMessage ? <p className="mt-3 break-words text-sm text-[#31513c]">{fileMessage}</p> : null}
-              <div className="mt-5 space-y-3">
-                {files.length ? (
-                  files.map((file) => (
-                    <div key={file.id} className="min-w-0 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
-                      <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <div className="min-w-0 flex-1">
-                          <p className="break-all font-semibold text-[#123622]">{file.name}</p>
-                          <a href={`/api/dashboard/files/open?id=${file.id}`} target="_blank" rel="noreferrer" className="mt-1 inline-block break-all text-sm text-[#2d6a3e] underline">
-                            Open file
-                          </a>
-                        </div>
-                        <button type="button" onClick={() => deleteFile(file.id)} className="shrink-0 text-left text-sm text-[#8c2d2d] sm:text-right">
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rounded-2xl border border-dashed border-[#d6d1c1] p-4 text-sm text-[#56705d]">
-                    No files uploaded yet.
-                  </div>
-                )}
+              <div className="mt-6 grid min-w-0 gap-4 md:grid-cols-2">
+                {[
+                  ["name", "Full name"],
+                  ["email", "Email"],
+                  ["phone", "Phone number"],
+                  ["currentCity", "Current city"],
+                  ["headline", "Headline"],
+                  ["experienceLevel", "Experience level"],
+                  ["serviceInterest", "Service interest"],
+                  ["linkedin", "LinkedIn URL"],
+                  ["resumeUrl", "Resume URL"],
+                ].map(([key, label]) => (
+                  <input
+                    key={key}
+                    className="min-w-0 w-full rounded-2xl border border-[#d6d1c1] px-4 py-3 text-sm text-[#123622] outline-none"
+                    placeholder={label}
+                    value={profile[key as keyof CandidateProfile] as string}
+                    onChange={(event) => setProfile((current) => ({ ...current, [key]: event.target.value }))}
+                    disabled={key === "email"}
+                  />
+                ))}
+                <textarea
+                  className="min-h-32 min-w-0 w-full rounded-2xl border border-[#d6d1c1] px-4 py-3 text-sm text-[#123622] outline-none md:col-span-2"
+                  placeholder="Add notes about roles, locations, or salary expectations"
+                  value={profile.note}
+                  onChange={(event) => setProfile((current) => ({ ...current, note: event.target.value }))}
+                />
               </div>
-            </div>
-
-            <div className="min-w-0 overflow-hidden rounded-3xl border border-[#e3decf] bg-white p-4 shadow-sm sm:p-6">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Payment history</p>
-              <h2 className="mt-2 break-words text-2xl font-semibold text-[#123622]">Recent transactions</h2>
-              <div className="mt-6 space-y-3">
-                {payments.length ? (
-                  payments.map((payment) => (
-                    <div key={payment.id} className="min-w-0 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
-                      <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <div className="min-w-0 flex-1">
-                          <p className="break-words font-semibold text-[#123622]">{payment.label || "Registration payment"}</p>
-                          <p className="break-words text-sm text-[#31513c]">{payment.currency} {payment.amount / 100}</p>
-                          <p className="break-all text-sm text-[#31513c]">Reference: {payment.reference || "Awaiting"}</p>
-                        </div>
-                        <span className="w-fit rounded-full border border-[#d6d1c1] px-3 py-1 text-xs text-[#2d6a3e]">{payment.status}</span>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rounded-2xl border border-dashed border-[#d6d1c1] p-4 text-sm text-[#56705d]">
-                    No payment records yet.
-                  </div>
-                )}
+              <div className="mt-5 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <button type="submit" disabled={savingProfile} className="w-full rounded-full bg-[#27c06b] px-6 py-3 text-sm font-semibold text-white disabled:opacity-70 sm:w-auto">
+                    {savingProfile ? "Saving profile..." : "Save profile"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveView("overview")}
+                    className="w-full rounded-full border border-[#d6d1c1] bg-white px-6 py-3 text-sm font-semibold text-[#123622] sm:w-auto"
+                  >
+                    Back to overview
+                  </button>
+                </div>
+                {profileMessage ? <p className="min-w-0 break-words text-sm text-[#31513c]">{profileMessage}</p> : null}
               </div>
-            </div>
+            </form>
           </section>
-
-          <section className="grid min-w-0 gap-6">
-            <div className="min-w-0 overflow-hidden rounded-3xl border border-[#e3decf] bg-white p-4 shadow-sm sm:p-6">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Applications</p>
-              <h2 className="mt-2 break-words text-2xl font-semibold text-[#123622]">Role history</h2>
-              <div className="mt-6 space-y-3">
-                {applications.length ? (
-                  applications.map((application) => (
-                    <div key={application.id} className="min-w-0 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
-                      <p className="break-words font-semibold text-[#123622]">{application.jobTitle}</p>
-                      <p className="break-words text-sm text-[#31513c]">{application.company}</p>
-                      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-                        <span className="rounded-full border border-[#d6d1c1] px-3 py-1 text-[#2d6a3e]">{application.status}</span>
-                        <span className="text-[#56705d]">{new Date(application.createdAt).toLocaleDateString()}</span>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rounded-2xl border border-dashed border-[#d6d1c1] p-4 text-sm text-[#56705d]">
-                    No applications recorded yet.
-                  </div>
-                )}
+        ) : (
+          <>
+            <section className="grid min-w-0 gap-4 md:grid-cols-3">
+              <div className="min-w-0 rounded-2xl border border-[#e3decf] bg-white p-5 shadow-sm">
+                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Payment status</p>
+                <p className="mt-3 text-2xl font-semibold text-[#123622]">{profile.paymentStatus || "pending"}</p>
+                <p className="mt-2 break-words text-sm text-[#31513c]">{latestPayment ? `${latestPayment.label || "Registration fee"} | ${latestPayment.currency} ${latestPayment.amount / 100}` : "No payment history yet."}</p>
               </div>
+              <div className="min-w-0 rounded-2xl border border-[#e3decf] bg-white p-5 shadow-sm">
+                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Files</p>
+                <p className="mt-3 text-2xl font-semibold text-[#123622]">{files.length}</p>
+                <p className="mt-2 break-words text-sm text-[#31513c]">Resume, text documents, and spreadsheet attachments linked to your profile.</p>
+              </div>
+              <div className="min-w-0 rounded-2xl border border-[#e3decf] bg-white p-5 shadow-sm">
+                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Applications</p>
+                <p className="mt-3 text-2xl font-semibold text-[#123622]">{applications.length}</p>
+                <p className="mt-2 break-words text-sm text-[#31513c]">Roles you have been submitted to through the Yeble desk.</p>
+              </div>
+            </section>
+
+            <section className="grid min-w-0 gap-6 xl:grid-cols-[1fr_1fr]">
+              <div className="min-w-0 overflow-hidden rounded-3xl border border-[#e3decf] bg-white p-4 shadow-sm sm:p-6">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Files</p>
+                    <h2 className="mt-2 break-words text-2xl font-semibold text-[#123622]">Resume and documents</h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveView("profile")}
+                    className="rounded-full border border-[#d6d1c1] bg-[#fffdf6] px-4 py-2 text-sm font-semibold text-[#123622]"
+                  >
+                    Manage profile
+                  </button>
+                </div>
+                <p className="mt-4 text-sm text-[#56705d]">{getRegistrantFileValidationMessage()}</p>
+                <label className="mt-6 inline-flex max-w-full cursor-pointer items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622]">
+                  {uploadingFile ? "Uploading..." : "Upload file"}
+                  <input type="file" className="hidden" onChange={uploadFile} disabled={uploadingFile} accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.csv,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" />
+                </label>
+                {fileMessage ? <p className="mt-3 break-words text-sm text-[#31513c]">{fileMessage}</p> : null}
+                <div className="mt-5 space-y-3">
+                  {files.length ? (
+                    files.map((file) => (
+                      <div key={file.id} className="min-w-0 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
+                        <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                          <div className="min-w-0 flex-1">
+                            <p className="break-all font-semibold text-[#123622]">{file.name}</p>
+                            <a href={`/api/dashboard/files/open?id=${file.id}`} target="_blank" rel="noreferrer" className="mt-1 inline-block break-all text-sm text-[#2d6a3e] underline">
+                              Open file
+                            </a>
+                          </div>
+                          <button type="button" onClick={() => deleteFile(file.id)} className="shrink-0 text-left text-sm text-[#8c2d2d] sm:text-right">
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="rounded-2xl border border-dashed border-[#d6d1c1] p-4 text-sm text-[#56705d]">
+                      No files uploaded yet.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="min-w-0 overflow-hidden rounded-3xl border border-[#e3decf] bg-white p-4 shadow-sm sm:p-6">
+                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Payment history</p>
+                <h2 className="mt-2 break-words text-2xl font-semibold text-[#123622]">Recent transactions</h2>
+                <div className="mt-6 space-y-3">
+                  {payments.length ? (
+                    payments.map((payment) => (
+                      <div key={payment.id} className="min-w-0 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
+                        <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                          <div className="min-w-0 flex-1">
+                            <p className="break-words font-semibold text-[#123622]">{payment.label || "Registration payment"}</p>
+                            <p className="break-words text-sm text-[#31513c]">{payment.currency} {payment.amount / 100}</p>
+                            <p className="break-all text-sm text-[#31513c]">Reference: {payment.reference || "Awaiting"}</p>
+                          </div>
+                          <span className="w-fit rounded-full border border-[#d6d1c1] px-3 py-1 text-xs text-[#2d6a3e]">{payment.status}</span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="rounded-2xl border border-dashed border-[#d6d1c1] p-4 text-sm text-[#56705d]">
+                      No payment records yet.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+
+            <section className="grid min-w-0 gap-6">
+              <div className="min-w-0 overflow-hidden rounded-3xl border border-[#e3decf] bg-white p-4 shadow-sm sm:p-6">
+                <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Applications</p>
+                <h2 className="mt-2 break-words text-2xl font-semibold text-[#123622]">Role history</h2>
+                <div className="mt-6 space-y-3">
+                  {applications.length ? (
+                    applications.map((application) => (
+                      <div key={application.id} className="min-w-0 rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
+                        <p className="break-words font-semibold text-[#123622]">{application.jobTitle}</p>
+                        <p className="break-words text-sm text-[#31513c]">{application.company}</p>
+                        {application.note ? <pre className="mt-3 whitespace-pre-wrap break-words rounded-2xl border border-[#e3decf] bg-white p-3 text-xs leading-6 text-[#31513c]">{application.note}</pre> : null}
+                        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                          <span className="rounded-full border border-[#d6d1c1] px-3 py-1 text-[#2d6a3e]">{application.status}</span>
+                          <span className="text-[#56705d]">{new Date(application.createdAt).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="rounded-2xl border border-dashed border-[#d6d1c1] p-4 text-sm text-[#56705d]">
+                      No applications recorded yet.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+      </div>
+
+      <OverlayModal
+        open={shouldShowApplyModal}
+        onClose={() => {}}
+        showCloseButton={false}
+        title={pendingApplicationJob ? `Complete your profile to apply for ${pendingApplicationJob.title}` : "Complete your profile"}
+        description={pendingApplicationJob ? `Finish your profile, upload your resume or supporting documents, and then we will submit your application to ${pendingApplicationJob.company}.` : undefined}
+        widthClassName="max-w-4xl"
+      >
+        <div className="space-y-6">
+          <div className="rounded-2xl border border-[#e3decf] bg-white p-4">
+            <p className="text-sm leading-7 text-[#31513c]">
+              Required before applying: {missingFields.length ? missingFields.join(", ") : "Profile looks complete."}
+            </p>
+            <p className="mt-2 text-sm leading-7 text-[#31513c]">
+              Supporting documents: {hasDocuments ? `${files.length} uploaded` : "Upload at least one resume or supporting document."}
+            </p>
+          </div>
+
+          <form onSubmit={saveProfile} className="grid gap-4 md:grid-cols-2">
+            {[
+              ["name", "Full name"],
+              ["email", "Email"],
+              ["phone", "Phone number"],
+              ["currentCity", "Current city"],
+              ["headline", "Headline"],
+              ["experienceLevel", "Experience level"],
+              ["serviceInterest", "Service interest"],
+              ["linkedin", "LinkedIn URL"],
+              ["resumeUrl", "Resume URL"],
+            ].map(([key, label]) => (
+              <input
+                key={key}
+                className="rounded-2xl border border-[#d6d1c1] px-4 py-3 text-sm text-[#123622] outline-none"
+                placeholder={label}
+                value={profile[key as keyof CandidateProfile] as string}
+                onChange={(event) => setProfile((current) => ({ ...current, [key]: event.target.value }))}
+                disabled={key === "email"}
+              />
+            ))}
+            <textarea
+              className="min-h-28 rounded-2xl border border-[#d6d1c1] px-4 py-3 text-sm text-[#123622] outline-none md:col-span-2"
+              placeholder="Notes for our team about roles, location, notice period, or salary expectations"
+              value={profile.note}
+              onChange={(event) => setProfile((current) => ({ ...current, note: event.target.value }))}
+            />
+            <div className="md:col-span-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <button type="submit" disabled={savingProfile} className="rounded-full border border-[#d6d1c1] bg-white px-5 py-3 text-sm font-semibold text-[#123622] disabled:opacity-70">
+                {savingProfile ? "Saving profile..." : "Save profile details"}
+              </button>
+              {profileMessage ? <p className="text-sm text-[#31513c]">{profileMessage}</p> : null}
             </div>
-          </section>
-        </>
-      )}
-    </div>
+          </form>
+
+          <div className="rounded-2xl border border-[#e3decf] bg-white p-4">
+            <p className="text-sm text-[#31513c]">{getRegistrantFileValidationMessage()}</p>
+            <label className="mt-4 inline-flex cursor-pointer items-center justify-center rounded-full border border-[#d6d1c1] px-5 py-3 text-sm font-semibold text-[#123622]">
+              {uploadingFile ? "Uploading..." : "Upload resume or supporting file"}
+              <input type="file" className="hidden" onChange={uploadFile} disabled={uploadingFile} accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.csv,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" />
+            </label>
+            {fileMessage ? <p className="mt-3 text-sm text-[#31513c]">{fileMessage}</p> : null}
+            <div className="mt-4 space-y-3">
+              {files.map((file) => (
+                <div key={file.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-3 text-sm text-[#31513c]">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="font-semibold text-[#123622]">{file.name}</p>
+                      <p>{new Date(file.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    <a href={`/api/dashboard/files/open?id=${file.id}`} target="_blank" rel="noreferrer" className="text-[#2d6a3e] underline">
+                      Open file
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-sm text-[#31513c]">
+              {profileReadyToApply ? "Your profile is ready. Submitting will notify our team immediately." : "Finish the required profile fields and upload a document to continue."}
+            </div>
+            <button
+              type="button"
+              onClick={submitApplication}
+              disabled={!profileReadyToApply || submittingApplication || savingProfile || uploadingFile}
+              className="rounded-full bg-[#27c06b] px-6 py-3 text-sm font-semibold text-white disabled:opacity-70"
+            >
+              {submittingApplication ? "Submitting application..." : pendingApplicationJob ? `Apply for ${pendingApplicationJob.title}` : "Submit application"}
+            </button>
+          </div>
+          {applicationMessage ? <p className="text-sm text-[#8c2d2d]">{applicationMessage}</p> : null}
+        </div>
+      </OverlayModal>
+    </>
   );
 }

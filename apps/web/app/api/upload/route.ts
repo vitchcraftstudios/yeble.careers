@@ -1,5 +1,10 @@
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
+import {
+  MAX_REGISTRANT_FILE_SIZE_BYTES,
+  getRegistrantFileValidationMessage,
+  isAllowedRegistrantFileType,
+} from "@/lib/registrant-files";
 
 export const runtime = "nodejs";
 
@@ -21,6 +26,14 @@ export async function POST(req: Request) {
 
     if (!file || !(file instanceof File)) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+
+    if (file.size > MAX_REGISTRANT_FILE_SIZE_BYTES) {
+      return NextResponse.json({ error: getRegistrantFileValidationMessage() }, { status: 400 });
+    }
+
+    if (!isAllowedRegistrantFileType(file.name, file.type)) {
+      return NextResponse.json({ error: getRegistrantFileValidationMessage() }, { status: 400 });
     }
 
     if (!process.env.BLOB_READ_WRITE_TOKEN) {

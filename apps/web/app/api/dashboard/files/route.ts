@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { resolveCandidate } from "@/lib/dashboard-candidate";
+import { isAllowedRegistrantFileType, getRegistrantFileValidationMessage } from "@/lib/registrant-files";
 
 async function getCandidate() {
   const { userId } = await auth();
@@ -38,6 +39,10 @@ export async function POST(req: Request) {
     const body = await req.json();
     if (!body.name || !body.url) {
       return NextResponse.json({ error: "Missing file details" }, { status: 400 });
+    }
+
+    if (!isAllowedRegistrantFileType(body.name, body.type)) {
+      return NextResponse.json({ error: getRegistrantFileValidationMessage() }, { status: 400 });
     }
 
     const file = await prisma.registrantFile.create({

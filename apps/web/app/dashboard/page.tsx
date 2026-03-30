@@ -6,6 +6,11 @@ import { DashboardSignOutButton } from "@/components/dashboard/dashboard-sign-ou
 import { DashboardHomeLink } from "@/components/dashboard/dashboard-home-link";
 import { isAdminUser } from "@/lib/clerk-access";
 
+type SearchParams = {
+  applied?: string;
+  applyJobId?: string;
+};
+
 function MailIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.9">
@@ -18,7 +23,7 @@ function MailIcon() {
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ applied?: string }>;
+  searchParams?: Promise<SearchParams>;
 }) {
   const params = await searchParams;
   const { userId } = await auth();
@@ -34,19 +39,29 @@ export default async function DashboardPage({
     redirect("/admin");
   }
 
-  const candidate = await prisma.candidate
-    .findUnique({
-      where: { email: email.toLowerCase() },
-      include: {
-        files: { orderBy: { createdAt: "desc" } },
-        payments: { orderBy: { createdAt: "desc" } },
-        applications: {
-          orderBy: { createdAt: "desc" },
-          include: { job: true },
+  const [candidate, pendingJob] = await Promise.all([
+    prisma.candidate
+      .findUnique({
+        where: { email: email.toLowerCase() },
+        include: {
+          files: { orderBy: { createdAt: "desc" } },
+          payments: { orderBy: { createdAt: "desc" } },
+          applications: {
+            orderBy: { createdAt: "desc" },
+            include: { job: true },
+          },
         },
-      },
-    })
-    .catch(() => null);
+      })
+      .catch(() => null),
+    params?.applyJobId
+      ? prisma.job
+          .findUnique({
+            where: { id: params.applyJobId },
+            select: { id: true, title: true, company: true },
+          })
+          .catch(() => null)
+      : Promise.resolve(null),
+  ]);
 
   const profile = {
     name: candidate?.name || user.fullName || "",
@@ -68,7 +83,7 @@ export default async function DashboardPage({
         <div className="mb-8 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.3em] text-[#2d6a3e]">Registrant Dashboard</p>
-            <h1 className="mt-2 break-words text-3xl font-semibold text-[#123622]">Profile, files, and payment status</h1>
+            <h1 className="mt-2 break-words text-3xl font-semibold text-[#123622]">Profile, files, and application records</h1>
             <p className="mt-2 max-w-2xl break-words text-sm leading-7 text-[#31513c]">
               Keep your profile updated, upload documents, and track the registration and application records linked to your account.
             </p>
@@ -108,6 +123,7 @@ export default async function DashboardPage({
             jobTitle: application.job.title,
             company: application.job.company,
           }))}
+          pendingApplicationJob={pendingJob}
         />
       </div>
     </div>

@@ -50,14 +50,9 @@ export async function GET(_request: Request, context: RouteContext) {
     select: { id: true },
   });
 
-  if (!existingApplication) {
-    await prisma.application.create({
-      data: {
-        jobId,
-        candidateId: candidate.id,
-      },
-    });
+  if (existingApplication) {
+    redirect(`/dashboard?applied=${encodeURIComponent(jobId)}`);
   }
 
-  redirect(`/dashboard?applied=${encodeURIComponent(jobId)}`);
+  redirect(`/dashboard?applyJobId=${encodeURIComponent(jobId)}`);
 }

@@ -669,7 +669,8 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
                         selectedRegistrant.files.map((file) => (
                           <div key={file.id} className="rounded-2xl border border-[#e3decf] bg-white p-3">
                             <p className="break-all font-semibold text-[#123622]">{file.name}</p>
-                            <a href={file.url} target="_blank" rel="noreferrer" className="mt-2 inline-block text-sm text-[#2d6a3e] underline">
+                            {file.type ? <p className="mt-1 text-sm text-[#56705d]">{file.type}</p> : null}
+                            <a href={`/api/admin/files/open?id=${file.id}`} target="_blank" rel="noreferrer" className="mt-2 inline-block text-sm text-[#2d6a3e] underline">
                               Open file
                             </a>
                           </div>
@@ -689,6 +690,8 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
                             <p className="font-semibold text-[#123622]">{application.jobTitle}</p>
                             <p className="text-sm text-[#31513c]">{application.company}</p>
                             <p className="text-sm text-[#31513c]">{application.status}</p>
+                            <p className="text-sm text-[#56705d]">{new Date(application.createdAt).toLocaleDateString()}</p>
+                            {application.note ? <pre className="mt-3 whitespace-pre-wrap break-words rounded-2xl border border-[#e3decf] bg-[#fffef6] p-3 text-xs leading-6 text-[#31513c]">{application.note}</pre> : null}
                           </div>
                         ))
                       ) : (
@@ -771,3 +774,5 @@ export function AdminDashboardClient({ initialJobs, initialRegistrants, initialC
     </div>
   );
 }
+
+
