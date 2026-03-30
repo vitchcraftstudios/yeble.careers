@@ -183,6 +183,7 @@ export function AdminDashboardClient({
   const [savingRegistrant, setSavingRegistrant] = useState(false);
   const [jobMessage, setJobMessage] = useState("");
   const [registrantMessage, setRegistrantMessage] = useState("");
+  const [showAllJobs, setShowAllJobs] = useState(false);
 
   const selectedRegistrant = useMemo(
     () => registrants.find((item) => item.id === selectedRegistrantId) || null,
@@ -194,6 +195,8 @@ export function AdminDashboardClient({
       setRegistrantForm(toRegistrantForm(selectedRegistrant));
     }
   }, [selectedRegistrant]);
+
+  const visibleJobs = useMemo(() => (showAllJobs ? jobs : jobs.slice(0, 8)), [jobs, showAllJobs]);
 
   const metrics = useMemo(
     () => [
@@ -491,26 +494,40 @@ export function AdminDashboardClient({
             <p className="text-xs uppercase tracking-[0.24em] text-[#2d6a3e]">Mandates</p>
             <h2 className="mt-2 text-2xl font-semibold text-[#123622]">Manage live jobs</h2>
             <div className="mt-6 space-y-3">
-              {jobs.length ? (
-                jobs.map((job) => (
-                  <div key={job.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                      <div>
-                        <p className="font-semibold text-[#123622]">{job.title}</p>
-                        <p className="text-sm text-[#31513c]">{job.company} | {job.city || job.location} | {job.status}</p>
-                        <p className="text-sm text-[#31513c]">{job.salaryRange || job.salary || "Salary on request"}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button type="button" onClick={() => startEditingJob(job)} className="rounded-full border border-[#d6d1c1] px-4 py-2 text-sm text-[#123622]">
-                          Edit
-                        </button>
-                        <button type="button" onClick={() => deleteJob(job.id)} className="rounded-full border border-[#e3decf] px-4 py-2 text-sm text-[#7a1f1f]">
-                          Delete
-                        </button>
+              {visibleJobs.length ? (
+                <>
+                  {visibleJobs.map((job) => (
+                    <div key={job.id} className="rounded-2xl border border-[#e3decf] bg-[#fffdf6] p-4">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                          <p className="font-semibold text-[#123622]">{job.title}</p>
+                          <p className="text-sm text-[#31513c]">{job.company} | {job.city || job.location} | {job.status}</p>
+                          <p className="text-sm text-[#31513c]">{job.salaryRange || job.salary || "Salary on request"}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <button type="button" onClick={() => startEditingJob(job)} className="rounded-full border border-[#d6d1c1] px-4 py-2 text-sm text-[#123622]">
+                            Edit
+                          </button>
+                          <button type="button" onClick={() => deleteJob(job.id)} className="rounded-full border border-[#e3decf] px-4 py-2 text-sm text-[#7a1f1f]">
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                  {jobs.length > 8 ? (
+                    <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#e3decf] bg-[#fffdf6] px-4 py-3 text-sm text-[#31513c]">
+                      <p>{showAllJobs ? `Showing all ${jobs.length} mandates.` : `Showing 8 of ${jobs.length} mandates.`}</p>
+                      <button
+                        type="button"
+                        onClick={() => setShowAllJobs((current) => !current)}
+                        className="rounded-full border border-[#d6d1c1] px-4 py-2 font-semibold text-[#123622]"
+                      >
+                        {showAllJobs ? "Show less" : "View more"}
+                      </button>
+                    </div>
+                  ) : null}
+                </>
               ) : (
                 <div className="rounded-2xl border border-dashed border-[#d6d1c1] bg-[#fffdf6] p-5 text-sm text-[#56705d]">
                   No live job mandates yet. Add one to start publishing.
