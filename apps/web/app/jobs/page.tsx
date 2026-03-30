@@ -1,6 +1,7 @@
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { JobsListClient } from "@/components/jobs-list-client";
+import { JobsListClient, type JobListItem } from "@/components/jobs-list-client";
 import { jobs as fallbackJobs } from "@/lib/data";
+import { getJobSourceLabel, getJobSourceTone } from "@/lib/job-source";
 import { prisma } from "@/lib/prisma";
 import { getSiteContentMap } from "@/lib/site-content";
 import { normalizeText } from "@/lib/text-normalize";
@@ -14,9 +15,18 @@ export const revalidate = 0;
 
 export default async function JobsPage() {
   const content = await getSiteContentMap();
-  const dbJobs = await prisma.job.findMany({ orderBy: { createdAt: "desc" } }).catch(() => []);
+  const dbJobs = await prisma.job
+    .findMany({
+      where: { isActive: true },
+      orderBy: [
+        { isVerified: "desc" },
+        { isImported: "asc" },
+        { createdAt: "desc" },
+      ],
+    })
+    .catch(() => []);
 
-  const jobs = dbJobs.length
+  const jobs: JobListItem[] = dbJobs.length
     ? dbJobs.map((job) => ({
         id: job.id,
         company: normalizeText(job.company),
@@ -30,6 +40,9 @@ export default async function JobsPage() {
         openings: job.openings,
         status: normalizeText(job.status),
         postedAt: job.createdAt.toISOString(),
+        sourceLabel: getJobSourceLabel(job),
+        sourceTone: getJobSourceTone(job),
+        sourceUrl: job.sourceUrl,
       }))
     : fallbackJobs.map((job) => ({
         ...job,
@@ -43,6 +56,9 @@ export default async function JobsPage() {
         sector: normalizeText(job.sector),
         status: normalizeText(job.status),
         postedAt: job.postedAt,
+        sourceLabel: "Verified",
+        sourceTone: "verified",
+        sourceUrl: null,
       }));
 
   return (
@@ -62,7 +78,7 @@ export default async function JobsPage() {
           <div className="rounded-3xl border border-[#e3decf] bg-white/85 p-6 text-sm leading-7 text-[#4d6654]">
             Candidates can currently apply or reach out with the Job ID at <a className="font-medium text-[#1f5c36]" href="mailto:growth@yeble.careers">growth@yeble.careers</a>.
             <br />
-            A dedicated HR email will be released soon, but for now all job-related queries are being handled through the same inbox for faster coordination.
+            Verified Yeble mandates are prioritised above imported discovery roles, and imported listings are labelled clearly for transparency.
           </div>
         </ScrollReveal>
       </div>

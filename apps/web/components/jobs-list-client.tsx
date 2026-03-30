@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
-type JobListItem = {
+export type JobListItem = {
   id: string;
   company: string;
   title: string;
