@@ -211,3 +211,24 @@ button {
 .success-check-ripple-delay {
   animation-delay: 0.2s;
 }
+
+.site-nav-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #2fc267 0%, #7ddc96 45%, #d9f5de 100%);
+  box-shadow: 0 0 0 1px rgba(47, 194, 103, 0.08), 0 6px 18px rgba(47, 194, 103, 0.28);
+  transition: opacity 0.18s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-nav-progress-active {
+  opacity: 1;
+  transform: scaleX(0.92);
+}
