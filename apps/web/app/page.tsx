@@ -276,6 +276,7 @@ export default function Home() {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [homeContent, setHomeContent] = useState(homeContentDefaults);
+  const [openingRoles, setOpeningRoles] = useState(false);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -338,9 +339,18 @@ export default function Home() {
                   </button>
                   <Link
                     href="/jobs"
-                    className="rounded-full border border-[#cfd8d0] px-6 py-3 text-center text-sm font-semibold text-[#1d402a] transition hover:border-[#27c06b] hover:text-[#1a703d]"
+                    onClick={() => setOpeningRoles(true)}
+                    aria-busy={openingRoles}
+                    className={`rounded-full border px-6 py-3 text-center text-sm font-semibold transition ${openingRoles ? "pointer-events-none border-[#27c06b] bg-[#f3fff7] text-[#1a703d]" : "border-[#cfd8d0] text-[#1d402a] hover:border-[#27c06b] hover:text-[#1a703d]"}`}
                   >
-                    View open roles
+                    {openingRoles ? (
+                      <span className="inline-flex items-center justify-center gap-2">
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#1a703d]/30 border-t-[#1a703d]" aria-hidden="true" />
+                        Opening roles...
+                      </span>
+                    ) : (
+                      "View open roles"
+                    )}
                   </Link>
                 </div>
                 <div className="mt-6 flex flex-wrap gap-3 text-xs text-[#31513c] sm:text-sm">
@@ -454,8 +464,8 @@ export default function Home() {
                 <li className="flex gap-3"><span className="mt-1 text-[#2d6a3e]"><CheckIcon /></span><span>Role clarity before interviews, so you understand the company, salary range, and expectations properly.</span></li>
                 <li className="flex gap-3"><span className="mt-1 text-[#2d6a3e]"><CheckIcon /></span><span>Cleaner communication and follow-up instead of silent gaps after every round.</span></li>
               </ul>
-              <Link href="/jobs" className="mt-6 inline-flex items-center rounded-full border border-[#d6d1c1] px-6 py-3 text-sm font-semibold text-[#123622] transition hover:border-[#27c06b]">
-                View openings
+              <Link href="/jobs" onClick={() => setOpeningRoles(true)} className={`mt-6 inline-flex items-center rounded-full border px-6 py-3 text-sm font-semibold transition ${openingRoles ? "pointer-events-none border-[#27c06b] bg-[#f3fff7] text-[#1a703d]" : "border-[#d6d1c1] text-[#123622] hover:border-[#27c06b]"}`}>
+                {openingRoles ? "Opening roles..." : "View openings"}
               </Link>
             </div>
           </section>
