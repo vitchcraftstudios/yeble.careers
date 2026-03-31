@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { Geist_Mono, Manrope } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SiteFloatingChrome, SiteFooterChrome, SiteHeaderChrome } from "@/components/site-chrome";
@@ -45,11 +46,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body
-          className={`${brandSans.variable} ${geistMono.variable} antialiased`}
-        >
+        <body className={`${brandSans.variable} ${geistMono.variable} antialiased`}>
           <Splash />
-          <NavigationProgress />
+          <Suspense fallback={null}>
+            <NavigationProgress />
+          </Suspense>
           <SiteHeaderChrome />
           {children}
           <SiteFloatingChrome />
@@ -59,7 +60,3 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
-
-
-
-
