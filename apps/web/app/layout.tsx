@@ -4,6 +4,7 @@ import { Geist_Mono, Manrope } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SiteFloatingChrome, SiteFooterChrome, SiteHeaderChrome } from "@/components/site-chrome";
 import { NavigationProgress } from "@/components/navigation-progress";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 import Splash from "./(auth)/splash";
 
@@ -19,6 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: "Yeble.careers - Accelerate your Placement",
   description: "Permanent & contract hiring across tech, product, analytics, GTM from Dehradun HQ.",
   icons: {
