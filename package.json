@@ -10,10 +10,6 @@
     "postinstall": "npm run postinstall --workspace apps/web",
     "dev:web": "npm run dev --workspace apps/web",
     "dev:mobile": "npm run start --workspace apps/mobile",
-    "build:web": "npm run build --workspace apps/web",
-    "lint:web": "npm run lint --workspace apps/web",
-    "cf:build": "npm run cf:build --workspace apps/web",
-    "cf:preview": "npm run cf:preview --workspace apps/web",
-    "cf:deploy": "npm run cf:deploy --workspace apps/web"
+    "lint:web": "npm run lint --workspace apps/web"
   }
 }
