@@ -8,24 +8,38 @@ datasource db {
 }
 
 model Job {
-  id           String        @id @default(uuid())
-  title        String
-  company      String
-  sector       String?
-  city         String?
-  locationType String?       @default("On-site")
-  experience   String?
-  salaryRange  String?
-  type         String?       @default("Full-time")
-  openings     Int           @default(1)
-  status       String        @default("Open")
-  location     String
-  description  String
-  salary       String?
-  tags         String[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  applications Application[]
+  id            String        @id @default(uuid())
+  title         String
+  company       String
+  sector        String?
+  city          String?
+  locationType  String?       @default("On-site")
+  experience    String?
+  salaryRange   String?
+  type          String?       @default("Full-time")
+  openings      Int           @default(1)
+  status        String        @default("Open")
+  location      String
+  description   String
+  salary        String?
+  tags          String[]
+  source        String        @default("manual")
+  sourceJobId   String?
+  sourceUrl     String?
+  sourcePayload Json?
+  isImported    Boolean       @default(false)
+  isVerified    Boolean       @default(true)
+  isActive      Boolean       @default(true)
+  syncStatus    String        @default("manual")
+  importHash    String?
+  lastSyncedAt  DateTime?
+  expiresAt     DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  applications  Application[]
+
+  @@unique([source, sourceJobId])
+  @@index([isActive, source, isVerified])
 }
 
 model Candidate {
