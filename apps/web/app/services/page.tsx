@@ -1,5 +1,6 @@
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { getSiteContentMap } from "@/lib/site-content";
+import { absoluteUrl, buildMetadata } from "@/lib/seo";
 
 function BriefcaseIcon() {
   return (
@@ -157,14 +158,57 @@ const coverageNotes = [
   "A practical approach that stays local in understanding while remaining broad enough for multi-location hiring needs.",
 ];
 
-export const metadata = {
-  title: "Services | Yeble Careers",
-};
+export const metadata = buildMetadata({
+  title: "Recruitment Services, Staffing, and Campus Hiring",
+  description:
+    "Explore Yeble Careers recruitment services including permanent hiring, contract staffing, campus recruitment, and candidate vetting for employers across Dehradun and North India.",
+  path: "/services",
+  keywords: [
+    "recruitment services Dehradun",
+    "staffing agency Uttarakhand",
+    "campus hiring North India",
+    "contract staffing Dehradun",
+    "candidate vetting services",
+  ],
+});
 
 export default async function ServicesPage() {
   const content = await getSiteContentMap();
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+                { "@type": "ListItem", position: 2, name: "Services", item: absoluteUrl("/services") },
+              ],
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              name: "Yeble Careers services",
+              itemListElement: services.map((service, index) => ({
+                "@type": "Service",
+                position: index + 1,
+                name: service.title,
+                serviceType: service.title,
+                areaServed: ["Dehradun", "Uttarakhand", "Uttar Pradesh", "Haryana", "Himachal Pradesh"],
+                provider: {
+                  "@type": "EmploymentAgency",
+                  name: "Yeble Careers",
+                  url: absoluteUrl("/"),
+                },
+              })),
+            },
+          ]),
+        }}
+      />
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-8">
         <ScrollReveal>
           <div className="space-y-3">

@@ -1,6 +1,7 @@
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ContactForm } from "@/components/contact-form";
 import { getSiteContentMap } from "@/lib/site-content";
+import { absoluteUrl, buildMetadata } from "@/lib/seo";
 
 function PhoneIcon() {
   return (
@@ -37,14 +38,48 @@ function ClockIcon() {
   );
 }
 
-export const metadata = {
-  title: "Contact | Yeble Careers",
-};
+export const metadata = buildMetadata({
+  title: "Contact Yeble Careers in Dehradun",
+  description:
+    "Contact Yeble Careers for recruitment mandates, staffing enquiries, and candidate support. Reach our Dehradun-based team serving Uttarakhand and North India employers and job seekers.",
+  path: "/contact",
+  keywords: [
+    "contact recruitment agency Dehradun",
+    "Yeble Careers phone number",
+    "staffing enquiry Uttarakhand",
+    "placement agency contact Dehradun",
+  ],
+});
 
 export default async function ContactPage() {
   const content = await getSiteContentMap();
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            name: "Contact Yeble Careers",
+            url: absoluteUrl("/contact"),
+            mainEntity: {
+              "@type": "EmploymentAgency",
+              name: "Yeble Careers",
+              telephone: "+91 94296 92113",
+              email: "growth@yeble.careers",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Dehradun",
+                addressRegion: "Uttarakhand",
+                postalCode: "248015",
+                addressCountry: "IN",
+              },
+            },
+          }),
+        }}
+      />
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-8">
         <ScrollReveal>
           <div className="grid gap-6 md:grid-cols-[1.05fr_0.95fr] md:items-start">

@@ -1,5 +1,6 @@
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { getSiteContentMap } from "@/lib/site-content";
+import { absoluteUrl, buildMetadata } from "@/lib/seo";
 
 function CalendarIcon() {
   return (
@@ -74,9 +75,18 @@ function CheckDotIcon() {
   );
 }
 
-export const metadata = {
-  title: "About Yeble Careers | India-first employment agency",
-};
+export const metadata = buildMetadata({
+  title: "About Yeble Careers Recruitment Agency in Dehradun",
+  description:
+    "Learn about Yeble Careers, a Dehradun-based recruitment and employment agency helping employers and candidates across Uttarakhand and North India with practical hiring support.",
+  path: "/about",
+  keywords: [
+    "about Yeble Careers",
+    "Dehradun recruitment agency",
+    "employment agency Uttarakhand",
+    "North India placement consultancy",
+  ],
+});
 
 const highlights = [
   {
@@ -139,6 +149,25 @@ export default async function AboutPage() {
   const content = await getSiteContentMap();
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: "About Yeble Careers",
+            url: absoluteUrl("/about"),
+            breadcrumb: {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+                { "@type": "ListItem", position: 2, name: "About", item: absoluteUrl("/about") },
+              ],
+            },
+          }),
+        }}
+      />
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-10">
         <ScrollReveal>
           <div className="grid gap-6 md:grid-cols-[1.08fr_0.92fr] md:items-start">

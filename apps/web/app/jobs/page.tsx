@@ -5,10 +5,21 @@ import { getJobSourceLabel, getJobSourceTone } from "@/lib/job-source";
 import { prisma } from "@/lib/prisma";
 import { getSiteContentMap } from "@/lib/site-content";
 import { normalizeText } from "@/lib/text-normalize";
+import { absoluteUrl, buildMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Open Jobs | Yeble Careers",
-};
+export const metadata = buildMetadata({
+  title: "Open Jobs in Dehradun and North India",
+  description:
+    "Browse open jobs from Yeble Careers across Dehradun, Noida, Gurugram, Chandigarh, Uttarakhand, Haryana, Uttar Pradesh, and nearby North India hiring markets.",
+  path: "/jobs",
+  keywords: [
+    "jobs in Dehradun",
+    "jobs in Uttarakhand",
+    "North India jobs",
+    "Yeble Careers jobs",
+    "open positions Noida Gurugram Chandigarh",
+  ],
+});
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -63,6 +74,19 @@ export default async function JobsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffef0] via-[#f7f3dc] to-[#fffef0] text-[#0f2918]">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "Open jobs",
+            url: absoluteUrl("/jobs"),
+            about: "Open roles from Yeble Careers across Dehradun and North India",
+          }),
+        }}
+      />
       <div className="mx-auto max-w-6xl space-y-6 px-6 py-14">
         <ScrollReveal>
           <div className="space-y-2">
