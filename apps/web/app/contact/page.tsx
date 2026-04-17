@@ -192,6 +192,42 @@ export default async function ContactPage() {
             </div>
           </div>
         </ScrollReveal>
+
+        <ScrollReveal delay={150}>
+          <div className="overflow-hidden rounded-3xl border border-[#e3decf] bg-white/90 shadow-sm">
+            <div className="border-b border-[#e3decf] px-6 py-5">
+              <p className="text-xs uppercase tracking-[0.28em] text-[#2d6a3e]">Office location</p>
+              <h2 className="mt-2 text-2xl font-semibold text-[#123622]">Visit Yeble in Dehradun</h2>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-[#31513c]">
+                Yeble - Accelerate your Placement, Sudhowala, Dehradun, Uttarakhand 248015. This map helps employers,
+                candidates, and local search users verify our location and plan a visit more easily.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <a
+                  href="https://share.google/I1bAZLEC4yVsoF9WJ"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center rounded-full border border-[#2d6a3e] bg-[#f5fbf6] px-5 py-2.5 text-sm font-semibold text-[#1d5b34] transition hover:bg-[#eaf7ee] hover:text-[#17482a]"
+                >
+                  View Google Business Profile
+                </a>
+              </div>
+            </div>
+            <div className="aspect-[16/10] w-full md:aspect-[21/9]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3442.7629048377903!2d77.93698757536916!3d30.357687474767264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3908d5e0f2ac46c3%3A0xa65e54154a0fb75d!2sYeble%20-%20Accelerate%20your%20Placement!5e0!3m2!1sen!2sin!4v1776394351909!5m2!1sen!2sin"
+                width="600"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Yeble office location on Google Maps"
+                className="h-full w-full"
+              />
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </div>
   );
